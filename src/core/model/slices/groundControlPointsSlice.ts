@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { PointOnImage } from './pointInImageInterface';
-import type { RootState } from './store';
+import { PointOnImage } from '../interfaces/pointOnImageInterface';
+import type { RootState } from '../store';
 
 type PointOnImageGCP = { PointOnImage: 'MANUAL' | 'IMPORTED' } & PointOnImage;
 

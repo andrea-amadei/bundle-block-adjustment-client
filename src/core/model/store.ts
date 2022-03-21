@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import cameraReducer from './cameraSlice';
-import groundControlPointsReducer from './groundControlPointsSlice';
+import cameraReducer from './slices/cameraSlice';
+import groundControlPointsReducer from './slices/groundControlPointsSlice';
 
 const store = configureStore({
   reducer: {

@@ -13,7 +13,7 @@ import reducer, {
   setP2,
   setA1,
   setA2,
-} from '../core/model/cameraSlice';
+} from '../core/model/slices/cameraSlice';
 
 describe('App', () => {
   test('should render', () => {
