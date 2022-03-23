@@ -1,11 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PointOnImage } from '../interfaces/pointOnImageInterface';
+import { PointOnImage, CommonPoint } from './common/interfaces';
 import type { RootState } from '../store';
+import {
+  addLinkedImageByPointIdCommon,
+  addPointCommon,
+  removeLinkedImageByPointIdCommon,
+  removePointByPointIdCommon,
+} from './common/reducers';
 
-export interface TiePoint {
-  pointId: number;
-  linkedImages: PointOnImage[];
-}
+export type TiePoint = CommonPoint<PointOnImage>;
+
 export const tiePointsSlice = createSlice({
   name: 'tiePoints',
 
@@ -13,43 +17,21 @@ export const tiePointsSlice = createSlice({
   initialState: [] as TiePoint[],
 
   reducers: {
-    addPoint: (state: TiePoint[], action: PayloadAction<TiePoint>) => {
-      if (state.map((x) => x.pointId).includes(action.payload.pointId))
-        throw Error('Point ID must be unique');
+    addPoint: (state: TiePoint[], action: PayloadAction<TiePoint>) =>
+      addPointCommon(state, action),
 
-      state.push(action.payload);
-    },
-
-    removePointByPointId: (state: TiePoint[], action: PayloadAction<number>) => {
-      state.splice(
-        state.findIndex((x) => x.pointId === action.payload),
-        1
-      );
-    },
+    removePointByPointId: (state: TiePoint[], action: PayloadAction<number>) =>
+      removePointByPointIdCommon(state, action),
 
     addLinkedImageByPointId: {
       prepare: (id: number, image: PointOnImage) => ({
         payload: { id, image },
       }),
 
-      reducer: (state: TiePoint[], action: PayloadAction<{ id: number, image: PointOnImage }>) => {
-        if (!state.map((x) => x.pointId).includes(action.payload.id))
-          throw Error('No existing point with given ID');
-
-        if (action.payload.id !== action.payload.image.pointId)
-          throw Error("Point ID and image's point ID must be identical");
-
-        const point = state.filter((p) => p.pointId === action.payload.id)[0];
-
-        if (
-          point.linkedImages
-            .map((x) => x.imageId)
-            .includes(action.payload.image.imageId)
-        )
-          throw Error('Image ID must be unique');
-
-        point.linkedImages.push(action.payload.image);
-      },
+      reducer: (
+        state: TiePoint[],
+        action: PayloadAction<{ id: number; image: PointOnImage }>
+      ) => addLinkedImageByPointIdCommon(state, action),
     },
 
     removeLinkedImageByPointId: {
@@ -57,19 +39,10 @@ export const tiePointsSlice = createSlice({
         payload: { pointId, imageId },
       }),
 
-      reducer: (state: TiePoint[], action: PayloadAction<{ pointId: number, imageId: number }>) => {
-        if (!state.map((x) => x.pointId).includes(action.payload.pointId))
-          throw Error('No existing point with given ID');
-
-        const images = state.filter(
-          (p) => p.pointId === action.payload.pointId
-        )[0].linkedImages;
-
-        images.splice(
-          images.findIndex((p) => p.imageId === action.payload.imageId),
-          1
-        );
-      },
+      reducer: (
+        state: TiePoint[],
+        action: PayloadAction<{ pointId: number; imageId: number }>
+      ) => removeLinkedImageByPointIdCommon(state, action),
     },
   },
 });

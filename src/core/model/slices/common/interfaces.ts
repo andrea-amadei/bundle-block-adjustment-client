@@ -5,3 +5,8 @@ export interface PointOnImage {
   y: number;
   source: 'AUTO' | 'MANUAL' | 'IMPORTED';
 }
+
+export interface CommonPoint<T extends PointOnImage> {
+  pointId: number;
+  linkedImages: T[];
+}

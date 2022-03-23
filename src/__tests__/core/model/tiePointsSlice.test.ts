@@ -5,7 +5,7 @@ import reducer, {
   removePointByPointId,
   TiePoint,
 } from '../../../core/model/slices/tiePointsSlice';
-import { PointOnImage } from '../../../core/model/interfaces/pointOnImageInterface';
+import { PointOnImage } from '../../../core/model/slices/common/interfaces';
 
 // eslint-disable-next-line jest/no-export
 export default () =>

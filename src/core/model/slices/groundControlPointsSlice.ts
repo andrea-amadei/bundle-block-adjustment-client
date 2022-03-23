@@ -1,12 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PointOnImage } from '../interfaces/pointOnImageInterface';
+import { PointOnImage, CommonPoint } from './common/interfaces';
 import type { RootState } from '../store';
+import {
+  addLinkedImageByPointIdCommon,
+  addPointCommon,
+  removeLinkedImageByPointIdCommon,
+  removePointByPointIdCommon,
+} from './common/reducers';
 
 export type PointOnImageGCP = { source: 'MANUAL' | 'IMPORTED' } & PointOnImage;
 
-export interface GroundControlPoint {
-  pointId: number;
-  linkedImages: PointOnImageGCP[];
+export interface GroundControlPoint extends CommonPoint<PointOnImageGCP> {
   x: number;
   y: number;
   z: number;
@@ -17,20 +21,35 @@ export const groundControlPointsSlice = createSlice({
 
   // TODO: perhaps it is better to convert the state to a map?
   initialState: [] as GroundControlPoint[],
-
   reducers: {
-    addPoint: (state: GroundControlPoint[], action: PayloadAction<GroundControlPoint>) => {
-      if (state.map((x) => x.pointId).includes(action.payload.pointId))
-        throw Error('Point ID must be unique');
+    addPoint: (
+      state: GroundControlPoint[],
+      action: PayloadAction<GroundControlPoint>
+    ) => addPointCommon(state, action),
 
-      state.push(action.payload);
+    removePointByPointId: (
+      state: GroundControlPoint[],
+      action: PayloadAction<number>
+    ) => removePointByPointIdCommon(state, action),
+
+    addLinkedImageByPointId: {
+      prepare: (id: number, image: PointOnImageGCP) => ({
+        payload: { id, image },
+      }),
+
+      reducer: (
+        state: GroundControlPoint[],
+        action: PayloadAction<{ id: number; image: PointOnImageGCP }>
+      ) => addLinkedImageByPointIdCommon(state, action),
     },
 
-    removePointByPointId: (state: GroundControlPoint[], action: PayloadAction<number>) => {
-      state.splice(
-        state.findIndex((x) => x.pointId === action.payload),
-        1
-      );
+    removeLinkedImageByPointId: {
+      prepare: (pointId: number, imageId: number) => ({
+        payload: { pointId, imageId },
+      }),
+
+      reducer: (state: GroundControlPoint[], action: PayloadAction<{ pointId: number, imageId: number }>) =>
+        removeLinkedImageByPointIdCommon(state, action),
     },
 
     setXByPointId: {
@@ -69,51 +88,6 @@ export const groundControlPointsSlice = createSlice({
         } catch (e) {
           throw Error('No existing point with given ID');
         }
-      },
-    },
-
-    addLinkedImageByPointId: {
-      prepare: (id: number, image: PointOnImageGCP) => ({
-        payload: { id, image },
-      }),
-
-      reducer: (state: GroundControlPoint[], action: PayloadAction<{ id: number, image: PointOnImageGCP }>) => {
-        if (!state.map((x) => x.pointId).includes(action.payload.id))
-          throw Error('No existing point with given ID');
-
-        if (action.payload.id !== action.payload.image.pointId)
-          throw Error("Point ID and image's point ID must be identical");
-
-        const point = state.filter((p) => p.pointId === action.payload.id)[0];
-
-        if (
-          point.linkedImages
-            .map((x) => x.imageId)
-            .includes(action.payload.image.imageId)
-        )
-          throw Error('Image ID must be unique');
-
-        point.linkedImages.push(action.payload.image);
-      },
-    },
-
-    removeLinkedImageByPointId: {
-      prepare: (pointId: number, imageId: number) => ({
-        payload: { pointId, imageId },
-      }),
-
-      reducer: (state: GroundControlPoint[], action: PayloadAction<{ pointId: number, imageId: number }>) => {
-        if (!state.map((x) => x.pointId).includes(action.payload.pointId))
-          throw Error('No existing point with given ID');
-
-        const images = state.filter(
-          (p) => p.pointId === action.payload.pointId
-        )[0].linkedImages;
-
-        images.splice(
-          images.findIndex((p) => p.imageId === action.payload.imageId),
-          1
-        );
       },
     },
   },
