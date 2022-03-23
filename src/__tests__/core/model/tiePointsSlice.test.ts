@@ -4,6 +4,8 @@ import reducer, {
   removeLinkedImageByPointId,
   removePointByPointId,
   TiePoint,
+  setLinkedImageX,
+  setLinkedImageY,
 } from '../../../core/model/slices/tiePointsSlice';
 import { PointOnImage } from '../../../core/model/slices/common/interfaces';
 
@@ -57,15 +59,69 @@ export default () =>
       ).toEqual(initialState);
     });
 
-    test('should throw an error when operating on a point with an incorrect ID', () => {
+    test('should set x and y of lined images correctly', () => {
       const newPointId = 42;
+      const newImageId = 1;
       const initialState: TiePoint[] = [
         {
           pointId: newPointId,
           linkedImages: [
             {
               pointId: newPointId,
-              imageId: 1,
+              imageId: newImageId,
+              x: 0,
+              y: 0,
+              source: 'MANUAL',
+            },
+          ],
+        },
+      ];
+
+      expect(
+        reducer(initialState, setLinkedImageX(newPointId, newImageId, 3))
+      ).toEqual([
+        {
+          pointId: newPointId,
+          linkedImages: [
+            {
+              pointId: newPointId,
+              imageId: newImageId,
+              x: 3,
+              y: 0,
+              source: 'MANUAL',
+            },
+          ],
+        },
+      ]);
+
+      expect(
+        reducer(initialState, setLinkedImageY(newPointId, newImageId, 3))
+      ).toEqual([
+        {
+          pointId: newPointId,
+          linkedImages: [
+            {
+              pointId: newPointId,
+              imageId: newImageId,
+              x: 0,
+              y: 3,
+              source: 'MANUAL',
+            },
+          ],
+        },
+      ]);
+    });
+
+    test('should throw an error when operating on a point with an incorrect ID', () => {
+      const newPointId = 42;
+      const newImageId = 1;
+      const initialState: TiePoint[] = [
+        {
+          pointId: newPointId,
+          linkedImages: [
+            {
+              pointId: newPointId,
+              imageId: newImageId,
               x: 1,
               y: 2,
               source: 'MANUAL',
@@ -89,6 +145,26 @@ export default () =>
 
       expect(() =>
         reducer(initialState, removeLinkedImageByPointId(newPointId + 1, 1))
+      ).toThrow(Error);
+
+      expect(() =>
+        reducer(initialState, removeLinkedImageByPointId(newPointId + 1, 1))
+      ).toThrow(Error);
+
+      expect(() =>
+        reducer(initialState, setLinkedImageX(newPointId + 1, newImageId, 1))
+      ).toThrow(Error);
+
+      expect(() =>
+        reducer(initialState, setLinkedImageX(newPointId, newImageId + 1, 1))
+      ).toThrow(Error);
+
+      expect(() =>
+        reducer(initialState, setLinkedImageY(newPointId + 1, newImageId, 1))
+      ).toThrow(Error);
+
+      expect(() =>
+        reducer(initialState, setLinkedImageY(newPointId, newImageId + 1, 1))
       ).toThrow(Error);
     });
 

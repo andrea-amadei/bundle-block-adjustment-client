@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PointOnImage, CommonPoint } from './common/interfaces';
 import type { RootState } from '../store';
 import {
-  addLinkedImageByPointIdCommon,
+  addLinkedImageCommon,
   addPointCommon,
-  removeLinkedImageByPointIdCommon,
-  removePointByPointIdCommon,
+  removeLinkedImageCommon,
+  removePointCommon,
+  setLinkedImageXCommon,
+  setLinkedImageYCommon,
 } from './common/reducers';
 
 export type TiePoint = CommonPoint<PointOnImage>;
@@ -21,7 +23,7 @@ export const tiePointsSlice = createSlice({
       addPointCommon(state, action),
 
     removePointByPointId: (state: TiePoint[], action: PayloadAction<number>) =>
-      removePointByPointIdCommon(state, action),
+      removePointCommon(state, action),
 
     addLinkedImageByPointId: {
       prepare: (id: number, image: PointOnImage) => ({
@@ -31,7 +33,7 @@ export const tiePointsSlice = createSlice({
       reducer: (
         state: TiePoint[],
         action: PayloadAction<{ id: number; image: PointOnImage }>
-      ) => addLinkedImageByPointIdCommon(state, action),
+      ) => addLinkedImageCommon(state, action),
     },
 
     removeLinkedImageByPointId: {
@@ -42,7 +44,29 @@ export const tiePointsSlice = createSlice({
       reducer: (
         state: TiePoint[],
         action: PayloadAction<{ pointId: number; imageId: number }>
-      ) => removeLinkedImageByPointIdCommon(state, action),
+      ) => removeLinkedImageCommon(state, action),
+    },
+
+    setLinkedImageX: {
+      prepare: (pointId: number, imageId: number, x: number) => ({
+        payload: { pointId, imageId, x },
+      }),
+
+      reducer: (
+        state: TiePoint[],
+        action: PayloadAction<{ pointId: number; imageId: number; x: number }>
+      ) => setLinkedImageXCommon(state, action),
+    },
+
+    setLinkedImageY: {
+      prepare: (pointId: number, imageId: number, y: number) => ({
+        payload: { pointId, imageId, y },
+      }),
+
+      reducer: (
+        state: TiePoint[],
+        action: PayloadAction<{ pointId: number; imageId: number; y: number }>
+      ) => setLinkedImageYCommon(state, action),
     },
   },
 });
@@ -52,6 +76,8 @@ export const {
   removePointByPointId,
   addLinkedImageByPointId,
   removeLinkedImageByPointId,
+  setLinkedImageX,
+  setLinkedImageY,
 } = tiePointsSlice.actions;
 
 export const selectTiePointById = (id: number) => (state: RootState) =>

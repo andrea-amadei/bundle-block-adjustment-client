@@ -2,10 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PointOnImage, CommonPoint } from './common/interfaces';
 import type { RootState } from '../store';
 import {
-  addLinkedImageByPointIdCommon,
+  addLinkedImageCommon,
   addPointCommon,
-  removeLinkedImageByPointIdCommon,
-  removePointByPointIdCommon,
+  removeLinkedImageCommon,
+  removePointCommon, setLinkedImageXCommon, setLinkedImageYCommon
 } from './common/reducers';
 
 export type PointOnImageGCP = { source: 'MANUAL' | 'IMPORTED' } & PointOnImage;
@@ -30,7 +30,7 @@ export const groundControlPointsSlice = createSlice({
     removePointByPointId: (
       state: GroundControlPoint[],
       action: PayloadAction<number>
-    ) => removePointByPointIdCommon(state, action),
+    ) => removePointCommon(state, action),
 
     addLinkedImageByPointId: {
       prepare: (id: number, image: PointOnImageGCP) => ({
@@ -40,7 +40,7 @@ export const groundControlPointsSlice = createSlice({
       reducer: (
         state: GroundControlPoint[],
         action: PayloadAction<{ id: number; image: PointOnImageGCP }>
-      ) => addLinkedImageByPointIdCommon(state, action),
+      ) => addLinkedImageCommon(state, action),
     },
 
     removeLinkedImageByPointId: {
@@ -49,7 +49,29 @@ export const groundControlPointsSlice = createSlice({
       }),
 
       reducer: (state: GroundControlPoint[], action: PayloadAction<{ pointId: number, imageId: number }>) =>
-        removeLinkedImageByPointIdCommon(state, action),
+        removeLinkedImageCommon(state, action),
+    },
+
+    setLinkedImageX: {
+      prepare: (pointId: number, imageId: number, x: number) => ({
+        payload: { pointId, imageId, x },
+      }),
+
+      reducer: (
+        state: GroundControlPoint[],
+        action: PayloadAction<{ pointId: number; imageId: number; x: number }>
+      ) => setLinkedImageXCommon(state, action),
+    },
+
+    setLinkedImageY: {
+      prepare: (pointId: number, imageId: number, y: number) => ({
+        payload: { pointId, imageId, y },
+      }),
+
+      reducer: (
+        state: GroundControlPoint[],
+        action: PayloadAction<{ pointId: number; imageId: number; y: number }>
+      ) => setLinkedImageYCommon(state, action),
     },
 
     setXByPointId: {
@@ -96,11 +118,13 @@ export const groundControlPointsSlice = createSlice({
 export const {
   addPoint,
   removePointByPointId,
+  addLinkedImageByPointId,
+  removeLinkedImageByPointId,
+  setLinkedImageX,
+  setLinkedImageY,
   setXByPointId,
   setYByPointId,
   setZByPointId,
-  addLinkedImageByPointId,
-  removeLinkedImageByPointId,
 } = groundControlPointsSlice.actions;
 
 export const selectGroundControlPointById =

@@ -5,6 +5,8 @@ import reducer, {
   PointOnImageGCP,
   removeLinkedImageByPointId,
   removePointByPointId,
+  setLinkedImageX,
+  setLinkedImageY,
   setXByPointId,
   setYByPointId,
   setZByPointId,
@@ -123,15 +125,78 @@ export default () =>
       ).toEqual(initialState);
     });
 
-    test('should throw an error when operating on a point with an incorrect ID', () => {
+    test('should set x and y of lined images correctly', () => {
       const newPointId = 42;
+      const newImageId = 1;
       const initialState: GroundControlPoint[] = [
         {
           pointId: newPointId,
           linkedImages: [
             {
               pointId: newPointId,
-              imageId: 1,
+              imageId: newImageId,
+              x: 0,
+              y: 0,
+              source: 'MANUAL',
+            },
+          ],
+          x: 1,
+          y: 2,
+          z: 3,
+        },
+      ];
+
+      expect(
+        reducer(initialState, setLinkedImageX(newPointId, newImageId, 3))
+      ).toEqual([
+        {
+          pointId: newPointId,
+          linkedImages: [
+            {
+              pointId: newPointId,
+              imageId: newImageId,
+              x: 3,
+              y: 0,
+              source: 'MANUAL',
+            },
+          ],
+          x: 1,
+          y: 2,
+          z: 3,
+        },
+      ]);
+
+      expect(
+        reducer(initialState, setLinkedImageY(newPointId, newImageId, 3))
+      ).toEqual([
+        {
+          pointId: newPointId,
+          linkedImages: [
+            {
+              pointId: newPointId,
+              imageId: newImageId,
+              x: 0,
+              y: 3,
+              source: 'MANUAL',
+            },
+          ],
+          x: 1,
+          y: 2,
+          z: 3,
+        },
+      ]);
+    });
+
+    test('should throw an error when operating on a point with an incorrect ID', () => {
+      const newPointId = 42;
+      const newImageId = 1;
+      const initialState: GroundControlPoint[] = [
+        {
+          pointId: newPointId,
+          linkedImages: [
+            {
+              pointId: newPointId,
+              imageId: newImageId,
               x: 1,
               y: 2,
               source: 'MANUAL',
@@ -170,6 +235,22 @@ export default () =>
 
       expect(() =>
         reducer(initialState, removeLinkedImageByPointId(newPointId + 1, 1))
+      ).toThrow(Error);
+
+      expect(() =>
+        reducer(initialState, setLinkedImageX(newPointId + 1, newImageId, 1))
+      ).toThrow(Error);
+
+      expect(() =>
+        reducer(initialState, setLinkedImageX(newPointId, newImageId + 1, 1))
+      ).toThrow(Error);
+
+      expect(() =>
+        reducer(initialState, setLinkedImageY(newPointId + 1, newImageId, 1))
+      ).toThrow(Error);
+
+      expect(() =>
+        reducer(initialState, setLinkedImageY(newPointId, newImageId + 1, 1))
       ).toThrow(Error);
     });
 

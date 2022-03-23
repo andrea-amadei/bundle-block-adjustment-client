@@ -11,7 +11,7 @@ export function addPointCommon<
   state.push(action.payload);
 }
 
-export function removePointByPointIdCommon<
+export function removePointCommon<
   T extends CommonPoint<P>,
   P extends PointOnImage
 >(state: T[], action: PayloadAction<number>) {
@@ -21,7 +21,7 @@ export function removePointByPointIdCommon<
   );
 }
 
-export function addLinkedImageByPointIdCommon<
+export function addLinkedImageCommon<
   T extends CommonPoint<P>,
   P extends PointOnImage
 >(state: T[], action: PayloadAction<{ id: number; image: P }>) {
@@ -43,7 +43,7 @@ export function addLinkedImageByPointIdCommon<
   point.linkedImages.push(action.payload.image);
 }
 
-export function removeLinkedImageByPointIdCommon<
+export function removeLinkedImageCommon<
   T extends CommonPoint<P>,
   P extends PointOnImage
 >(state: T[], action: PayloadAction<{ pointId: number; imageId: number }>) {
@@ -57,4 +57,38 @@ export function removeLinkedImageByPointIdCommon<
     images.findIndex((p) => p.imageId === action.payload.imageId),
     1
   );
+}
+
+export function setLinkedImageXCommon<
+  T extends CommonPoint<P>,
+  P extends PointOnImage
+>(state: T[], action: PayloadAction<{ pointId: number; imageId: number; x: number }>) {
+  if (!state.map((x) => x.pointId).includes(action.payload.pointId))
+    throw Error('No existing point with given ID');
+
+  const images = state.filter((p) => p.pointId === action.payload.pointId)[0]
+    .linkedImages;
+
+  if (!images.map((x) => x.imageId).includes(action.payload.imageId))
+    throw Error('No existing image with given ID');
+
+  images.filter((i) => i.imageId === action.payload.imageId)[0].x =
+    action.payload.x;
+}
+
+export function setLinkedImageYCommon<
+  T extends CommonPoint<P>,
+  P extends PointOnImage
+>(state: T[], action: PayloadAction<{ pointId: number; imageId: number; y: number }>) {
+  if (!state.map((x) => x.pointId).includes(action.payload.pointId))
+    throw Error('No existing point with given ID');
+
+  const images = state.filter((p) => p.pointId === action.payload.pointId)[0]
+    .linkedImages;
+
+  if (!images.map((x) => x.imageId).includes(action.payload.imageId))
+    throw Error('No existing image with given ID');
+
+  images.filter((i) => i.imageId === action.payload.imageId)[0].y =
+    action.payload.y;
 }
