@@ -6,7 +6,16 @@ export interface PointOnImage {
   source: 'AUTO' | 'MANUAL' | 'IMPORTED';
 }
 
-export interface CommonPoint<T extends PointOnImage> {
+export interface Point {
   pointId: number;
-  linkedImages: T[];
+}
+
+export interface VirtualPoint<T extends PointOnImage> extends Point {
+  linkedPoints: T[];
+}
+
+export interface RealPoint extends Point {
+  x: number;
+  y: number;
+  z: number;
 }

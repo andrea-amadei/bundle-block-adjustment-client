@@ -1,11 +1,11 @@
 import reducer, {
-  addLinkedImageByPointId,
+  addLinkedPointByPointId,
   addPoint,
-  removeLinkedImageByPointId,
+  removeLinkedPointByPointId,
   removePointByPointId,
   TiePoint,
-  setLinkedImageX,
-  setLinkedImageY,
+  setLinkedPointX,
+  setLinkedPointY,
 } from '../../../core/model/slices/tiePointsSlice';
 import { PointOnImage } from '../../../core/model/slices/common/interfaces';
 
@@ -18,7 +18,7 @@ export default () =>
 
     test('should add and remove a point correctly', () => {
       const newPointId = 42;
-      const newPoint: TiePoint = { pointId: newPointId, linkedImages: [] };
+      const newPoint: TiePoint = { pointId: newPointId, linkedPoints: [] };
 
       const initialState: TiePoint[] = [];
       const finalState: TiePoint[] = [newPoint];
@@ -43,19 +43,19 @@ export default () =>
       };
 
       const initialState: TiePoint[] = [
-        { pointId: newPointId, linkedImages: [] },
+        { pointId: newPointId, linkedPoints: [] },
       ];
 
       const finalState: TiePoint[] = [
-        { pointId: newPointId, linkedImages: [newImage] },
+        { pointId: newPointId, linkedPoints: [newImage] },
       ];
 
       expect(
-        reducer(initialState, addLinkedImageByPointId(newPointId, newImage))
+        reducer(initialState, addLinkedPointByPointId(newPointId, newImage))
       ).toEqual(finalState);
 
       expect(
-        reducer(finalState, removeLinkedImageByPointId(newPointId, newImageId))
+        reducer(finalState, removeLinkedPointByPointId(newPointId, newImageId))
       ).toEqual(initialState);
     });
 
@@ -65,7 +65,7 @@ export default () =>
       const initialState: TiePoint[] = [
         {
           pointId: newPointId,
-          linkedImages: [
+          linkedPoints: [
             {
               pointId: newPointId,
               imageId: newImageId,
@@ -78,11 +78,11 @@ export default () =>
       ];
 
       expect(
-        reducer(initialState, setLinkedImageX(newPointId, newImageId, 3))
+        reducer(initialState, setLinkedPointX(newPointId, newImageId, 3))
       ).toEqual([
         {
           pointId: newPointId,
-          linkedImages: [
+          linkedPoints: [
             {
               pointId: newPointId,
               imageId: newImageId,
@@ -95,11 +95,11 @@ export default () =>
       ]);
 
       expect(
-        reducer(initialState, setLinkedImageY(newPointId, newImageId, 3))
+        reducer(initialState, setLinkedPointY(newPointId, newImageId, 3))
       ).toEqual([
         {
           pointId: newPointId,
-          linkedImages: [
+          linkedPoints: [
             {
               pointId: newPointId,
               imageId: newImageId,
@@ -118,7 +118,7 @@ export default () =>
       const initialState: TiePoint[] = [
         {
           pointId: newPointId,
-          linkedImages: [
+          linkedPoints: [
             {
               pointId: newPointId,
               imageId: newImageId,
@@ -133,7 +133,7 @@ export default () =>
       expect(() =>
         reducer(
           initialState,
-          addLinkedImageByPointId(newPointId + 1, {
+          addLinkedPointByPointId(newPointId + 1, {
             pointId: newPointId,
             imageId: 2,
             x: 2,
@@ -144,27 +144,27 @@ export default () =>
       ).toThrow(Error);
 
       expect(() =>
-        reducer(initialState, removeLinkedImageByPointId(newPointId + 1, 1))
+        reducer(initialState, removeLinkedPointByPointId(newPointId + 1, 1))
       ).toThrow(Error);
 
       expect(() =>
-        reducer(initialState, removeLinkedImageByPointId(newPointId + 1, 1))
+        reducer(initialState, removeLinkedPointByPointId(newPointId + 1, 1))
       ).toThrow(Error);
 
       expect(() =>
-        reducer(initialState, setLinkedImageX(newPointId + 1, newImageId, 1))
+        reducer(initialState, setLinkedPointX(newPointId + 1, newImageId, 1))
       ).toThrow(Error);
 
       expect(() =>
-        reducer(initialState, setLinkedImageX(newPointId, newImageId + 1, 1))
+        reducer(initialState, setLinkedPointX(newPointId, newImageId + 1, 1))
       ).toThrow(Error);
 
       expect(() =>
-        reducer(initialState, setLinkedImageY(newPointId + 1, newImageId, 1))
+        reducer(initialState, setLinkedPointY(newPointId + 1, newImageId, 1))
       ).toThrow(Error);
 
       expect(() =>
-        reducer(initialState, setLinkedImageY(newPointId, newImageId + 1, 1))
+        reducer(initialState, setLinkedPointY(newPointId, newImageId + 1, 1))
       ).toThrow(Error);
     });
 
@@ -174,7 +174,7 @@ export default () =>
       const initialState: TiePoint[] = [
         {
           pointId: newPointId,
-          linkedImages: [
+          linkedPoints: [
             {
               pointId: newPointId,
               imageId: newImageId,
@@ -189,14 +189,14 @@ export default () =>
       expect(() =>
         reducer(
           initialState,
-          addPoint({ pointId: newPointId, linkedImages: [] })
+          addPoint({ pointId: newPointId, linkedPoints: [] })
         )
       ).toThrow();
 
       expect(() =>
         reducer(
           initialState,
-          addLinkedImageByPointId(newPointId, {
+          addLinkedPointByPointId(newPointId, {
             pointId: newPointId,
             imageId: newImageId,
             x: 1,
@@ -213,7 +213,7 @@ export default () =>
       const initialState: TiePoint[] = [
         {
           pointId: newPointId,
-          linkedImages: [
+          linkedPoints: [
             {
               pointId: newPointId,
               imageId: newImageId,
@@ -228,7 +228,7 @@ export default () =>
       expect(() =>
         reducer(
           initialState,
-          addLinkedImageByPointId(newPointId, {
+          addLinkedPointByPointId(newPointId, {
             pointId: newPointId + 1,
             imageId: newImageId,
             x: 1,

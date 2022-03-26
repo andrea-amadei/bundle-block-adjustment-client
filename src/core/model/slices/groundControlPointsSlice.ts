@@ -1,22 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PointOnImage, CommonPoint } from './common/interfaces';
+import { PointOnImage, RealPoint, VirtualPoint } from './common/interfaces';
 import type { RootState } from '../store';
 import {
-  addLinkedImageCommon,
+  addLinkedPointCommon,
   addPointCommon,
-  removeLinkedImageCommon,
+  removeLinkedPointCommon,
   removePointCommon,
-  setLinkedImageXCommon,
-  setLinkedImageYCommon,
+  setLinkedPointXCommon,
+  setLinkedPointYCommon,
+  setXByPointIdCommon,
+  setYByPointIdCommon,
+  setZByPointIdCommon,
 } from './common/reducers';
 
 export type PointOnImageGCP = { source: 'MANUAL' | 'IMPORTED' } & PointOnImage;
 
-export interface GroundControlPoint extends CommonPoint<PointOnImageGCP> {
-  x: number;
-  y: number;
-  z: number;
-}
+export type GroundControlPoint = VirtualPoint<PointOnImageGCP> & RealPoint;
 
 export const groundControlPointsSlice = createSlice({
   name: 'groundControlPoints',
@@ -34,7 +33,7 @@ export const groundControlPointsSlice = createSlice({
       action: PayloadAction<number>
     ) => removePointCommon(state, action),
 
-    addLinkedImageByPointId: {
+    addLinkedPointByPointId: {
       prepare: (id: number, image: PointOnImageGCP) => ({
         payload: { id, image },
       }),
@@ -42,19 +41,21 @@ export const groundControlPointsSlice = createSlice({
       reducer: (
         state: GroundControlPoint[],
         action: PayloadAction<{ id: number; image: PointOnImageGCP }>
-      ) => addLinkedImageCommon(state, action),
+      ) => addLinkedPointCommon(state, action),
     },
 
-    removeLinkedImageByPointId: {
+    removeLinkedPointByPointId: {
       prepare: (pointId: number, imageId: number) => ({
         payload: { pointId, imageId },
       }),
 
-      reducer: (state: GroundControlPoint[], action: PayloadAction<{ pointId: number, imageId: number }>) =>
-        removeLinkedImageCommon(state, action),
+      reducer: (
+        state: GroundControlPoint[],
+        action: PayloadAction<{ pointId: number; imageId: number }>
+      ) => removeLinkedPointCommon(state, action),
     },
 
-    setLinkedImageX: {
+    setLinkedPointX: {
       prepare: (pointId: number, imageId: number, x: number) => ({
         payload: { pointId, imageId, x },
       }),
@@ -62,10 +63,10 @@ export const groundControlPointsSlice = createSlice({
       reducer: (
         state: GroundControlPoint[],
         action: PayloadAction<{ pointId: number; imageId: number; x: number }>
-      ) => setLinkedImageXCommon(state, action),
+      ) => setLinkedPointXCommon(state, action),
     },
 
-    setLinkedImageY: {
+    setLinkedPointY: {
       prepare: (pointId: number, imageId: number, y: number) => ({
         payload: { pointId, imageId, y },
       }),
@@ -73,46 +74,34 @@ export const groundControlPointsSlice = createSlice({
       reducer: (
         state: GroundControlPoint[],
         action: PayloadAction<{ pointId: number; imageId: number; y: number }>
-      ) => setLinkedImageYCommon(state, action),
+      ) => setLinkedPointYCommon(state, action),
     },
 
     setXByPointId: {
-      prepare: (id: number, x: number) => ({ payload: { id, x } }),
+      prepare: (pointId: number, x: number) => ({ payload: { pointId, x } }),
 
-      reducer: (state: GroundControlPoint[], action: PayloadAction<{ id: number; x: number }>) => {
-        try {
-          state.filter((p) => p.pointId === action.payload.id)[0].x =
-            action.payload.x;
-        } catch (e) {
-          throw Error('No existing point with given ID');
-        }
-      },
+      reducer: (
+        state: GroundControlPoint[],
+        action: PayloadAction<{ pointId: number; x: number }>
+      ) => setXByPointIdCommon(state, action),
     },
 
     setYByPointId: {
-      prepare: (id: number, y: number) => ({ payload: { id, y } }),
+      prepare: (pointId: number, y: number) => ({ payload: { pointId, y } }),
 
-      reducer: (state: GroundControlPoint[], action: PayloadAction<{ id: number; y: number }>) => {
-        try {
-          state.filter((p) => p.pointId === action.payload.id)[0].y =
-            action.payload.y;
-        } catch (e) {
-          throw Error('No existing point with given ID');
-        }
-      },
+      reducer: (
+        state: GroundControlPoint[],
+        action: PayloadAction<{ pointId: number; y: number }>
+      ) => setYByPointIdCommon(state, action),
     },
 
     setZByPointId: {
-      prepare: (id: number, z: number) => ({ payload: { id, z } }),
+      prepare: (pointId: number, z: number) => ({ payload: { pointId, z } }),
 
-      reducer: (state: GroundControlPoint[], action: PayloadAction<{ id: number; z: number }>) => {
-        try {
-          state.filter((p) => p.pointId === action.payload.id)[0].z =
-            action.payload.z;
-        } catch (e) {
-          throw Error('No existing point with given ID');
-        }
-      },
+      reducer: (
+        state: GroundControlPoint[],
+        action: PayloadAction<{ pointId: number; z: number }>
+      ) => setZByPointIdCommon(state, action),
     },
   },
 });
@@ -120,10 +109,10 @@ export const groundControlPointsSlice = createSlice({
 export const {
   addPoint,
   removePointByPointId,
-  addLinkedImageByPointId,
-  removeLinkedImageByPointId,
-  setLinkedImageX,
-  setLinkedImageY,
+  addLinkedPointByPointId,
+  removeLinkedPointByPointId,
+  setLinkedPointX,
+  setLinkedPointY,
   setXByPointId,
   setYByPointId,
   setZByPointId,
@@ -136,7 +125,7 @@ export const selectGroundControlPointById =
 export const selectGroundControlPointsOnImage =
   (imageId: number) => (state: RootState) =>
     state.groundControlPoints.filter((x) =>
-      x.linkedImages.some((y) => y.imageId === imageId)
+      x.linkedPoints.some((y) => y.imageId === imageId)
     );
 
 export default groundControlPointsSlice.reducer;

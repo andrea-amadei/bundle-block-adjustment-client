@@ -1,28 +1,28 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { CommonPoint, PointOnImage } from './interfaces';
+import { VirtualPoint, PointOnImage, Point, RealPoint } from './interfaces';
 
-export function addPointCommon<
-  T extends CommonPoint<P>,
-  P extends PointOnImage
->(state: T[], action: PayloadAction<T>) {
+export function addPointCommon<T extends Point>(
+  state: T[],
+  action: PayloadAction<T>
+) {
   if (state.map((x) => x.pointId).includes(action.payload.pointId))
     throw Error('Point ID must be unique');
 
   state.push(action.payload);
 }
 
-export function removePointCommon<
-  T extends CommonPoint<P>,
-  P extends PointOnImage
->(state: T[], action: PayloadAction<number>) {
+export function removePointCommon<T extends Point>(
+  state: T[],
+  action: PayloadAction<number>
+) {
   state.splice(
     state.findIndex((x) => x.pointId === action.payload),
     1
   );
 }
 
-export function addLinkedImageCommon<
-  T extends CommonPoint<P>,
+export function addLinkedPointCommon<
+  T extends VirtualPoint<P>,
   P extends PointOnImage
 >(state: T[], action: PayloadAction<{ id: number; image: P }>) {
   if (!state.map((x) => x.pointId).includes(action.payload.id))
@@ -34,24 +34,24 @@ export function addLinkedImageCommon<
   const point = state.filter((p) => p.pointId === action.payload.id)[0];
 
   if (
-    point.linkedImages
+    point.linkedPoints
       .map((x) => x.imageId)
       .includes(action.payload.image.imageId)
   )
     throw Error('Image ID must be unique');
 
-  point.linkedImages.push(action.payload.image);
+  point.linkedPoints.push(action.payload.image);
 }
 
-export function removeLinkedImageCommon<
-  T extends CommonPoint<P>,
+export function removeLinkedPointCommon<
+  T extends VirtualPoint<P>,
   P extends PointOnImage
 >(state: T[], action: PayloadAction<{ pointId: number; imageId: number }>) {
   if (!state.map((x) => x.pointId).includes(action.payload.pointId))
     throw Error('No existing point with given ID');
 
   const images = state.filter((p) => p.pointId === action.payload.pointId)[0]
-    .linkedImages;
+    .linkedPoints;
 
   images.splice(
     images.findIndex((p) => p.imageId === action.payload.imageId),
@@ -59,15 +59,18 @@ export function removeLinkedImageCommon<
   );
 }
 
-export function setLinkedImageXCommon<
-  T extends CommonPoint<P>,
+export function setLinkedPointXCommon<
+  T extends VirtualPoint<P>,
   P extends PointOnImage
->(state: T[], action: PayloadAction<{ pointId: number; imageId: number; x: number }>) {
+>(
+  state: T[],
+  action: PayloadAction<{ pointId: number; imageId: number; x: number }>
+) {
   if (!state.map((x) => x.pointId).includes(action.payload.pointId))
     throw Error('No existing point with given ID');
 
   const images = state.filter((p) => p.pointId === action.payload.pointId)[0]
-    .linkedImages;
+    .linkedPoints;
 
   if (!images.map((x) => x.imageId).includes(action.payload.imageId))
     throw Error('No existing image with given ID');
@@ -76,19 +79,58 @@ export function setLinkedImageXCommon<
     action.payload.x;
 }
 
-export function setLinkedImageYCommon<
-  T extends CommonPoint<P>,
+export function setLinkedPointYCommon<
+  T extends VirtualPoint<P>,
   P extends PointOnImage
->(state: T[], action: PayloadAction<{ pointId: number; imageId: number; y: number }>) {
+>(
+  state: T[],
+  action: PayloadAction<{ pointId: number; imageId: number; y: number }>
+) {
   if (!state.map((x) => x.pointId).includes(action.payload.pointId))
     throw Error('No existing point with given ID');
 
   const images = state.filter((p) => p.pointId === action.payload.pointId)[0]
-    .linkedImages;
+    .linkedPoints;
 
   if (!images.map((x) => x.imageId).includes(action.payload.imageId))
     throw Error('No existing image with given ID');
 
   images.filter((i) => i.imageId === action.payload.imageId)[0].y =
     action.payload.y;
+}
+
+export function setXByPointIdCommon<T extends RealPoint>(
+  state: T[],
+  action: PayloadAction<{ pointId: number; x: number }>
+) {
+  try {
+    state.filter((p) => p.pointId === action.payload.pointId)[0].x =
+      action.payload.x;
+  } catch (e) {
+    throw Error('No existing point with given ID');
+  }
+}
+
+export function setYByPointIdCommon<T extends RealPoint>(
+  state: T[],
+  action: PayloadAction<{ pointId: number; y: number }>
+) {
+  try {
+    state.filter((p) => p.pointId === action.payload.pointId)[0].y =
+      action.payload.y;
+  } catch (e) {
+    throw Error('No existing point with given ID');
+  }
+}
+
+export function setZByPointIdCommon<T extends RealPoint>(
+  state: T[],
+  action: PayloadAction<{ pointId: number; z: number }>
+) {
+  try {
+    state.filter((p) => p.pointId === action.payload.pointId)[0].z =
+      action.payload.z;
+  } catch (e) {
+    throw Error('No existing point with given ID');
+  }
 }
