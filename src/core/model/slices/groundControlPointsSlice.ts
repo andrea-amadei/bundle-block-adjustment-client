@@ -118,6 +118,9 @@ export const {
   setZByPointId,
 } = groundControlPointsSlice.actions;
 
+export const selectAllGroundControlPoints = (state: RootState) =>
+  state.groundControlPoints;
+
 export const selectGroundControlPointById =
   (id: number) => (state: RootState) =>
     state.groundControlPoints[id];

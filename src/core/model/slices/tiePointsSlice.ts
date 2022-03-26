@@ -80,11 +80,14 @@ export const {
   setLinkedPointY,
 } = tiePointsSlice.actions;
 
+export const selectAllTiePoints = (state: RootState) =>
+  state.tiePoints;
+
 export const selectTiePointById = (id: number) => (state: RootState) =>
-  state.groundControlPoints[id];
+  state.tiePoints[id];
 
 export const selectTiePointsOnImage = (imageId: number) => (state: RootState) =>
-  state.groundControlPoints.filter((x) =>
+  state.tiePoints.filter((x) =>
     x.linkedPoints.some((y) => y.imageId === imageId)
   );
 
