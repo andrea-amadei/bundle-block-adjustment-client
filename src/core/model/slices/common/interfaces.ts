@@ -19,3 +19,15 @@ export interface RealPoint extends Point {
   y: number;
   z: number;
 }
+
+export interface CameraPosition {
+  imageId: number;
+
+  xc: number;
+  yc: number;
+  zc: number;
+
+  omega: number;
+  phi: number;
+  kappa: number;
+}
