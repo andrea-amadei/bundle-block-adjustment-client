@@ -1,5 +1,11 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { VirtualPoint, PointOnImage, Point, RealPoint } from './interfaces';
+import {
+  VirtualPoint,
+  PointOnImage,
+  Point,
+  RealPoint,
+  CameraPosition,
+} from './interfaces';
 
 export function addPointCommon<T extends Point>(
   state: T[],
@@ -133,4 +139,24 @@ export function setZByPointIdCommon<T extends RealPoint>(
   } catch (e) {
     throw Error('No existing point with given ID');
   }
+}
+
+export function addCameraPositionCommon(
+  state: CameraPosition[],
+  action: PayloadAction<CameraPosition>
+) {
+  if (state.map((x) => x.imageId).includes(action.payload.imageId))
+    throw Error('Image ID must be unique');
+
+  state.push(action.payload);
+}
+
+export function removeCameraPositionCommon(
+  state: CameraPosition[],
+  action: PayloadAction<number>
+) {
+  state.splice(
+    state.findIndex((x) => x.imageId === action.payload),
+    1
+  );
 }

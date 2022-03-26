@@ -30,7 +30,7 @@ export default () =>
       );
     });
 
-    test('should add and removed linked images correctly', () => {
+    test('should add and removed linked points correctly', () => {
       const newPointId = 42;
       const newImageId = 7;
 
@@ -59,7 +59,7 @@ export default () =>
       ).toEqual(initialState);
     });
 
-    test('should set x and y of lined images correctly', () => {
+    test('should set x and y of linked points correctly', () => {
       const newPointId = 42;
       const newImageId = 1;
       const initialState: TiePoint[] = [
