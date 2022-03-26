@@ -5,7 +5,9 @@ import {
   addLinkedImageCommon,
   addPointCommon,
   removeLinkedImageCommon,
-  removePointCommon, setLinkedImageXCommon, setLinkedImageYCommon
+  removePointCommon,
+  setLinkedImageXCommon,
+  setLinkedImageYCommon,
 } from './common/reducers';
 
 export type PointOnImageGCP = { source: 'MANUAL' | 'IMPORTED' } & PointOnImage;
