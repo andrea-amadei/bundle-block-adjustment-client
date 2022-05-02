@@ -1,0 +1,44 @@
+.point-side-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 6px;
+
+  .point-side-list-header {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .compact-btn {
+
+  }
+
+  .source-groups-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .source-group {
+
+      .divider {
+        margin-top: 3px;
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .point-side-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow: scroll;
+
+    &.compact {
+      flex-direction: row;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+  }
+
+}
+

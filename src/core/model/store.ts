@@ -3,13 +3,15 @@ import cameraReducer from './slices/cameraSlice';
 import groundControlPointsReducer from './slices/groundControlPointsSlice';
 import tiePointsReducer from './slices/tiePointsSlice';
 import resultSliceReducer from './slices/resultSlice';
+import imageListReducer from './slices/imageListSlice';
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     camera: cameraReducer,
     groundControlPoints: groundControlPointsReducer,
     tiePoints: tiePointsReducer,
     result: resultSliceReducer,
+    imageList: imageListReducer,
   },
 });
 

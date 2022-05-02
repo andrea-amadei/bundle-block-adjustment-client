@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,bold,italic&subset=latin,latin-ext');
+//@import "~bootstrap/scss/bootstrap";
+
+$main-color-dark: #103D3E;
+$main-color-light: #C3F1F1;
+$main-color-lighter: #E6F4F1;
+$main-color-accent: #C75314;
+
+$tp-color: #e37575;
+$gcp-color: #e1e17f;
+$sp-color: gold;
+
+$main-font: 'Roboto Slab', serif;
+
+@mixin flex-container($direction: row) {
+  display: flex;
+  flex-direction: $direction;
+  overflow: hidden;
+  >* {
+    flex: 0 0 auto;
+    overflow: scroll;
+  }
+}
+
+@mixin stretchy {
+  flex: 1 1 auto !important;
+}
+
+html, body, #root, .pages-container {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+.pages-container {
+  @include flex-container(column)
+}
+
+@mixin page-mixin {
+  align-self: stretch;
+  flex-grow: 1;
+}
+
+//@import "src/ui/components/PageMenu";
+//@import "src/ui/pages/EditorPage";
+
+
+
+
+
+

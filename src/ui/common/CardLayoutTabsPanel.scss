@@ -1,0 +1,68 @@
+@use "sass:color";
+
+@use "/src/ui/styles/MainStyle" as *;
+
+$header-size: 24px;
+$rounded-border-radius: 10px;
+$border-size: 1px;
+$border: $border-size solid $main-color-dark;;
+
+$card-layout-bg: $main-color-lighter;
+
+* {
+  box-sizing: border-box;
+}
+
+.card-layout-tabs-panel {
+
+  position: relative;
+  display: block;
+  border: none;
+
+  .tab-selection-header{
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-items: stretch;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: $header-size;
+
+    .tab-header {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: stretch;
+      border: $border ;
+      border-bottom: none;
+      width: 52px;
+      border-radius: $rounded-border-radius $rounded-border-radius 0 0;
+      z-index: 1;
+
+      background: color.adjust($card-layout-bg, $saturation: -40%);
+
+      &.active{
+        background: $card-layout-bg;
+        z-index: 3;
+      }
+
+    }
+  }
+
+  .tab-content {
+    position: absolute;
+    top: $header-size - $border-size;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    border: $border;
+    border-radius: 0 $rounded-border-radius $rounded-border-radius $rounded-border-radius;
+    z-index: 2;
+
+    background: $card-layout-bg;
+  }
+
+}

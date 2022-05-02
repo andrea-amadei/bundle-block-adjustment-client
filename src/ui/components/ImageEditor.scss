@@ -1,0 +1,23 @@
+@use "/src/ui/styles/MainStyle" as *;
+
+.editor-img-container {
+    @include stretchy;
+    @include flex-container(column);
+    gap: 2px;
+
+    .img-title {
+        font-size: 22px;
+        font-family: $main-font;
+        font-style: normal;
+        font-weight: 400;
+        color: $main-color-dark;
+    }
+
+    .editor-img{
+        @include stretchy;
+        border: 1px solid $main-color-dark;
+        flex-basis: 0;
+        object-fit: contain;
+    }
+}
+

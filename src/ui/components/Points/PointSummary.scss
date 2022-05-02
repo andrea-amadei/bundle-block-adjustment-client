@@ -1,0 +1,54 @@
+@use "/src/ui/styles/MainStyle" as *;
+
+
+.point-summary {
+  border: 1px solid $main-color-dark;
+  border-radius: 4px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 9px;
+
+  background: #bdbaba;
+
+  &.tp-style {
+    background: $tp-color;
+  }
+
+  &.gcp-style {
+    background: $gcp-color;
+  }
+
+  .additional-info-container {
+    display: flex;
+    flex-direction: row;
+    gap: 7px;
+    font-size: medium;
+  }
+
+  .tag-card {
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+    margin: 2px;
+    border: 1px solid $main-color-dark;
+    border-radius: 4px;
+  }
+
+  .id-text {
+    font-size: larger;
+    font-weight: bold;
+  }
+
+  .additional-info-key-text {
+    display: inline;
+    font-weight: 550;
+  }
+
+  .additional-info-value-text {
+    display: inline;
+  }
+
+}

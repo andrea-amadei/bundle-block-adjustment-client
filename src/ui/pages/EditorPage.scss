@@ -1,0 +1,102 @@
+@use "sass:color";
+
+@use "/src/ui/styles/MainStyle" as *;
+
+@mixin panel-mixin {
+  margin: 5px;
+}
+
+@mixin rounded-panel-mixin {
+  @include panel-mixin;
+  border-radius: 10px;
+  border: 1.5px solid $main-color-dark;
+}
+
+.editor-page {
+  //@include page-mixin;
+  @include stretchy;
+
+  display: grid;
+  grid-template-columns: 250px auto 250px;
+  grid-template-areas: "left-col main-col right-col";
+  overflow: hidden;
+
+  .image-list {
+    @include rounded-panel-mixin;
+    grid-area: left-col;
+    background: $main-color-light;
+
+    @include flex-container(column);
+    align-items: center;
+
+    padding: 15px 30px;
+    gap: 8px;
+
+    overflow: auto;
+    flex: 1;
+
+    .title{
+      font-size: 22px;
+      font-family: $main-font;
+      font-style: normal;
+      font-weight: 400;
+      color: $main-color-dark;
+    }
+
+    .list {
+      display: flex;
+      min-height: min-content;
+      flex-direction: column;
+      gap: 22px;
+      align-items: stretch;
+      width: 185px;
+    }
+
+  }
+
+  .main-section {
+
+    @include panel-mixin;
+    grid-area: main-col;
+
+    @include flex-container(column);
+
+    gap: 16px;
+
+    .no-image-selected-text {
+      font-size: 18px;
+      font-family: $main-font;
+      font-style: normal;
+      font-weight: 400;
+      color: color.scale($main-color-dark, $saturation: -70%);
+    }
+
+    .point-inspector {
+      @include rounded-panel-mixin;
+      margin: 0;
+      height: 260px;
+      background: $main-color-lighter;
+    }
+
+    .no-point-selected {
+      margin: 0;
+      height: 260px;
+    }
+
+  }
+
+  .gpc-tp-point-list {
+    @include panel-mixin;
+    grid-area: right-col;
+    //background: $main-color-lighter;
+  }
+
+  .tab-link{
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
