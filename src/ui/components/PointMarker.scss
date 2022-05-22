@@ -1,0 +1,27 @@
+@use "/src/ui/styles/MainStyle" as *;
+
+.point-marker {
+  .outer-circle {
+    &.dragged-all {
+      stroke: $point-dragged-color;
+    }
+
+    &.dragged-right {
+      stroke: $point-dragged-right-color;
+    }
+
+    &.dragged-bottom {
+      stroke: $point-dragged-bottom-color;
+    }
+
+    &.dragged-none {
+      &.point-type-tp {
+        stroke: $tp-color;
+      }
+
+      &.point-type-gcp {
+        stroke: $gcp-color;
+      }
+    }
+  }
+}

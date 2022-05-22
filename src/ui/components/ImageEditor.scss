@@ -1,23 +1,66 @@
 @use "/src/ui/styles/MainStyle" as *;
 
+$canvas-background-color: #696969;
+
 .editor-img-container {
     @include stretchy;
     @include flex-container(column);
     gap: 2px;
 
-    .img-title {
-        font-size: 22px;
-        font-family: $main-font;
-        font-style: normal;
-        font-weight: 400;
-        color: $main-color-dark;
+    .img-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: end;
+        padding: 10px 5px;
+
+        .img-title {
+            font-size: 22px;
+            font-family: $main-font;
+            font-style: normal;
+            font-weight: 400;
+            color: $main-color-dark;
+        }
+
+        .img-controls {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 7px;
+
+            button {
+                width: 30px;
+                height: 30px;
+            }
+
+            input[type= 'range'] {
+                width: 300px;
+            }
+
+            .img-controls-label {
+                font-weight: bold;
+                font-size: 1.5em;
+            }
+        }
     }
 
-    .editor-img{
+    .editor-canvas {
         @include stretchy;
+        cursor: grab;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border: 1px solid $main-color-dark;
+        background-color: $canvas-background-color;
         flex-basis: 0;
         object-fit: contain;
+
+        .editor-img {
+            position: relative;
+            display: flex;
+            align-items: center;
+            image-rendering: pixelated;
+        }
     }
 }
 
