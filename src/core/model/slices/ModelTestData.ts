@@ -5,6 +5,8 @@ export const imgTest = {
   1: {id: 1, name: "Img1", path: "https://images.unsplash.com/photo-1648818172118-093be9c12d59?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"},
   2: {id: 2, name: "Img2", path: "https://images.unsplash.com/photo-1615472669810-e72da447b314?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=749&q=80"},
   3: {id: 3, name: "Img3", path: "https://images.unsplash.com/photo-1611363279288-55e33723ac06?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"},
+  4: {id: 4, name: "Vaporwave", path: "https://i.redd.it/1iwcit1gidyy.jpg"},
+  5: {id: 5, name: "Random", path: "https://www.dcode.fr/tools/image-randomness/images/random-dcode.png"},
 };
 
 export const tpTest: TiePoint[] = [
@@ -66,20 +68,25 @@ export const tpTest: TiePoint[] = [
     ]
   },
   {
-    pointId: 178,
+    pointId: 1000,
     linkedPoints: [
       {
-        pointId: 178,
-        x: 20,
-        y: 40,
-        imageId: 2,
+        pointId: 1000,
+        x: 30,
+        y: 30,
+        imageId: 5,
         source: 'IMPORTED',
-      },
+      }
+    ]
+  },
+  {
+    pointId: 1001,
+    linkedPoints: [
       {
-        pointId: 178,
-        x: 60,
-        y: 70,
-        imageId: 3,
+        pointId: 1001,
+        x: 100,
+        y: 20,
+        imageId: 5,
         source: 'IMPORTED',
       }
     ]
