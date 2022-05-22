@@ -31,7 +31,6 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
-    overflow: scroll;
 
     &.compact {
       flex-direction: row;

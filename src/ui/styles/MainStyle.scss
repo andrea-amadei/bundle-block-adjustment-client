@@ -6,9 +6,13 @@ $main-color-light: #C3F1F1;
 $main-color-lighter: #E6F4F1;
 $main-color-accent: #C75314;
 
-$tp-color: #e37575;
-$gcp-color: #e1e17f;
+$tp-color: orange;
+$gcp-color: magenta;
 $sp-color: gold;
+
+$point-dragged-color: blue;
+$point-dragged-right-color: lime;
+$point-dragged-bottom-color: red;
 
 $main-font: 'Roboto Slab', serif;
 
@@ -18,7 +22,7 @@ $main-font: 'Roboto Slab', serif;
   overflow: hidden;
   >* {
     flex: 0 0 auto;
-    overflow: scroll;
+    overflow: hidden;
   }
 }
 

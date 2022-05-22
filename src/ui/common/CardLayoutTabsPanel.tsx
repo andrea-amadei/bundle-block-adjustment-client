@@ -21,11 +21,11 @@ export const CardLayoutTabsPanel: React.FC<PropType> = (props) => {
     activeTab = tabHeaderList[0].tabId;
 
   return (
-    <div className={"card-layout-tabs-panel "+className}>
+    <div className={`card-layout-tabs-panel ${className}`}>
       <div className="tab-selection-header">
-        {tabHeaderList.map(tabHeader => (
+        {tabHeaderList.map((tabHeader) => (
           <div
-            className={"tab-header " + (tabHeader.tabId === activeTab ? "active" : "")}
+            className={`tab-header ${tabHeader.tabId === activeTab ? "active" : ""}`}
             onClick={tabHeader.onClick}>
             {tabHeader.label}
           </div>

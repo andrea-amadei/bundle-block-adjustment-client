@@ -29,10 +29,11 @@
     @include flex-container(column);
     align-items: center;
 
-    padding: 15px 30px;
+    padding: 15px 15px;
     gap: 8px;
 
-    overflow: auto;
+    overflow-x: inherit;
+    overflow-y: auto;
     flex: 1;
 
     .title{
@@ -49,7 +50,7 @@
       flex-direction: column;
       gap: 22px;
       align-items: stretch;
-      width: 185px;
+      width: 100%;
     }
 
   }
