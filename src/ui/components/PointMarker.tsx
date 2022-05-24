@@ -3,20 +3,28 @@ import './PointMarker.scss';
 import { useEffect, useState } from 'react';
 import { PointOnImage } from '../../core/model/slices/common/interfaces';
 import { store } from '../../core/model/store';
-import { setLinkedPointX as setLinkedPointX_TP, setLinkedPointY as setLinkedPointY_TP } from '../../core/model/slices/tiePointsSlice';
-import { setLinkedPointX as setLinkedPointX_GCP, setLinkedPointY as setLinkedPointY_GCP } from '../../core/model/slices/groundControlPointsSlice';
+import {
+  setLinkedPointX as setLinkedPointX_TP,
+  setLinkedPointY as setLinkedPointY_TP,
+} from '../../core/model/slices/tiePointsSlice';
+import {
+  PointOnImageGCP,
+  setLinkedPointX as setLinkedPointX_GCP,
+  setLinkedPointY as setLinkedPointY_GCP,
+} from '../../core/model/slices/groundControlPointsSlice';
 
 interface PointMarkerAttributes {
-  point: PointOnImage;
+  point: PointOnImage | PointOnImageGCP;
   type: 'TP' | 'GCP';
   isMovable?: boolean;
+  isSelected?: boolean;
   zoomValue: number;
   wzoom: any;
 }
 
 // eslint-disable-next-line import/prefer-default-export
 export function PointMarker(props: PointMarkerAttributes) {
-  const { point, type, isMovable, zoomValue, wzoom } = props;
+  const { point, type, isMovable, isSelected, zoomValue, wzoom } = props;
 
   if (type === undefined) throw Error('Attribute "type" is required');
 
@@ -125,11 +133,12 @@ export function PointMarker(props: PointMarkerAttributes) {
       ) : (
         <></>
       )}
-      <circle className={`outer-circle point-type-${type.toLowerCase()} dragged-${dragged}`} cx="50" cy="50" r="40" strokeWidth="15" fillOpacity="0" onMouseDown={(e) => isMovable ? handleMouseHold(e, 'all') : null} />
+      <circle className={`${isSelected ? 'point-selected' : ''} outer-circle point-type-${type.toLowerCase()} dragged-${dragged}`} cx="50" cy="50" r="40" strokeWidth="15" fillOpacity="0" onMouseDown={(e) => isMovable ? handleMouseHold(e, 'all') : null} />
     </svg>
   );
 }
 
 PointMarker.defaultProps = {
   isMovable: false,
+  isSelected: false,
 };

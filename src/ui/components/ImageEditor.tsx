@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import WZoom from 'vanilla-js-wheel-zoom';
 import { selectImageById } from '../../core/model/slices/imageListSlice';
-import { selectAllTiePoints, selectTiePointsOnImage } from '../../core/model/slices/tiePointsSlice';
-import { selectAllGroundControlPoints } from '../../core/model/slices/groundControlPointsSlice';
+import { selectTiePointsOnImage } from '../../core/model/slices/tiePointsSlice';
+import { selectGroundControlPointsOnImage } from '../../core/model/slices/groundControlPointsSlice';
 import { PointMarker } from './PointMarker';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -15,20 +15,27 @@ export function ImageEditor() {
 
   if (!selectedImageId) throw new Error('No image selected!');
 
-  const selectedImage = useSelector(selectImageById(selectedImageId));
+  const selectedImage = useSelector(
+    selectImageById(parseInt(selectedImageId, 10))
+  );
+
   const tpList = useSelector(
     selectTiePointsOnImage(parseInt(selectedImageId, 10))
   );
-  const gcpList = useSelector(selectAllGroundControlPoints);
+  const gcpList = useSelector(
+    selectGroundControlPointsOnImage(parseInt(selectedImageId, 10))
+  );
 
   const canvasRef = useRef(null);
   const groupRef = useRef(null);
   const imgRef = useRef(null);
   const inputRangeRef = useRef(null);
 
-  let [wzoom, setWzoom] = useState(null);
-  let [zoomValue, setZoomValue] = useState(1);
-  let [isLocked, setLocked] = useState(true);
+  const [wzoom, setWzoom] = useState(null);
+  const [zoomValue, setZoomValue] = useState(1);
+  const [isLocked, setLocked] = useState(true);
+  const [isTPVisible, setTPVisible] = useState(true);
+  const [isGCPVisible, setGCPVisible] = useState(true);
 
   let scale;
 
@@ -108,7 +115,13 @@ export function ImageEditor() {
             {`[${selectedImage.id}] ${selectedImage.name}`}
           </div>
           <div className="img-controls">
-            <button style={{ marginRight: '5%' }} onClick={() => setLocked(!isLocked)}>{isLocked ? 'X' : '_'}</button>
+            <div className="img-controls-points" style={{ marginRight: '5%' }}>
+              <input type="checkbox" id="tp-checkbox" checked={isTPVisible} onChange={() => setTPVisible(!isTPVisible)} />
+              <label htmlFor="tp-checkbox">TP</label>
+              <input type="checkbox" id="gcp-checkbox" checked={isGCPVisible} onChange={() => setGCPVisible(!isGCPVisible)} />
+              <label htmlFor="gcp-checkbox">GCP</label>
+              <button onClick={() => setLocked(!isLocked)}>{isLocked ? 'X' : '_'}</button>
+            </div>
             <span className="img-controls-label">Zoom</span>
             <input type="range" ref={inputRangeRef} value={zoomValue} onInput={() =>
                 Number(inputRangeRef.current.value) > wzoom.content.currentScale
@@ -124,9 +137,16 @@ export function ImageEditor() {
           <div className="editor-group" ref={groupRef}>
             <img className="editor-img" ref={imgRef} src={selectedImage.path} alt={selectedImage.path}/>
             <div className="editor-points">
-              {tpList.map((tp) => (
-                <PointMarker point={tp} zoomValue={zoomValue} wzoom={wzoom} type="TP" isMovable={!isLocked} />
-              ))}
+              {isTPVisible
+                ? tpList.map((tp) => (
+                  <PointMarker point={tp} zoomValue={zoomValue} wzoom={wzoom} type="TP" isMovable={!isLocked} />
+                )) : null
+              }
+              {isGCPVisible
+                ? gcpList.map((gcp) => (
+                  <PointMarker point={gcp} zoomValue={zoomValue} wzoom={wzoom} type="GCP" isMovable={!isLocked} />
+                )) : null
+              }
             </div>
           </div>
         </div>

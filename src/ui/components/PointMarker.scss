@@ -15,12 +15,24 @@
     }
 
     &.dragged-none {
-      &.point-type-tp {
-        stroke: $tp-color;
+      &.point-selected {
+        &.point-type-tp {
+          stroke: $tp-selected-color;
+        }
+
+        &.point-type-gcp {
+          stroke: $gcp-selected-color;
+        }
       }
 
-      &.point-type-gcp {
-        stroke: $gcp-color;
+      &:not(.point-selected) {
+        &.point-type-tp {
+          stroke: $tp-color;
+        }
+
+        &.point-type-gcp {
+          stroke: $gcp-color;
+        }
       }
     }
   }
