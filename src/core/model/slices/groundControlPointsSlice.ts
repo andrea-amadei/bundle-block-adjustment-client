@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PointOnImage, RealPoint, VirtualPoint } from './common/interfaces';
 import type { RootState } from '../store';
 import {
@@ -12,6 +12,7 @@ import {
   setYByPointIdCommon,
   setZByPointIdCommon,
 } from './common/reducers';
+import { gcpTest } from './ModelTestData';
 
 export type PointOnImageGCP = { source: 'MANUAL' | 'IMPORTED' } & PointOnImage;
 
@@ -21,7 +22,9 @@ export const groundControlPointsSlice = createSlice({
   name: 'groundControlPoints',
 
   // TODO: perhaps it is better to convert the state to a map?
-  initialState: [] as GroundControlPoint[],
+  // initialState: [] as GroundControlPoint[],
+  initialState: gcpTest as GroundControlPoint[],
+
   reducers: {
     addPoint: (
       state: GroundControlPoint[],
@@ -119,16 +122,45 @@ export const {
 } = groundControlPointsSlice.actions;
 
 export const selectAllGroundControlPoints = (state: RootState) =>
-  state.groundControlPoints;
+  state.groundControlPoints as GroundControlPoint[];
 
 export const selectGroundControlPointById =
   (id: number) => (state: RootState) =>
-    state.groundControlPoints[id];
+    state.groundControlPoints[id] as GroundControlPoint;
 
+const _selectImageId = (_state: RootState, {imageId}: {imageId: number | undefined}) => imageId;
+const _selectGroundControlPointsOnImage = createSelector(
+  [selectAllGroundControlPoints, _selectImageId],
+  (points, imageId) =>
+    points
+      .flatMap((point) => point.linkedPoints)
+      .filter((pointOnImage) => pointOnImage.imageId === imageId)
+);
 export const selectGroundControlPointsOnImage =
-  (imageId: number) => (state: RootState) =>
-    state.groundControlPoints.filter((x) =>
-      x.linkedPoints.some((y) => y.imageId === imageId)
-    );
+  (imageId: number | undefined) => (state: RootState) =>
+    _selectGroundControlPointsOnImage(state, { imageId }) as PointOnImage[];
+
+const _selectPointSourceType = (_state: RootState, {pointSourceType}: {pointSourceType: string | undefined}) => pointSourceType;
+const _selectGroundControlPointsOnImageBySourceType = createSelector(
+  [_selectGroundControlPointsOnImage, _selectPointSourceType],
+  (tpOnImageList, source) => tpOnImageList.filter((tp) => tp.source === source)
+);
+export const selectGroundControlPointsOnImageBySourceType =
+  (imageId: number | undefined, pointSourceType: string | undefined) =>
+  (state: RootState) =>
+    _selectGroundControlPointsOnImageBySourceType(state, { imageId, pointSourceType }) as PointOnImage[];
+
+// export const selectAllGroundControlPoints = (state: RootState) =>
+//   state.groundControlPoints;
+//
+// export const selectGroundControlPointById =
+//   (id: number) => (state: RootState) =>
+//     state.groundControlPoints[id];
+//
+// export const selectGroundControlPointsOnImage =
+//   (imageId: number) => (state: RootState) =>
+//     state.groundControlPoints.filter((x) =>
+//       x.linkedPoints.some((y) => y.imageId === imageId)
+//     );
 
 export default groundControlPointsSlice.reducer;
