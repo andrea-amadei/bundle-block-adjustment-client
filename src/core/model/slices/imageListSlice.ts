@@ -8,7 +8,7 @@ export interface InputImage {
   path: string;
 }
 
-interface InputImageToIdMap {
+export interface InputImageToIdMap {
   [id: number]: InputImage;
 }
 
@@ -32,6 +32,9 @@ export const {
 
 export const selectAllImages = (state: RootState) =>
   Object.values(state.imageList) as InputImage[];
+
+export const selectImagesMap = (state: RootState) =>
+  state.imageList as InputImageToIdMap;
 
 export const selectImageById = (id: number) => (state: RootState) =>
   state.imageList[id] as InputImage;

@@ -1,6 +1,6 @@
 import './ImageEditor.scss';
 
-import { useParams } from 'react-router-dom';
+import { useMatch, useParams } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import WZoom from 'vanilla-js-wheel-zoom';
@@ -12,6 +12,10 @@ import { PointMarker } from './PointMarker';
 // eslint-disable-next-line import/prefer-default-export
 export function ImageEditor() {
   const { selectedImageId } = useParams();
+  const match = useMatch("/editor/:imgId/:pointType/:pointId");
+  const selectedPointId = match?.params.pointId ? parseInt(match?.params.pointId) : undefined;
+  const selectedPointType = match?.params.pointType;
+  console.log("ie", selectedPointId, selectedPointType)
 
   if (!selectedImageId) throw new Error('No image selected!');
 
@@ -139,12 +143,26 @@ export function ImageEditor() {
             <div className="editor-points">
               {isTPVisible
                 ? tpList.map((tp) => (
-                  <PointMarker point={tp} zoomValue={zoomValue} wzoom={wzoom} type="TP" isMovable={!isLocked} />
+                  <PointMarker
+                    point={tp}
+                    zoomValue={zoomValue}
+                    wzoom={wzoom}
+                    type="TP"
+                    isMovable={!isLocked && selectedPointType === "TP" && selectedPointId === tp.pointId}
+                    isSelected={selectedPointType === "TP" && selectedPointId === tp.pointId}
+                  />
                 )) : null
               }
               {isGCPVisible
                 ? gcpList.map((gcp) => (
-                  <PointMarker point={gcp} zoomValue={zoomValue} wzoom={wzoom} type="GCP" isMovable={!isLocked} />
+                  <PointMarker
+                    point={gcp}
+                    zoomValue={zoomValue}
+                    wzoom={wzoom}
+                    type="GCP"
+                    isMovable={!isLocked && selectedPointType === "GCP" && selectedPointId === gcp.pointId}
+                    isSelected={selectedPointType === "GCP" && selectedPointId === gcp.pointId}
+                  />
                 )) : null
               }
             </div>

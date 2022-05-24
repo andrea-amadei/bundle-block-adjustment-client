@@ -50,7 +50,7 @@ export function SideListTP() {
             <div className={"source-group"}>
               {source}
               <hr className="divider"/>
-              <div className={"point-side-list "+(isCompact ? "compact" : "")}>
+              <div className={`point-side-list ${isCompact ? "compact" : ""}`}>
                 {tpList.map(tp =>
                   <PointSummary
                     type="TP"

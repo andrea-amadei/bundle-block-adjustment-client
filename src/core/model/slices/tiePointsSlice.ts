@@ -107,6 +107,21 @@ const _selectTiePointsOnImageBySourceType = createSelector(
 export const selectTiePointsOnImageBySourceType = (imageId: number | undefined, pointSourceType: string | undefined) => (state: RootState) =>
   _selectTiePointsOnImageBySourceType(state, {imageId, pointSourceType}) as PointOnImage[];
 
+const _selectPointId = (_state: RootState, {pointId}: {pointId: number | undefined}) => pointId;
+const _selectTiePointOnImageById = createSelector(
+  [selectAllTiePoints, _selectPointId, _selectImageId],
+  (tpList, pointId, imageId) => {
+    if(pointId !== undefined)
+      return tpList[pointId].linkedPoints.filter(
+        (pointOnImage) => pointOnImage.imageId === imageId
+      )[0] as PointOnImage;
+    return undefined;
+  }
+);
+export const selectTiePointOnImageById = (pointId: number | undefined, imageId: number | undefined) => (state: RootState) =>
+  _selectTiePointOnImageById(state, {pointId, imageId}) as PointOnImage;
+
+
 /*
 export const selectTiePointsOnImage = (imageId: number | undefined) => (state: RootState) =>
    state.tiePoints.filter((x) =>

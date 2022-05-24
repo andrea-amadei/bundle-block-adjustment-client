@@ -5,24 +5,35 @@ import { Link, Outlet, useMatch, useParams } from 'react-router-dom';
 import { ImageEditor } from 'ui/components/ImageEditor';
 import { selectAllImages } from '../../core/model/slices/imageListSlice';
 import { CardLayoutTabsPanel } from '../common/CardLayoutTabsPanel';
+import { PointInspectorTP } from "../components/PointInspectorTP";
+import { app } from 'electron';
 
 // eslint-disable-next-line import/prefer-default-export
 export function EditorPage() {
   const imgList = useSelector(selectAllImages);
-  const { selectedImageId, selectedPointId } = useParams();
-  const match = useMatch('/editor/:imgId/:pointType');
+  const { selectedImageId } = useParams();
+  const match = useMatch("/editor/:imgId/:pointType/:pointId");
+
+  const selectedPointType = match?.params.pointType;
+  const selectedPointId = match?.params.pointId;
 
   let contentMainSection;
-  if (selectedImageId) {
+  if(selectedImageId) {
     contentMainSection = (
       <>
-        <ImageEditor key={selectedImageId} />
-        {selectedPointId && <div className="point-inspector" />}
-        {!selectedPointId && (
+        <ImageEditor key={selectedImageId} className="main-img"/>
+        {selectedPointId &&
+          <div className="point-inspector">
+            {selectedPointType === "TP" &&
+              <PointInspectorTP/>
+            }
+          </div>
+        }
+        {!selectedPointId &&
           <div className="no-point-selected">
             Select a point using the right sidebar
           </div>
-        )}
+        }
       </>
     );
   } else {
@@ -70,7 +81,7 @@ export function EditorPage() {
             },
           ]}
           content={<Outlet />}
-          activeTabId={match?.params.pointType}
+          activeTabId={selectedPointType}
         />
       </div>
     </>

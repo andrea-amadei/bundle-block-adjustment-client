@@ -30,6 +30,10 @@ export const imgTest = {
 
 export const tpTest: TiePoint[] = [
   {
+    pointId: 0,
+    linkedPoints: [],
+  },
+  {
     pointId: 1,
     linkedPoints: [
       {

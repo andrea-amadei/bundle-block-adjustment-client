@@ -1,0 +1,16 @@
+.input-filed-container {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  flex: none;
+
+  .label {
+    font-size: 0.9em;
+  }
+
+  .input.number {
+    width: 60px;
+  }
+
+}

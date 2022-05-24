@@ -13,12 +13,21 @@
 
   background: #bdbaba;
 
+  &, * {
+    text-decoration: none;
+    color: inherit;
+  }
+
   &.tp-style {
     background: $tp-color;
   }
 
   &.gcp-style {
     background: $gcp-color;
+  }
+
+  &.active {
+    background: gold;
   }
 
   .additional-info-container {

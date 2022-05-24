@@ -25,7 +25,9 @@ export default function App() {
         <Route path="/" element={<PagesContainer />}>
           <Route index element={<RedirectToFirstImageInEditor/>} />
           <Route path="editor/:selectedImageId" element={<EditorPage/>}>
-            <Route path="TP" element={<SideListTP/>}/>
+            <Route path="TP" element={<SideListTP/>}>
+              <Route path=":pointId"/>
+            </Route>
             <Route path="GCP" element={<SideListGCP/>}/>
             <Route index element={<Navigate to="TP"/>}/>
           </Route>

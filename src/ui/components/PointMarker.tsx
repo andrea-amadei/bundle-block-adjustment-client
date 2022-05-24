@@ -12,6 +12,7 @@ import {
   setLinkedPointX as setLinkedPointX_GCP,
   setLinkedPointY as setLinkedPointY_GCP,
 } from '../../core/model/slices/groundControlPointsSlice';
+import { useMatch, useNavigate, useParams } from "react-router-dom";
 
 interface PointMarkerAttributes {
   point: PointOnImage | PointOnImageGCP;
@@ -25,6 +26,11 @@ interface PointMarkerAttributes {
 // eslint-disable-next-line import/prefer-default-export
 export function PointMarker(props: PointMarkerAttributes) {
   const { point, type, isMovable, isSelected, zoomValue, wzoom } = props;
+
+
+  const imgId = useParams().selectedImageId;
+
+  const navigate = useNavigate();
 
   if (type === undefined) throw Error('Attribute "type" is required');
 
@@ -133,7 +139,16 @@ export function PointMarker(props: PointMarkerAttributes) {
       ) : (
         <></>
       )}
-      <circle className={`${isSelected ? 'point-selected' : ''} outer-circle point-type-${type.toLowerCase()} dragged-${dragged}`} cx="50" cy="50" r="40" strokeWidth="15" fillOpacity="0" onMouseDown={(e) => isMovable ? handleMouseHold(e, 'all') : null} />
+      <circle
+        className={`${isSelected ? "point-selected" : ""} outer-circle point-type-${type.toLowerCase()} dragged-${dragged}`}
+        cx="50"
+        cy="50"
+        r="40"
+        strokeWidth="15"
+        fillOpacity="0"
+        onMouseDown={(e) => isMovable ? handleMouseHold(e, "all") : null}
+        onClick={() => navigate(`/editor/${imgId}/${type}/${point.pointId}`)}
+      />
     </svg>
   );
 }

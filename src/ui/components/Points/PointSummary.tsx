@@ -1,5 +1,6 @@
 import React from "react";
 import "./PointSummary.scss";
+import { NavLink } from "react-router-dom";
 
 interface PropType {
   type: string,
@@ -45,9 +46,12 @@ function renderContent(type: string, id: string | number, additionalInfo: Map<st
   );
 }
 
-export const PointSummary: React.FC<PropType> = ({compact, type, id, additionalInfo}) => {
-
-
+export const PointSummary: React.FC<PropType> = ({
+  compact,
+  type,
+  id,
+  additionalInfo,
+}) => {
   let content;
   if(compact)
     content = renderCompactContent(type, id);
@@ -55,9 +59,9 @@ export const PointSummary: React.FC<PropType> = ({compact, type, id, additionalI
     content = renderContent(type, id, new Map(Object.entries(additionalInfo)));
 
   return (
-    <div className={"point-summary "+getStyleForPointType(type)}>
+    <NavLink className={"point-summary "+getStyleForPointType(type)} to={`${id}`}>
       {content}
-    </div>
+    </NavLink>
   );
 }
 

@@ -1,0 +1,38 @@
+.point-inspector-component {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px;
+  background: inherit;
+
+  .header {
+
+  }
+
+  .point-local, .point-global {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .linked-img-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .linked-img {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 11px;
+  }
+
+  .linked-img-text {
+    font-size: 0.95em;
+  }
+
+
+}
