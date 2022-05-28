@@ -121,7 +121,14 @@ export function PointMarker(props: PointMarkerAttributes) {
   }, [dragged]);
 
   return (
-    <svg className="point-marker" viewBox="0 0 200 200" width="30px" height="30px" style={{left: point.x - 8, top: point.y - 8, position: 'absolute'}} transform="scale(NaN)">
+    <svg
+      className="point-marker"
+      viewBox="0 0 200 200"
+      width="30px"
+      height="30px"
+      style={{ left: point.x - 8, top: point.y - 8, position: 'absolute' }}
+      onClick={() => navigate(`/editor/${imgId}/${type}/${point.pointId}`)}
+    >
       <circle cx="50" cy="50" r="1" stroke="white" strokeWidth="1" fill="black" />
       {isMovable ? (
         <>
@@ -147,7 +154,6 @@ export function PointMarker(props: PointMarkerAttributes) {
         strokeWidth="15"
         fillOpacity="0"
         onMouseDown={(e) => isMovable ? handleMouseHold(e, "all") : null}
-        onClick={() => navigate(`/editor/${imgId}/${type}/${point.pointId}`)}
       />
     </svg>
   );
