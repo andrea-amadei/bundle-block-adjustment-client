@@ -150,17 +150,18 @@ export const selectGroundControlPointsOnImageBySourceType =
   (state: RootState) =>
     _selectGroundControlPointsOnImageBySourceType(state, { imageId, pointSourceType }) as PointOnImage[];
 
-// export const selectAllGroundControlPoints = (state: RootState) =>
-//   state.groundControlPoints;
-//
-// export const selectGroundControlPointById =
-//   (id: number) => (state: RootState) =>
-//     state.groundControlPoints[id];
-//
-// export const selectGroundControlPointsOnImage =
-//   (imageId: number) => (state: RootState) =>
-//     state.groundControlPoints.filter((x) =>
-//       x.linkedPoints.some((y) => y.imageId === imageId)
-//     );
+const _selectPointId = (_state: RootState, {pointId}: {pointId: number | undefined}) => pointId;
+const _selectGroundControlPointsPointOnImageById = createSelector(
+  [selectAllGroundControlPoints, _selectPointId, _selectImageId],
+  (gcpList, pointId, imageId) => {
+    if(pointId !== undefined)
+      return gcpList[pointId].linkedPoints.filter(
+        (pointOnImage) => pointOnImage.imageId === imageId
+      )[0] as PointOnImage;
+    return undefined;
+  }
+);
+export const selectGroundControlPointsOnImageById = (pointId: number | undefined, imageId: number | undefined) => (state: RootState) =>
+  _selectGroundControlPointsPointOnImageById(state, {pointId, imageId}) as PointOnImage;
 
 export default groundControlPointsSlice.reducer;

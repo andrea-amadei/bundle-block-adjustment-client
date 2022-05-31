@@ -1,39 +1,45 @@
 import './EditorPage.scss';
 import { ImageThumbnailNavLink } from 'ui/components/ImageThumbnailNavLink';
 import { useSelector } from 'react-redux';
-import { Link, Outlet, useMatch, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { ImageEditor } from 'ui/components/ImageEditor';
+import { useState } from 'react';
 import { selectAllImages } from '../../core/model/slices/imageListSlice';
 import { CardLayoutTabsPanel } from '../common/CardLayoutTabsPanel';
-import { PointInspectorTP } from "../components/PointInspectorTP";
-import { app } from 'electron';
+import { PointInspectorTP } from '../components/PointInspectorTP';
+import useGetUrlParams from '../../utils/useGetUrlParams';
+import { SideListTP } from '../components/SideListTP';
+import { SideListGCP } from '../components/SideListGCP';
+import { PointInspectorGCP } from '../components/PointInspectorGCP';
 
 // eslint-disable-next-line import/prefer-default-export
 export function EditorPage() {
   const imgList = useSelector(selectAllImages);
   const { selectedImageId } = useParams();
-  const match = useMatch("/editor/:imgId/:pointType/:pointId");
+  const { pointType: selectedPointType, pointId: selectedPointId } =
+    useGetUrlParams();
 
-  const selectedPointType = match?.params.pointType;
-  const selectedPointId = match?.params.pointId;
+  const [activeSideTab, setActiveSideTab] = useState('TP');
+  let sideTabContent;
+  if (activeSideTab === 'TP') sideTabContent = <SideListTP />;
+  else if (activeSideTab === 'GCP') sideTabContent = <SideListGCP />;
 
   let contentMainSection;
-  if(selectedImageId) {
+  if (selectedImageId) {
     contentMainSection = (
       <>
-        <ImageEditor key={selectedImageId} className="main-img"/>
-        {selectedPointId &&
+        <ImageEditor key={selectedImageId}/>
+        {selectedPointId && (
           <div className="point-inspector">
-            {selectedPointType === "TP" &&
-              <PointInspectorTP/>
-            }
+            {selectedPointType === 'TP' && <PointInspectorTP />}
+            {selectedPointType === 'GCP' && <PointInspectorGCP />}
           </div>
-        }
-        {!selectedPointId &&
+        )}
+        {!selectedPointId && (
           <div className="no-point-selected">
             Select a point using the right sidebar
           </div>
-        }
+        )}
       </>
     );
   } else {
@@ -66,22 +72,28 @@ export function EditorPage() {
             {
               tabId: 'TP',
               label: (
-                <Link className="tab-link" to="TP">
+                <div
+                  className="tab-link"
+                  onClick={() => setActiveSideTab('TP')}
+                >
                   TP
-                </Link>
+                </div>
               ),
             },
             {
               tabId: 'GCP',
               label: (
-                <Link className="tab-link" to="GCP">
+                <div
+                  className="tab-link"
+                  onClick={() => setActiveSideTab('GCP')}
+                >
                   GCP
-                </Link>
+                </div>
               ),
             },
           ]}
-          content={<Outlet />}
-          activeTabId={selectedPointType}
+          content={sideTabContent}
+          activeTabId={activeSideTab}
         />
       </div>
     </>

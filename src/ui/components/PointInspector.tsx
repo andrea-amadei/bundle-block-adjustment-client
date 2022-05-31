@@ -18,6 +18,7 @@ interface PointInspectorPropType {
     url: string;
     linkPath: string;
   }>;
+  additionalGlobalFields?: any;
 }
 
 export const PointInspector: React.FC<PointInspectorPropType> = ({
@@ -28,29 +29,33 @@ export const PointInspector: React.FC<PointInspectorPropType> = ({
   pointX,
   pointY,
   setPointX,
-  setPointY
+  setPointY,
+  additionalGlobalFields
 }) => {
   return (
     <div className="point-inspector-component">
       <div className="header">{`${pointType} ${pointId}`}</div>
       <FieldsContainer title="Image based TP properties">
         <div className="point-local">
-          <InputField
-            type="number"
-            label="X"
-            value={pointX}
-            setValue={setPointX}
-          />
-          <InputField
-            type="number"
-            label="Y"
-            value={pointY}
-            setValue={setPointY}
-          />
+          <div className="point-position">
+            <InputField
+              type="number"
+              label="X"
+              value={pointX}
+              setValue={setPointX}
+            />
+            <InputField
+              type="number"
+              label="Y"
+              value={pointY}
+              setValue={setPointY}
+            />
+          </div>
         </div>
       </FieldsContainer>
       <FieldsContainer title="Global TP properties">
         <div className="point-global">
+          {additionalGlobalFields}
           <div className="linked-img-container">
             <div className="linked-img-text"> Images linked to TP</div>
             <div className="linked-img">

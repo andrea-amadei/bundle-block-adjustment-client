@@ -1,20 +1,19 @@
+import { useSelector } from 'react-redux';
 import { PointInspector } from './PointInspector';
-import { useMatch } from 'react-router-dom';
-import { useSelector } from "react-redux";
 import {
   selectTiePointById,
   selectTiePointOnImageById,
   setLinkedPointX,
-  setLinkedPointY
-} from "../../core/model/slices/tiePointsSlice";
+  setLinkedPointY,
+} from '../../core/model/slices/tiePointsSlice';
 import { store } from '../../core/model/store';
-import { selectAllImages, selectImagesMap } from "../../core/model/slices/imageListSlice";
+import { selectImagesMap } from '../../core/model/slices/imageListSlice';
+import useGetUrlParams from '../../utils/useGetUrlParams';
 
 export function PointInspectorTP() {
-
-  const match = useMatch("/editor/:imgId/:pointType/:pointId");
-  const imgId = match?.params.imgId ? parseInt(match?.params.imgId) : undefined;
-  const pointId = match?.params.pointId ? parseInt(match?.params.pointId) : undefined;
+  const { imgId: imgIdStr, pointId: pointIdStr } = useGetUrlParams();
+  const imgId = imgIdStr ? parseInt(imgIdStr) : undefined;
+  const pointId = pointIdStr ? parseInt(pointIdStr) : undefined;
   const point = useSelector(selectTiePointById(pointId));
   const pointOnImage = useSelector(selectTiePointOnImageById(pointId, imgId));
   const images = useSelector(selectImagesMap);

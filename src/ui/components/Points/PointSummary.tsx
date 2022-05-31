@@ -1,6 +1,7 @@
 import React from "react";
 import "./PointSummary.scss";
 import { NavLink } from "react-router-dom";
+import useGetUrlParams from "../../../utils/useGetUrlParams";
 
 interface PropType {
   type: string,
@@ -52,6 +53,9 @@ export const PointSummary: React.FC<PropType> = ({
   id,
   additionalInfo,
 }) => {
+
+  const {imgId} = useGetUrlParams();
+
   let content;
   if(compact)
     content = renderCompactContent(type, id);
@@ -59,7 +63,7 @@ export const PointSummary: React.FC<PropType> = ({
     content = renderContent(type, id, new Map(Object.entries(additionalInfo)));
 
   return (
-    <NavLink className={"point-summary "+getStyleForPointType(type)} to={`${id}`}>
+    <NavLink className={"point-summary "+getStyleForPointType(type)} to={`/editor/${imgId}/${type}/${id}`}>
       {content}
     </NavLink>
   );
