@@ -17,10 +17,7 @@ export const imgTest = {
     name: 'Img3',
     path: 'https://images.unsplash.com/photo-1611363279288-55e33723ac06?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
   },
-  4: { id: 4,
-    name: 'Vaporwave',
-    path: 'https://i.redd.it/1iwcit1gidyy.jpg'
-  },
+  4: { id: 4, name: 'Vaporwave', path: 'https://i.redd.it/1iwcit1gidyy.jpg' },
   5: {
     id: 5,
     name: 'Random',
@@ -117,6 +114,21 @@ export const tpTest: TiePoint[] = [
 ];
 
 export const gcpTest: GroundControlPoint[] = [
+  {
+    pointId: 0,
+    x: 50,
+    y: 60,
+    z: 70,
+    linkedPoints: [
+      {
+        pointId: 0,
+        x: 190,
+        y: 200,
+        imageId: 1,
+        source: 'MANUAL',
+      },
+    ],
+  },
   {
     pointId: 1,
     x: 20,

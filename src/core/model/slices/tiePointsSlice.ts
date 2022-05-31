@@ -122,11 +122,4 @@ export const selectTiePointOnImageById = (pointId: number | undefined, imageId: 
   _selectTiePointOnImageById(state, {pointId, imageId}) as PointOnImage;
 
 
-/*
-export const selectTiePointsOnImage = (imageId: number | undefined) => (state: RootState) =>
-   state.tiePoints.filter((x) =>
-    x.linkedPoints.some((y) => y.imageId === imageId)
-  ) as TiePoint[];
-   */
-
 export default tiePointsSlice.reducer;

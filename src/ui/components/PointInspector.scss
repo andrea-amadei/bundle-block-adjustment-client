@@ -1,19 +1,26 @@
 .point-inspector-component {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   padding: 10px;
   background: inherit;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
 
   .header {
 
   }
 
-  .point-local, .point-global {
+  .point-position {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     gap: 20px;
+  }
+
+  .point-local, .point-global {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   .linked-img-container {

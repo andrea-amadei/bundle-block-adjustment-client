@@ -93,11 +93,11 @@
   }
 
   .tab-link{
-    text-decoration: none;
     color: inherit;
     display: flex;
     flex-direction: column;
     align-items: center;
+    cursor: pointer;
   }
 }
 
