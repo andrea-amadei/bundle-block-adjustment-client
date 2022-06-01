@@ -8,7 +8,7 @@ export function PageMenu(props) {
         Editor
       </NavLink>
       <NavLink className="page-menu-nav-link rightSeparator" to="data">
-        Data
+        Raw Data
       </NavLink>
       <NavLink className="page-menu-nav-link rightSeparator" to="results">
         Compute results

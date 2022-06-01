@@ -1,9 +1,24 @@
 import  './DataPage.scss'
 import { useState } from 'react';
 import { CardLayoutTabsPanel } from '../components/common/CardLayoutTabsPanel';
+import { CameraSettingsTable } from '../components/editor/tables/CameraSettingsTable';
+import { GCPObjectTable } from '../components/editor/tables/GCPObjectTable';
+import { GCPImageTable } from '../components/editor/tables/GCPImageTable';
+import { TPImageTable } from '../components/editor/tables/TPImageTable';
+import { CameraPositionTable } from '../components/editor/tables/CameraPositionTable';
+import { PointCloudTable } from '../components/editor/tables/PointCloudTable';
 
 export function DataPage() {
-  const [activeSideTab, setActiveSideTab] = useState('global');
+  const [activeSideTab, setActiveSideTab] = useState('camera');
+
+  const tables = {
+    camera: <CameraSettingsTable />,
+    gcp_obj: <GCPObjectTable />,
+    gcp_img: <GCPImageTable />,
+    tp_img: <TPImageTable />,
+    img: <CameraPositionTable />,
+    cloud: <PointCloudTable />,
+  };
 
   return (
     <div className="data-page">
@@ -12,10 +27,10 @@ export function DataPage() {
         className="main-section"
         tabHeaderList={[
           {
-            tabId: 'global',
+            tabId: 'camera',
             label: (
-              <div className="tab-link" onClick={() => setActiveSideTab('global')}>
-                Global Settings
+              <div className="tab-link" onClick={() => setActiveSideTab('camera')}>
+                Camera Settings
               </div>
             ),
           },
@@ -44,9 +59,9 @@ export function DataPage() {
             ),
           },
           {
-            tabId: 'camera',
+            tabId: 'img',
             label: (
-              <div className="tab-link" onClick={() => setActiveSideTab('camera')}>
+              <div className="tab-link" onClick={() => setActiveSideTab('img')}>
                 Images
               </div>
             ),
@@ -60,7 +75,11 @@ export function DataPage() {
             ),
           },
         ]}
-        content={<h1>CONTENT</h1>}
+        content={
+          <div className="main-content">
+            {tables[activeSideTab]}
+          </div>
+        }
         activeTabId={activeSideTab}
       />
     </div>

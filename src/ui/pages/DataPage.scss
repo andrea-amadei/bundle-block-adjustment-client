@@ -20,8 +20,38 @@
   .main-section {
     grid-area: b;
 
+    .main-content {
+      padding: 20px;
+      height: 100%;
+      overflow-y: scroll;
+
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        table-layout: fixed;
+      }
+
+      thead {
+        border: 1px solid black;
+        font-weight: bold;
+        background-color: #92dc92;
+      }
+
+      td {
+        border: 1px solid black;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(odd) {
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+    }
+
     .tab-header {
-      width: 15%;
+      white-space: nowrap;
+      width: max(200px, 15%);
     }
   }
 
