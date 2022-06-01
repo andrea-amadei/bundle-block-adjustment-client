@@ -28,30 +28,45 @@ export const imgTest = {
 export const tpTest: TiePoint[] = [
   {
     pointId: 0,
-    linkedPoints: [],
-  },
-  {
-    pointId: 1,
     linkedPoints: [
       {
-        pointId: 1,
+        pointId: 0,
         x: 1,
         y: 1,
         imageId: 1,
         source: 'MANUAL',
       },
       {
-        pointId: 1,
+        pointId: 0,
         x: 10,
         y: 10,
         imageId: 2,
         source: 'MANUAL',
       },
       {
-        pointId: 1,
+        pointId: 0,
         x: 15,
         y: 15,
         imageId: 3,
+        source: 'MANUAL',
+      },
+    ],
+  },
+  {
+    pointId: 1,
+    linkedPoints: [
+      {
+        pointId: 1,
+        x: 4,
+        y: 8,
+        imageId: 1,
+        source: 'IMPORTED',
+      },
+      {
+        pointId: 1,
+        x: 8,
+        y: 16,
+        imageId: 2,
         source: 'MANUAL',
       },
     ],
@@ -61,16 +76,9 @@ export const tpTest: TiePoint[] = [
     linkedPoints: [
       {
         pointId: 2,
-        x: 4,
-        y: 8,
+        x: 15,
+        y: 30,
         imageId: 1,
-        source: 'IMPORTED',
-      },
-      {
-        pointId: 2,
-        x: 8,
-        y: 16,
-        imageId: 2,
         source: 'MANUAL',
       },
     ],
@@ -80,18 +88,6 @@ export const tpTest: TiePoint[] = [
     linkedPoints: [
       {
         pointId: 3,
-        x: 15,
-        y: 30,
-        imageId: 1,
-        source: 'MANUAL',
-      },
-    ],
-  },
-  {
-    pointId: 1000,
-    linkedPoints: [
-      {
-        pointId: 1000,
         x: 30,
         y: 30,
         imageId: 5,
@@ -100,10 +96,10 @@ export const tpTest: TiePoint[] = [
     ],
   },
   {
-    pointId: 1001,
+    pointId: 4,
     linkedPoints: [
       {
-        pointId: 1001,
+        pointId: 4,
         x: 100,
         y: 20,
         imageId: 5,
@@ -116,14 +112,14 @@ export const tpTest: TiePoint[] = [
 export const gcpTest: GroundControlPoint[] = [
   {
     pointId: 0,
-    x: 50,
-    y: 60,
-    z: 70,
+    x: 20,
+    y: 40,
+    z: 60,
     linkedPoints: [
       {
         pointId: 0,
-        x: 190,
-        y: 200,
+        x: 180,
+        y: 180,
         imageId: 1,
         source: 'MANUAL',
       },
@@ -131,14 +127,14 @@ export const gcpTest: GroundControlPoint[] = [
   },
   {
     pointId: 1,
-    x: 20,
-    y: 40,
-    z: 60,
+    x: 50,
+    y: 60,
+    z: 70,
     linkedPoints: [
       {
         pointId: 1,
-        x: 180,
-        y: 180,
+        x: 190,
+        y: 200,
         imageId: 1,
         source: 'MANUAL',
       },

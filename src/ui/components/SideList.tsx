@@ -42,13 +42,13 @@ export const SideList: React.FC<PropType> = ({ pointType, points }) => {
       <div className="point-side-list-header">{compactBtn}</div>
       <div className="source-groups-container">
         {Object.entries(points)
-          .filter(([source, tpList]) => tpList.length > 0)
-          .map(([source, tpList]) => (
+          .filter(([source, pointList]) => pointList.length > 0)
+          .map(([source, pointList]) => (
             <div className="source-group">
               {POINTS_SOURCE_LABEL[source as keyof typeof POINTS_SOURCE_LABEL]}
               <hr className="divider" />
               <div className={`point-side-list ${isCompact ? 'compact' : ''}`}>
-                {tpList.map((tp) => (
+                {pointList.map((tp) => (
                   <PointSummary
                     type={pointType}
                     id={tp.pointId}

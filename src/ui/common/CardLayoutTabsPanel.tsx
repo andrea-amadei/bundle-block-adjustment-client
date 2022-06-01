@@ -14,11 +14,10 @@ interface PropType {
 
 export const CardLayoutTabsPanel: React.FC<PropType> = (props) => {
 
-  const {tabHeaderList, content, className, activeTabId} = props;
+  const { tabHeaderList, content, className, activeTabId } = props;
 
   let activeTab = activeTabId;
-  if(activeTab == null)
-    activeTab = tabHeaderList[0].tabId;
+  if (activeTab == null) activeTab = tabHeaderList[0].tabId;
 
   return (
     <div className={`card-layout-tabs-panel ${className}`}>
@@ -26,14 +25,13 @@ export const CardLayoutTabsPanel: React.FC<PropType> = (props) => {
         {tabHeaderList.map((tabHeader) => (
           <div
             className={`tab-header ${tabHeader.tabId === activeTab ? "active" : ""}`}
-            onClick={tabHeader.onClick}>
+            onClick={() => tabHeader.onClick}
+          >
             {tabHeader.label}
           </div>
         ))}
       </div>
-      <div className="tab-content">
-        {content}
-      </div>
+      <div className="tab-content">{content}</div>
     </div>
   );
 };

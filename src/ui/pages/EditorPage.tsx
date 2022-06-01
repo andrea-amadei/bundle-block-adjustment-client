@@ -1,25 +1,27 @@
 import './EditorPage.scss';
 import { ImageThumbnailNavLink } from 'ui/components/ImageThumbnailNavLink';
-import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { ImageEditor } from 'ui/components/ImageEditor';
-import { useState } from 'react';
-import { selectAllImages } from '../../core/model/slices/imageListSlice';
 import { CardLayoutTabsPanel } from '../common/CardLayoutTabsPanel';
 import { PointInspectorTP } from '../components/PointInspectorTP';
-import useGetUrlParams from '../../utils/useGetUrlParams';
+import { PointInspectorGCP } from '../components/PointInspectorGCP';
+import { useState } from 'react';
 import { SideListTP } from '../components/SideListTP';
 import { SideListGCP } from '../components/SideListGCP';
-import { PointInspectorGCP } from '../components/PointInspectorGCP';
+import { selectAllImages } from '../../core/model/slices/imageListSlice';
+import { useSelector } from 'react-redux';
 
 // eslint-disable-next-line import/prefer-default-export
 export function EditorPage() {
-  const imgList = useSelector(selectAllImages);
-  const { selectedImageId } = useParams();
-  const { pointType: selectedPointType, pointId: selectedPointId } =
-    useGetUrlParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedPointId = parseInt(searchParams.get('pointId') as string);
+  const selectedPointType = searchParams.get('pointType');
+  const selectedImageId = parseInt(searchParams.get('imgId') as string);
 
   const [activeSideTab, setActiveSideTab] = useState('TP');
+
+  const imgList = useSelector(selectAllImages);
+
   let sideTabContent;
   if (activeSideTab === 'TP') sideTabContent = <SideListTP />;
   else if (activeSideTab === 'GCP') sideTabContent = <SideListGCP />;
@@ -28,16 +30,18 @@ export function EditorPage() {
   if (selectedImageId) {
     contentMainSection = (
       <>
-        <ImageEditor key={selectedImageId}/>
-        {selectedPointId && (
+        <ImageEditor key={selectedImageId} className="main-img" />
+        {selectedPointId >= 0 ? (
           <div className="point-inspector">
-            {selectedPointType === 'TP' && <PointInspectorTP />}
-            {selectedPointType === 'GCP' && <PointInspectorGCP />}
+            {selectedPointType === 'TP' ? (
+              <PointInspectorTP />
+            ) : (
+              <PointInspectorGCP />
+            )}
           </div>
-        )}
-        {!selectedPointId && (
+        ) : (
           <div className="no-point-selected">
-            Select a point using the right sidebar
+            Select a point using the right sidebar or the editor
           </div>
         )}
       </>
@@ -60,7 +64,7 @@ export function EditorPage() {
               <ImageThumbnailNavLink
                 title={name}
                 imgSrc={path}
-                link={`/editor/${id}`}
+                imgId={id}
               />
             ))}
           </div>

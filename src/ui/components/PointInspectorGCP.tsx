@@ -1,42 +1,43 @@
 import { useSelector } from 'react-redux';
 import { PointInspector } from './PointInspector';
-import {
-  setLinkedPointX,
-  setLinkedPointY,
-} from '../../core/model/slices/tiePointsSlice';
 import { store } from '../../core/model/store';
 import { selectImagesMap } from '../../core/model/slices/imageListSlice';
-import useGetUrlParams from '../../utils/useGetUrlParams';
 import {
   selectGroundControlPointById,
-  selectGroundControlPointsOnImageById, setXByPointId, setYByPointId, setZByPointId
-} from "../../core/model/slices/groundControlPointsSlice";
+  selectGroundControlPointsOnImageById,
+  setXByPointId,
+  setYByPointId,
+  setZByPointId,
+  setLinkedPointX,
+  setLinkedPointY,
+} from '../../core/model/slices/groundControlPointsSlice';
 import { InputField } from '../common/InputField';
+import { useSearchParams } from 'react-router-dom';
 
 export function PointInspectorGCP() {
-  const { imgId: imgIdStr, pointId: pointIdStr } = useGetUrlParams();
-  const imgId = imgIdStr ? parseInt(imgIdStr) : undefined;
-  const pointId = pointIdStr ? parseInt(pointIdStr) : undefined;
-  const point = useSelector(selectGroundControlPointById(pointId));
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedPointId = parseInt(searchParams.get('pointId') as string);
+  const selectedImageId = parseInt(searchParams.get('imgId') as string);
+
+  const point = useSelector(selectGroundControlPointById(selectedPointId));
   const pointOnImage = useSelector(
-    selectGroundControlPointsOnImageById(pointId, imgId)
+    selectGroundControlPointsOnImageById(selectedPointId, selectedImageId)
   );
   const images = useSelector(selectImagesMap);
 
   return (
     <PointInspector
-      pointId={pointId || -1}
-      imgId={imgId || -1}
+      pointId={selectedPointId}
+      imgId={selectedImageId}
       pointType="GCP"
       pointX={pointOnImage.x}
-      setPointX={(x) => store.dispatch(setLinkedPointX(pointId, imgId, x))}
+      setPointX={(x) => store.dispatch(setLinkedPointX(selectedPointId, selectedImageId, parseInt(x)))}
       pointY={pointOnImage.y}
-      setPointY={(y) => store.dispatch(setLinkedPointY(pointId, imgId, y))}
+      setPointY={(y) => store.dispatch(setLinkedPointY(selectedPointId, selectedImageId, parseInt(y)))}
       linkedImg={point.linkedPoints.map((lp) => ({
         id: lp.imageId,
         name: images[lp.imageId].name,
         url: images[lp.imageId].path,
-        linkPath: `/editor/${lp.imageId}/TP/${pointId}`,
       }))}
       additionalGlobalFields={
         <>
@@ -45,19 +46,25 @@ export function PointInspectorGCP() {
               type="number"
               label="X"
               value={point.x}
-              setValue={(x) => store.dispatch(setXByPointId(pointId, x))}
+              setValue={(x) =>
+                store.dispatch(setXByPointId(selectedPointId, parseInt(x)))
+              }
             />
             <InputField
               type="number"
               label="Y"
               value={point.y}
-              setValue={(y) => store.dispatch(setYByPointId(pointId, y))}
+              setValue={(y) =>
+                store.dispatch(setYByPointId(selectedPointId, parseInt(y)))
+              }
             />
             <InputField
               type="number"
               label="Z"
               value={point.z}
-              setValue={(z) => store.dispatch(setZByPointId(pointId, z))}
+              setValue={(z) =>
+                store.dispatch(setZByPointId(selectedPointId, parseInt(z)))
+              }
             />
           </div>
         </>

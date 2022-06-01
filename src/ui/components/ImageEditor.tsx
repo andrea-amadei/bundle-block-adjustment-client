@@ -1,6 +1,6 @@
 import './ImageEditor.scss';
 
-import { useMatch, useParams } from "react-router-dom";
+import { useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import WZoom from 'vanilla-js-wheel-zoom';
@@ -11,24 +11,19 @@ import { PointMarker } from './PointMarker';
 
 // eslint-disable-next-line import/prefer-default-export
 export function ImageEditor() {
-  const { selectedImageId } = useParams();
-  const match = useMatch("/editor/:imgId/:pointType/:pointId");
-  const selectedPointId = match?.params.pointId ? parseInt(match?.params.pointId) : undefined;
-  const selectedPointType = match?.params.pointType;
-  console.log("ie", selectedPointId, selectedPointType)
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedPointId = parseInt(searchParams.get('pointId') as string);
+  const selectedPointType = searchParams.get('pointType');
+  const selectedImageId = parseInt(searchParams.get('imgId') as string);
+
+  console.log(searchParams.toString());
 
   if (!selectedImageId) throw new Error('No image selected!');
 
-  const selectedImage = useSelector(
-    selectImageById(parseInt(selectedImageId, 10))
-  );
+  const selectedImage = useSelector(selectImageById(selectedImageId));
 
-  const tpList = useSelector(
-    selectTiePointsOnImage(parseInt(selectedImageId, 10))
-  );
-  const gcpList = useSelector(
-    selectGroundControlPointsOnImage(parseInt(selectedImageId, 10))
-  );
+  const tpList = useSelector(selectTiePointsOnImage(selectedImageId));
+  const gcpList = useSelector(selectGroundControlPointsOnImage(selectedImageId));
 
   const canvasRef = useRef(null);
   const groupRef = useRef(null);
@@ -43,7 +38,10 @@ export function ImageEditor() {
 
   let scale;
 
-  const handleKeyDown = (event: KeyboardEvent) => {
+  const handleKeyDown = async (event: KeyboardEvent) => {
+    // const filePath = await window.electron.openFilePicker();
+    // console.log(filePath[0]);
+
     switch (event.code) {
       case 'NumpadAdd':
         wzoom?.zoomUp();
@@ -143,28 +141,28 @@ export function ImageEditor() {
             <div className="editor-points">
               {isTPVisible
                 ? tpList.map((tp) => (
-                  <PointMarker
-                    point={tp}
-                    zoomValue={zoomValue}
-                    wzoom={wzoom}
-                    type="TP"
-                    isMovable={!isLocked && selectedPointType === "TP" && selectedPointId === tp.pointId}
-                    isSelected={selectedPointType === "TP" && selectedPointId === tp.pointId}
-                  />
-                )) : null
-              }
+                    <PointMarker
+                      point={tp}
+                      zoomValue={zoomValue}
+                      wzoom={wzoom}
+                      type="TP"
+                      isMovable={!isLocked && selectedPointType === "TP" && selectedPointId === tp.pointId}
+                      isSelected={selectedPointType === "TP" && selectedPointId === tp.pointId}
+                    />
+                  ))
+                : null}
               {isGCPVisible
                 ? gcpList.map((gcp) => (
-                  <PointMarker
-                    point={gcp}
-                    zoomValue={zoomValue}
-                    wzoom={wzoom}
-                    type="GCP"
-                    isMovable={!isLocked && selectedPointType === "GCP" && selectedPointId === gcp.pointId}
-                    isSelected={selectedPointType === "GCP" && selectedPointId === gcp.pointId}
-                  />
-                )) : null
-              }
+                    <PointMarker
+                      point={gcp}
+                      zoomValue={zoomValue}
+                      wzoom={wzoom}
+                      type="GCP"
+                      isMovable={!isLocked && selectedPointType === "GCP" && selectedPointId === gcp.pointId}
+                      isSelected={selectedPointType === "GCP" && selectedPointId === gcp.pointId}
+                    />
+                  ))
+                : null}
             </div>
           </div>
         </div>

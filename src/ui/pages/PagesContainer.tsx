@@ -1,20 +1,16 @@
-import { Container, Nav, Navbar, Stack } from "react-bootstrap";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
-import { PageMenu } from "../components/PageMenu";
-import { useEffect } from "react";
+import { Outlet, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { PageMenu } from '../components/PageMenu';
 
-export function PagesContainer(props) {
+export function PagesContainer() {
   const location = useLocation();
 
-  useEffect(
-    () => console.log("PATH", location.pathname),
-    [location.pathname]
-  );
-  return(
+  useEffect(() => console.log('PATH', location.pathname), [location.pathname]);
+
+  return (
     <div className="pages-container">
       <PageMenu />
       <Outlet />
     </div>
-
   );
 }

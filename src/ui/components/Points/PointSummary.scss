@@ -5,6 +5,8 @@
   border: 1px solid $main-color-dark;
   border-radius: 4px;
 
+  cursor: pointer;
+
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -18,16 +20,24 @@
     color: inherit;
   }
 
-  &.tp-style {
-    background: $tp-color;
-  }
+  &:not(.active) {
+    &.tp-style {
+      background: $tp-color;
+    }
 
-  &.gcp-style {
-    background: $gcp-color;
+    &.gcp-style {
+      background: $gcp-color;
+    }
   }
 
   &.active {
-    background: gold;
+    &.tp-style {
+      background: $tp-selected-color;
+    }
+
+    &.gcp-style {
+      background: $gcp-selected-color;
+    }
   }
 
   .additional-info-container {

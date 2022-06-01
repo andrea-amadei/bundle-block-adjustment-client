@@ -1,25 +1,24 @@
-import React from "react";
-import "./PointSummary.scss";
-import { NavLink } from "react-router-dom";
-import useGetUrlParams from "../../../utils/useGetUrlParams";
+import React from 'react';
+import './PointSummary.scss';
+import { useSearchParams } from 'react-router-dom';
 
 interface PropType {
-  type: string,
-  id: string | number,
+  type: string;
+  id: string | number;
   additionalInfo?: {
-    [key: string]: string | number
-  },
-  compact?: boolean
+    [key: string]: string | number;
+  };
+  compact?: boolean;
 }
 
 function getStyleForPointType(type: string) {
   switch (type) {
-    case "TP":
-      return "tp-style";
-    case "GCP":
-      return "gcp-style";
+    case 'TP':
+      return 'tp-style';
+    case 'GCP':
+      return 'gcp-style';
     default:
-      return "";
+      return '';
   }
 }
 
@@ -38,7 +37,9 @@ function renderContent(type: string, id: string | number, additionalInfo: Map<st
       <div className="additional-info-container">
         {Array.from(additionalInfo.entries()).map(([key, val]) => (
           <div>
-            {key.search("hidden") === -1 && <div className="additional-info-key-text">{key}: </div>}
+            {key.search('hidden') === -1 && (
+              <div className="additional-info-key-text">{key}: </div>
+            )}
             <div className="additional-info-value-text">{val}</div>
           </div>
         ))}
@@ -53,25 +54,32 @@ export const PointSummary: React.FC<PropType> = ({
   id,
   additionalInfo,
 }) => {
-
-  const {imgId} = useGetUrlParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedPointId = parseInt(searchParams.get('pointId') as string);
+  const selectedPointType = searchParams.get('pointType');
 
   let content;
-  if(compact)
-    content = renderCompactContent(type, id);
+  if (compact) content = renderCompactContent(type, id);
   else
     content = renderContent(type, id, new Map(Object.entries(additionalInfo)));
 
   return (
-    <NavLink className={"point-summary "+getStyleForPointType(type)} to={`/editor/${imgId}/${type}/${id}`}>
+    <div
+      className={`point-summary ${getStyleForPointType(type)} ${
+        selectedPointId === id && selectedPointType === type ? 'active' : ''
+      }`}
+      onClick={() => {
+        searchParams.set('pointId', String(id));
+        searchParams.set('pointType', type);
+        setSearchParams(searchParams);
+      }}
+    >
       {content}
-    </NavLink>
+    </div>
   );
-}
-
-
+};
 
 PointSummary.defaultProps = {
   additionalInfo: {},
-  compact: false
-}
+  compact: false,
+};

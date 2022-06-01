@@ -1,8 +1,8 @@
 import React from 'react';
 import './PointInspector.scss';
 import { InputField } from '../common/InputField';
-import { FieldsContainer } from "../common/FieldsContainer";
-import { ImagePreview } from "./ImagePreview";
+import { FieldsContainer } from '../common/FieldsContainer';
+import { ImagePreview } from './ImagePreview';
 
 interface PointInspectorPropType {
   pointType: string;
@@ -16,7 +16,6 @@ interface PointInspectorPropType {
     id: number;
     name: string;
     url: string;
-    linkPath: string;
   }>;
   additionalGlobalFields?: any;
 }
@@ -30,7 +29,7 @@ export const PointInspector: React.FC<PointInspectorPropType> = ({
   pointY,
   setPointX,
   setPointY,
-  additionalGlobalFields
+  additionalGlobalFields,
 }) => {
   return (
     <div className="point-inspector-component">
@@ -59,13 +58,12 @@ export const PointInspector: React.FC<PointInspectorPropType> = ({
           <div className="linked-img-container">
             <div className="linked-img-text"> Images linked to TP</div>
             <div className="linked-img">
-              {linkedImg.map(img => (
+              {linkedImg.map((img) => (
                 <ImagePreview
                   key={img.id}
                   imageId={img.id}
                   imageName={img.name}
                   imageUrl={img.url}
-                  linkPath={img.linkPath}
                 />
               ))}
             </div>
