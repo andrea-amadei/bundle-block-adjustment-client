@@ -1,13 +1,13 @@
 import './EditorPage.scss';
-import { ImageThumbnailNavLink } from 'ui/components/ImageThumbnailNavLink';
+import { ImageThumbnailNavLink } from 'ui/components/editor/images/ImageThumbnailNavLink';
 import { useSearchParams } from 'react-router-dom';
-import { ImageEditor } from 'ui/components/ImageEditor';
-import { CardLayoutTabsPanel } from '../common/CardLayoutTabsPanel';
-import { PointInspectorTP } from '../components/PointInspectorTP';
-import { PointInspectorGCP } from '../components/PointInspectorGCP';
+import { ImageEditor } from 'ui/components/editor/ImageEditor';
+import { CardLayoutTabsPanel } from '../components/common/CardLayoutTabsPanel';
+import { PointInspectorTP } from '../components/editor/points/PointInspectorTP';
+import { PointInspectorGCP } from '../components/editor/points/PointInspectorGCP';
 import { useState } from 'react';
-import { SideListTP } from '../components/SideListTP';
-import { SideListGCP } from '../components/SideListGCP';
+import { SideListTP } from '../components/editor/sidelist/SideListTP';
+import { SideListGCP } from '../components/editor/sidelist/SideListGCP';
 import { selectAllImages } from '../../core/model/slices/imageListSlice';
 import { useSelector } from 'react-redux';
 

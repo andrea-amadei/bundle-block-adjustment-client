@@ -2,17 +2,17 @@ import './PointMarker.scss';
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { PointOnImage } from '../../core/model/slices/common/interfaces';
-import { store } from '../../core/model/store';
+import { PointOnImage } from '../../../../core/model/slices/common/interfaces';
+import { store } from '../../../../core/model/store';
 import {
   setLinkedPointX as setLinkedPointX_TP,
   setLinkedPointY as setLinkedPointY_TP,
-} from '../../core/model/slices/tiePointsSlice';
+} from '../../../../core/model/slices/tiePointsSlice';
 import {
   PointOnImageGCP,
   setLinkedPointX as setLinkedPointX_GCP,
   setLinkedPointY as setLinkedPointY_GCP,
-} from '../../core/model/slices/groundControlPointsSlice';
+} from '../../../../core/model/slices/groundControlPointsSlice';
 
 interface PointMarkerAttributes {
   point: PointOnImage | PointOnImageGCP;

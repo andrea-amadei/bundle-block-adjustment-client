@@ -1,7 +1,7 @@
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { SideList } from './SideList';
-import { selectGroundControlPointsOnImageBySourceType } from '../../core/model/slices/groundControlPointsSlice';
+import { selectGroundControlPointsOnImageBySourceType } from '../../../../core/model/slices/groundControlPointsSlice';
 
 export function SideListGCP() {
   const [searchParams, setSearchParams] = useSearchParams();

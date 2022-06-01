@@ -1,6 +1,6 @@
 @use "sass:color";
 
-@use "/src/ui/styles/MainStyle" as *;
+@use "../../styles/MainStyle" as *;
 
 $header-size: 24px;
 $rounded-border-radius: 10px;

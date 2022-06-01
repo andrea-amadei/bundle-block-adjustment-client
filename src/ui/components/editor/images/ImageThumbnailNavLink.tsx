@@ -2,8 +2,8 @@ import './ImageThumbnailNavLink.scss';
 import { useSearchParams } from 'react-router-dom';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectTiePointsOnImage } from '../../core/model/slices/tiePointsSlice';
-import { selectGroundControlPointsOnImage } from '../../core/model/slices/groundControlPointsSlice';
+import { selectTiePointsOnImage } from '../../../../core/model/slices/tiePointsSlice';
+import { selectGroundControlPointsOnImage } from '../../../../core/model/slices/groundControlPointsSlice';
 
 interface PropsType {
   title?: string | null;

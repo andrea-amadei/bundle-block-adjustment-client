@@ -4,10 +4,10 @@ import { useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import WZoom from 'vanilla-js-wheel-zoom';
-import { selectImageById } from '../../core/model/slices/imageListSlice';
-import { selectTiePointsOnImage } from '../../core/model/slices/tiePointsSlice';
-import { selectGroundControlPointsOnImage } from '../../core/model/slices/groundControlPointsSlice';
-import { PointMarker } from './PointMarker';
+import { selectImageById } from '../../../core/model/slices/imageListSlice';
+import { selectTiePointsOnImage } from '../../../core/model/slices/tiePointsSlice';
+import { selectGroundControlPointsOnImage } from '../../../core/model/slices/groundControlPointsSlice';
+import { PointMarker } from './points/PointMarker';
 
 // eslint-disable-next-line import/prefer-default-export
 export function ImageEditor() {

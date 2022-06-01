@@ -6,9 +6,9 @@ import {
   selectTiePointOnImageById,
   setLinkedPointX,
   setLinkedPointY,
-} from '../../core/model/slices/tiePointsSlice';
-import { store } from '../../core/model/store';
-import { selectImagesMap } from '../../core/model/slices/imageListSlice';
+} from '../../../../core/model/slices/tiePointsSlice';
+import { store } from '../../../../core/model/store';
+import { selectImagesMap } from '../../../../core/model/slices/imageListSlice';
 
 export function PointInspectorTP() {
   const [searchParams, setSearchParams] = useSearchParams();

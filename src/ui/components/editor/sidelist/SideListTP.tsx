@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { selectTiePointsOnImageBySourceType } from '../../core/model/slices/tiePointsSlice';
+import { selectTiePointsOnImageBySourceType } from '../../../../core/model/slices/tiePointsSlice';
 import { SideList } from './SideList';
 
 export function SideListTP() {

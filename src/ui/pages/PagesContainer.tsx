@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import { PageMenu } from '../components/PageMenu';
+import { PageMenu } from './PageMenu';
 
 export function PagesContainer() {
   const location = useLocation();

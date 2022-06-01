@@ -1,8 +1,8 @@
 import React from 'react';
 import './PointInspector.scss';
-import { InputField } from '../common/InputField';
-import { FieldsContainer } from '../common/FieldsContainer';
-import { ImagePreview } from './ImagePreview';
+import { InputField } from '../../common/InputField';
+import { FieldsContainer } from '../../common/FieldsContainer';
+import { ImagePreview } from '../images/ImagePreview';
 
 interface PointInspectorPropType {
   pointType: string;

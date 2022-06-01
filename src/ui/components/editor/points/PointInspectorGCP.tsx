@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { PointInspector } from './PointInspector';
-import { store } from '../../core/model/store';
-import { selectImagesMap } from '../../core/model/slices/imageListSlice';
+import { store } from '../../../../core/model/store';
+import { selectImagesMap } from '../../../../core/model/slices/imageListSlice';
 import {
   selectGroundControlPointById,
   selectGroundControlPointsOnImageById,
@@ -10,8 +10,8 @@ import {
   setZByPointId,
   setLinkedPointX,
   setLinkedPointY,
-} from '../../core/model/slices/groundControlPointsSlice';
-import { InputField } from '../common/InputField';
+} from '../../../../core/model/slices/groundControlPointsSlice';
+import { InputField } from '../../common/InputField';
 import { useSearchParams } from 'react-router-dom';
 
 export function PointInspectorGCP() {

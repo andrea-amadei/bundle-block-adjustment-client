@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { PointSummary } from './Points/PointSummary';
+import { PointSummary } from '../points/PointSummary';
 import './SideList.scss';
 import { Button } from 'react-bootstrap';
-import { PointOnImage } from '../../core/model/slices/common/interfaces';
+import { PointOnImage } from '../../../../core/model/slices/common/interfaces';
 
 interface PropType {
   pointType: 'TP' | 'GCP';
