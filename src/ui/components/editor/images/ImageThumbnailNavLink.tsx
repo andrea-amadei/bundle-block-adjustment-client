@@ -35,8 +35,10 @@ export const ImageThumbnailNavLink: React.FC<PropsType> = (props) => {
               !tpOnImage.some((tp) => tp.pointId === selectedPointId)) ||
             (selectedPointType === 'GCP' &&
               !gcpOnImage.some((gcp) => gcp.pointId === selectedPointId))
-          )
+          ) {
             searchParams.delete('pointId');
+            searchParams.delete('pointType');
+          }
 
         setSearchParams(searchParams);
       }}
