@@ -1,23 +1,15 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electron', {
-  ipcRenderer: {
-    myPing() {
-      ipcRenderer.send('ipc-example', 'ping');
-    },
-    on(channel, func) {
-      const validChannels = ['ipc-example'];
-      if (validChannels.includes(channel)) {
-        // Deliberately strip event as it includes `sender`
-        ipcRenderer.on(channel, (event, ...args) => func(...args));
-      }
-    },
-    once(channel, func) {
-      const validChannels = ['ipc-example'];
-      if (validChannels.includes(channel)) {
-        // Deliberately strip event as it includes `sender`
-        ipcRenderer.once(channel, (event, ...args) => func(...args));
-      }
-    },
-  },
+  log: (text) => ipcRenderer.send('log', text),
+
+  getPath: () => ipcRenderer.invoke('getPath:main'),
+  getSavesPath: () => ipcRenderer.invoke('getPath:saves'),
+  readTextFile: (path) => ipcRenderer.invoke('readTextFile', path),
+  writeTextFile: (path, rows) => ipcRenderer.invoke('writeTextFile', path, rows),
+  writeTextFileInSaves: (path, rows) => ipcRenderer.invoke('writeTextFile:saves', path, rows),
+  copyFile: (sourcePath, destinationPath) => ipcRenderer.invoke('copyFile', sourcePath, destinationPath),
+  copyFileToSaves: (sourcePath, name) => ipcRenderer.invoke('copyFile:saves', sourcePath, name),
+
+  openFilePicker: () => ipcRenderer.invoke('filePicker:open'),
 });
