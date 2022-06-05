@@ -25,27 +25,41 @@
       height: 100%;
       overflow-y: scroll;
 
+      .buttons-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        padding-bottom: 10px;
+        gap: 10px;
+
+        button {
+          width: 200px;
+          height: 40px;
+        }
+      }
+
       table {
         font-family: arial, sans-serif;
         border-collapse: collapse;
         width: 100%;
         table-layout: fixed;
-      }
 
-      thead {
-        border: 1px solid black;
-        font-weight: bold;
-        background-color: #92dc92;
-      }
+        th {
+          border: 1px solid black;
+          font-weight: bold;
+          background-color: #92dc92;
+          padding: 12px;
+        }
 
-      td {
-        border: 1px solid black;
-        text-align: left;
-        padding: 8px;
-      }
+        td {
+          border: 1px solid black;
+          text-align: left;
+          padding: 8px;
+        }
 
-      tr:nth-child(odd) {
-        background-color: rgba(0, 0, 0, 0.2);
+        tr:nth-child(even) {
+          background-color: rgba(0, 0, 0, 0.2);
+        }
       }
     }
 

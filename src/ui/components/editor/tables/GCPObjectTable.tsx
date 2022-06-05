@@ -5,21 +5,31 @@ export function GCPObjectTable() {
   const gcpList = useSelector(selectAllGroundControlPoints);
 
   return (
-    <table>
-      <thead>
-        <td>id_gcp</td>
-        <td>x</td>
-        <td>y</td>
-        <td>z</td>
-      </thead>
-      {gcpList.map((gcp) => (
-        <tr>
-          <td>{gcp.pointId}</td>
-          <td>{gcp.x}</td>
-          <td>{gcp.y}</td>
-          <td>{gcp.z}</td>
-        </tr>
-      ))}
-    </table>
+    <>
+      <div className="buttons-row">
+        <button onClick={() => console.log('Click!')}>Import from CSV</button>
+        <button onClick={() => console.log('Click!')}>Export to CSV</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>id_gcp</th>
+            <th>x</th>
+            <th>y</th>
+            <th>z</th>
+          </tr>
+        </thead>
+        <tbody>
+          {gcpList.map((gcp) => (
+            <tr key={gcp.pointId}>
+              <td>{gcp.pointId}</td>
+              <td>{gcp.x}</td>
+              <td>{gcp.y}</td>
+              <td>{gcp.z}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
   );
 }

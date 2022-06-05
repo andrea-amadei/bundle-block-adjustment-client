@@ -5,25 +5,35 @@ export function GCPImageTable() {
   const gcpList = useSelector(selectAllGroundControlPoints);
 
   return (
-    <table>
-      <thead>
-        <td>id_gcp</td>
-        <td>id_img</td>
-        <td>x</td>
-        <td>y</td>
-        <td>source</td>
-      </thead>
-      {gcpList.map((gcp) =>
-        gcp.linkedPoints.map((lp) => (
+    <>
+      <div className="buttons-row">
+        <button onClick={() => console.log('Click!')}>Import from CSV</button>
+        <button onClick={() => console.log('Click!')}>Export to CSV</button>
+      </div>
+      <table>
+        <thead>
           <tr>
-            <td>{gcp.pointId}</td>
-            <td>{lp.imageId}</td>
-            <td>{lp.x}</td>
-            <td>{lp.y}</td>
-            <td>{lp.source.toUpperCase()}</td>
+            <th>id_gcp</th>
+            <th>id_img</th>
+            <th>x</th>
+            <th>y</th>
+            <th>source</th>
           </tr>
-        ))
-      )}
-    </table>
+        </thead>
+        <tbody>
+          {gcpList.map((gcp) =>
+            gcp.linkedPoints.map((lp) => (
+              <tr key={`${gcp.pointId},${lp.imageId}`}>
+                <td>{gcp.pointId}</td>
+                <td>{lp.imageId}</td>
+                <td>{lp.x}</td>
+                <td>{lp.y}</td>
+                <td>{lp.source.toUpperCase()}</td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </>
   );
 }

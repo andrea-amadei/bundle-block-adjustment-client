@@ -5,27 +5,37 @@ export function CameraPositionTable() {
   const cameraList = useSelector(selectAllCameras);
 
   return (
-    <table>
-      <thead>
-        <td>id_img</td>
-        <td>xc</td>
-        <td>yc</td>
-        <td>zc</td>
-        <td>omega</td>
-        <td>phi</td>
-        <td>kappa</td>
-      </thead>
-      {cameraList.map((c) => (
-        <tr>
-          <td>{c.imageId}</td>
-          <td>{c.xc}</td>
-          <td>{c.yc}</td>
-          <td>{c.zc}</td>
-          <td>{c.omega}</td>
-          <td>{c.phi}</td>
-          <td>{c.kappa}</td>
-        </tr>
-      ))}
-    </table>
+    <>
+      <div className="buttons-row">
+        <button onClick={() => console.log('Click!')}>Import from CSV</button>
+        <button onClick={() => console.log('Click!')}>Export to CSV</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>id_img</th>
+            <th>xc</th>
+            <th>yc</th>
+            <th>zc</th>
+            <th>omega</th>
+            <th>phi</th>
+            <th>kappa</th>
+          </tr>
+        </thead>
+        <tbody>
+          {cameraList.map((c) => (
+            <tr key={c.imageId}>
+              <td>{c.imageId}</td>
+              <td>{c.xc}</td>
+              <td>{c.yc}</td>
+              <td>{c.zc}</td>
+              <td>{c.omega}</td>
+              <td>{c.phi}</td>
+              <td>{c.kappa}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
   );
 }

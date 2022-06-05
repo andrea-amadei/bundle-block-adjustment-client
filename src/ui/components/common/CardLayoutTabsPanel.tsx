@@ -26,6 +26,7 @@ export const CardLayoutTabsPanel: React.FC<PropType> = (props) => {
           <div
             className={`tab-header ${tabHeader.tabId === activeTab ? "active" : ""}`}
             onClick={() => tabHeader.onClick}
+            key={tabHeader.tabId}
           >
             {tabHeader.label}
           </div>

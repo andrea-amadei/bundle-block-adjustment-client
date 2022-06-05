@@ -1,12 +1,7 @@
-import { Outlet, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
 import { PageMenu } from './PageMenu';
 
 export function PagesContainer() {
-  const location = useLocation();
-
-  useEffect(() => console.log('PATH', location.pathname), [location.pathname]);
-
   return (
     <div className="pages-container">
       <PageMenu />

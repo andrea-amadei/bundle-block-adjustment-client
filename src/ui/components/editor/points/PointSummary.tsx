@@ -36,7 +36,7 @@ function renderContent(type: string, id: string | number, additionalInfo: Map<st
       <div className="id-text">{id}</div>
       <div className="additional-info-container">
         {Array.from(additionalInfo.entries()).map(([key, val]) => (
-          <div>
+          <div key={key}>
             {key.search('hidden') === -1 && (
               <div className="additional-info-key-text">{key}: </div>
             )}
