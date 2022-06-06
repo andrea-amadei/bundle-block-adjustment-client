@@ -8,8 +8,8 @@
 
 @mixin rounded-panel-mixin {
   @include panel-mixin;
-  border-radius: 10px;
-  border: 1.5px solid $main-color-dark;
+  border-radius: $border-radius;
+  border: none;
 }
 
 .editor-page {
@@ -24,7 +24,7 @@
   .image-list {
     @include rounded-panel-mixin;
     grid-area: left-col;
-    background: $main-color-light;
+    background: $main-color-medium;
 
     @include flex-container(column);
     align-items: center;
@@ -33,14 +33,14 @@
     gap: 8px;
 
     overflow-x: inherit;
-    overflow-y: auto;
+    overflow-y: scroll;
     flex: 1;
 
     .title{
       font-size: 22px;
       font-family: $main-font;
       font-style: normal;
-      font-weight: 400;
+      font-weight: normal;
       color: $main-color-dark;
     }
 
@@ -65,11 +65,10 @@
     gap: 16px;
 
     .no-image-selected-text {
+      padding: 10px;
       font-size: 18px;
       font-family: $main-font;
-      font-style: normal;
-      font-weight: 400;
-      color: color.scale($main-color-dark, $saturation: -70%);
+      color: $main-color-light;
     }
 
     .point-inspector {
@@ -89,7 +88,6 @@
   .gpc-tp-point-list {
     @include panel-mixin;
     grid-area: right-col;
-    //background: $main-color-lighter;
   }
 
   .tab-link{

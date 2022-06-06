@@ -16,8 +16,6 @@ export function ImageEditor() {
   const selectedPointType = searchParams.get('pointType');
   const selectedImageId = parseInt(searchParams.get('imgId') as string);
 
-  console.log(searchParams.toString());
-
   if (!selectedImageId) throw new Error('No image selected!');
 
   const selectedImage = useSelector(selectImageById(selectedImageId));
@@ -113,8 +111,9 @@ export function ImageEditor() {
     return (
       <div className="editor-img-container">
         <div className="img-header">
-          <div className="img-title">
-            {`[${selectedImage.id}] ${selectedImage.name}`}
+          <div className="img-title-container">
+            <span className="img-title-id">{selectedImage.id}</span>
+            <span className="img-title">{selectedImage.name}</span>
           </div>
           <div className="img-controls">
             <div className="img-controls-points" style={{ marginRight: '5%' }}>
@@ -148,6 +147,7 @@ export function ImageEditor() {
                       type="TP"
                       isMovable={!isLocked && selectedPointType === "TP" && selectedPointId === tp.pointId}
                       isSelected={selectedPointType === "TP" && selectedPointId === tp.pointId}
+                      key={tp.pointId}
                     />
                   ))
                 : null}
@@ -160,6 +160,7 @@ export function ImageEditor() {
                       type="GCP"
                       isMovable={!isLocked && selectedPointType === "GCP" && selectedPointId === gcp.pointId}
                       isSelected={selectedPointType === "GCP" && selectedPointId === gcp.pointId}
+                      key={gcp.pointId}
                     />
                   ))
                 : null}

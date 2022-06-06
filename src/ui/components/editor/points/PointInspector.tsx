@@ -75,7 +75,7 @@ export const PointInspector: React.FC<PointInspectorPropType> = ({
           {additionalGlobalFields}
           <div className="linked-img-container">
             <div className="group-header">
-              <div className="linked-img-text"> Images linked to TP</div>
+              <div className="linked-img-text">Linked images:</div>
               <div className="add-btn" onClick={() => setShowNewImgPopup(true)}>
                 <span className="material-symbols-outlined btn"> add </span>
               </div>

@@ -2,12 +2,10 @@
 
 @use "../../styles/MainStyle" as *;
 
-$header-size: 24px;
-$rounded-border-radius: 10px;
-$border-size: 1px;
-$border: $border-size solid $main-color-dark;;
+$header-size: 32px;
+$rounded-border-radius: $border-radius;
 
-$card-layout-bg: $main-color-lighter;
+$card-layout-bg: $main-color-medium;
 
 * {
   box-sizing: border-box;
@@ -35,13 +33,11 @@ $card-layout-bg: $main-color-lighter;
       flex-direction: column;
       justify-content: center;
       align-items: stretch;
-      border: $border ;
-      border-bottom: none;
       width: 52px;
       border-radius: $rounded-border-radius $rounded-border-radius 0 0;
       z-index: 1;
 
-      background: color.adjust($card-layout-bg, $saturation: -40%);
+      background: darken($main-color-medium, 6%);
 
       &.active{
         background: $card-layout-bg;
@@ -53,16 +49,14 @@ $card-layout-bg: $main-color-lighter;
 
   .tab-content {
     position: absolute;
-    top: $header-size - $border-size;
+    top: $header-size;
     left: 0;
     right: 0;
     bottom: 0;
 
-    border: $border;
     border-radius: 0 $rounded-border-radius $rounded-border-radius $rounded-border-radius;
     z-index: 2;
 
     background: $card-layout-bg;
   }
-
 }

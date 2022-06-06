@@ -25,31 +25,41 @@ export function CameraSettingsTable() {
   const a2 = useSelector(selectA2);
 
   return (
-    <table>
-      <thead>
-        <td>xi0</td>
-        <td>eta0</td>
-        <td>c</td>
-        <td>k1</td>
-        <td>k2</td>
-        <td>k3</td>
-        <td>p1</td>
-        <td>p2</td>
-        <td>a1</td>
-        <td>a2</td>
-      </thead>
-      <tr>
-        <td>{xi0}</td>
-        <td>{eta0}</td>
-        <td>{c}</td>
-        <td>{k1}</td>
-        <td>{k2}</td>
-        <td>{k3}</td>
-        <td>{p1}</td>
-        <td>{p2}</td>
-        <td>{a1}</td>
-        <td>{a2}</td>
-      </tr>
-    </table>
+    <>
+      <div className="buttons-row">
+        <button onClick={() => console.log('Click!')}>Import from CSV</button>
+        <button onClick={() => console.log('Click!')}>Export to CSV</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>xi0</th>
+            <th>eta0</th>
+            <th>c</th>
+            <th>k1</th>
+            <th>k2</th>
+            <th>k3</th>
+            <th>p1</th>
+            <th>p2</th>
+            <th>a1</th>
+            <th>a2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{xi0}</td>
+            <td>{eta0}</td>
+            <td>{c}</td>
+            <td>{k1}</td>
+            <td>{k2}</td>
+            <td>{k3}</td>
+            <td>{p1}</td>
+            <td>{p2}</td>
+            <td>{a1}</td>
+            <td>{a2}</td>
+          </tr>
+        </tbody>
+      </table>
+    </>
   );
 }

@@ -20,8 +20,6 @@ export const ImageThumbnailNavLink: React.FC<PropsType> = (props) => {
   const tpOnImage = useSelector(selectTiePointsOnImage(imgId));
   const gcpOnImage = useSelector(selectGroundControlPointsOnImage(imgId));
 
-  console.log('selectedPointId', selectedPointId);
-
   return (
     <div
       key={imgId}
@@ -43,8 +41,8 @@ export const ImageThumbnailNavLink: React.FC<PropsType> = (props) => {
         setSearchParams(searchParams);
       }}
     >
-      {title && <div className="img-title">{title}</div>}
       <img src={imgSrc} alt={imgSrc} />
+      {title && <div className="img-title">{title}</div>}
     </div>
   );
 };

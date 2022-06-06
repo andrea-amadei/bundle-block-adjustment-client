@@ -30,7 +30,7 @@ export function EditorPage() {
   if (selectedImageId) {
     contentMainSection = (
       <>
-        <ImageEditor key={selectedImageId} className="main-img" />
+        <ImageEditor key={selectedImageId} />
         {selectedPointId >= 0 ? (
           <div className="point-inspector">
             {selectedPointType === 'TP' ? (
@@ -65,6 +65,7 @@ export function EditorPage() {
                 title={name}
                 imgSrc={path}
                 imgId={id}
+                key={id}
               />
             ))}
           </div>

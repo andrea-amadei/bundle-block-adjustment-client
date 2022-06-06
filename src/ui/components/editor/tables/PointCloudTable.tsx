@@ -5,21 +5,31 @@ export function PointCloudTable() {
   const pointList = useSelector(selectAllPoints);
 
   return (
-    <table>
-      <thead>
-        <td>id_point</td>
-        <td>x</td>
-        <td>y</td>
-        <td>z</td>
-      </thead>
-      {pointList.map((p) => (
-        <tr>
-          <td>{p.pointId}</td>
-          <td>{p.x}</td>
-          <td>{p.y}</td>
-          <td>{p.z}</td>
-        </tr>
-      ))}
-    </table>
+    <>
+      <div className="buttons-row">
+        <button onClick={() => console.log('Click!')}>Import from CSV</button>
+        <button onClick={() => console.log('Click!')}>Export to CSV</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>id_point</th>
+            <th>x</th>
+            <th>y</th>
+            <th>z</th>
+          </tr>
+        </thead>
+        <tbody>
+          {pointList.map((p) => (
+            <tr key={p.pointId}>
+              <td>{p.pointId}</td>
+              <td>{p.x}</td>
+              <td>{p.y}</td>
+              <td>{p.z}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
   );
 }

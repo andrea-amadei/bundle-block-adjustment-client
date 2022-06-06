@@ -15,7 +15,7 @@
   padding: 0;
   height: 53px;
 
-  border-bottom: 2px solid $main-color-light;
+  border-bottom: 2px solid $main-color-medium;
 }
 
 .page-menu-nav-link {
@@ -35,20 +35,14 @@
   text-transform: uppercase;
   font-family: $main-font;
   font-style: normal;
-  font-weight: 400;
+  font-weight: bold;
   text-decoration: none;
 
   color: $main-color-lighter;
 
+  border-radius: $border-radius;
+
   &.active {
     background: $main-color-accent;
-  }
-
-  &.leftSeparator {
-    border-left: 2px solid $main-color-light;
-  }
-
-  &.rightSeparator {
-    border-right: 2px solid $main-color-light;
   }
 }
