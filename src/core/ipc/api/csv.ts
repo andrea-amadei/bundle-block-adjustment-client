@@ -1,6 +1,6 @@
 import { stringify } from 'csv-stringify';
 
-export function convertDataToCSV(data: string[][]): Promise<string[]> {
+export function convertDataToCSV(data: any[][]): Promise<string> {
   return new Promise((resolve, reject) => {
     const result: string[] = [];
 
@@ -20,10 +20,12 @@ export function convertDataToCSV(data: string[][]): Promise<string[]> {
     });
 
     stringifier.on('finish', () => {
-      resolve(result);
+      resolve(result.join(''));
     });
 
-    data.forEach((row) => stringifier.write(row));
+    data.forEach((row) =>
+      stringifier.write(row.filter((value) => value.toString()))
+    );
     stringifier.end();
   });
 }

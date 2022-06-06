@@ -9,6 +9,7 @@ import {
   writeTextFile,
   writeTextFileInSaves
 } from './api/fs';
+import { convertDataToCSV } from './api/csv';
 
 export default function registerIpcEvents() {
   ipcMain.on('log', async (_event, arg) => {
@@ -18,6 +19,7 @@ export default function registerIpcEvents() {
     console.log(msgTemplate(arg));
   });
 
+  // fs.ts
   ipcMain.handle('getPath:main', async (_event) => getPath());
   ipcMain.handle('getPath:saves', async (_event) => getSavesPath());
   ipcMain.handle('readTextFile', async (_event, arg) => readTextFile(arg));
@@ -26,5 +28,9 @@ export default function registerIpcEvents() {
   ipcMain.handle('copyFile', async (_event, arg1, arg2) => copyFile(arg1, arg2));
   ipcMain.handle('copyFile:saves', async (_event, arg1, arg2) => copyFileToSaves(arg1, arg2));
 
+  // csv.ts
+  ipcMain.handle('convertToCSV', async (_event, arg) => convertDataToCSV(arg));
+
+  // filePicker.ts
   ipcMain.handle('filePicker:open', async (_event, arg) => openFilePicker(arg));
 }
