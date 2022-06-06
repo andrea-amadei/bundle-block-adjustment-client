@@ -111,8 +111,9 @@ export function ImageEditor() {
     return (
       <div className="editor-img-container">
         <div className="img-header">
-          <div className="img-title">
-            {`[${selectedImage.id}] ${selectedImage.name}`}
+          <div className="img-title-container">
+            <span className="img-title-id">{selectedImage.id}</span>
+            <span className="img-title">{selectedImage.name}</span>
           </div>
           <div className="img-controls">
             <div className="img-controls-points" style={{ marginRight: '5%' }}>

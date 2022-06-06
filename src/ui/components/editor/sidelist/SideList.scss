@@ -1,3 +1,5 @@
+@use "../../../styles/MainStyle.scss" as *;
+
 .point-side-list-container {
   display: flex;
   flex-direction: column;
@@ -10,19 +12,25 @@
   }
 
   .compact-btn {
+    height: 24px;
+    background-color: $medium-color-button-background;
+  }
 
+  .compact-btn:hover {
+    background-color: $medium-color-button-background-hover;
   }
 
   .source-groups-container {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 30px;
 
     .source-group {
 
       .divider {
-        margin-top: 3px;
-        margin-bottom: 5px;
+        border: 2px solid $main-color-light;
+        //margin-top: 3px;
+        //margin-bottom: 5px;
       }
     }
   }

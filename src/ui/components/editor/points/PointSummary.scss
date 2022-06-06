@@ -32,11 +32,11 @@
 
   &.active {
     &.tp-style {
-      background: $tp-selected-color;
+      background: $selected-tp-color;
     }
 
     &.gcp-style {
-      background: $gcp-selected-color;
+      background: $selected-gcp-color;
     }
   }
 

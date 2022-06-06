@@ -11,7 +11,16 @@
   .text {
     font-size: 0.8em;
     text-decoration: none;
-    color: black;
+    color: $main-color-light;
+  }
+
+  .image-id {
+    background-color: $main-color-light;
+    color: $main-color-medium;
+    border-radius: $border-radius * 0.5;
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+    margin-right: 0.2em;
   }
 
   .img-preview {
@@ -25,7 +34,7 @@
     }
 
     &.active {
-      border: 3px solid $sp-color;
+      border: 3px solid $selected-image-color;
     }
   }
 }

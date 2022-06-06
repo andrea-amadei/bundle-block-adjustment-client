@@ -17,11 +17,11 @@
     &.dragged-none {
       &.point-selected {
         &.point-type-tp {
-          stroke: $tp-selected-color;
+          stroke: $selected-tp-color;
         }
 
         &.point-type-gcp {
-          stroke: $gcp-selected-color;
+          stroke: $selected-gcp-color;
         }
       }
 

@@ -6,7 +6,7 @@
   @include stretchy;
 
   display: grid;
-  grid-template-rows: 250px auto;
+  grid-template-rows: 20px auto;
   grid-template-areas:
     "a"
     "b";
@@ -35,6 +35,11 @@
         button {
           width: 200px;
           height: 40px;
+          background-color: $medium-color-button-background;
+        }
+
+        button:hover {
+          background-color: $medium-color-button-background-hover;
         }
       }
 
@@ -47,7 +52,8 @@
         th {
           border: 1px solid black;
           font-weight: bold;
-          background-color: #92dc92;
+          background-color: $main-color-accent;
+          color: $main-color-lighter;
           padding: 12px;
         }
 
@@ -58,7 +64,11 @@
         }
 
         tr:nth-child(even) {
-          background-color: rgba(0, 0, 0, 0.2);
+          background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        tr:nth-child(odd) {
+          background-color: rgba(0, 0, 0, 0.1);
         }
       }
     }

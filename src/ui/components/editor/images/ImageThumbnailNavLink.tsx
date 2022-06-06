@@ -41,8 +41,8 @@ export const ImageThumbnailNavLink: React.FC<PropsType> = (props) => {
         setSearchParams(searchParams);
       }}
     >
-      {title && <div className="img-title">{title}</div>}
       <img src={imgSrc} alt={imgSrc} />
+      {title && <div className="img-title">{title}</div>}
     </div>
   );
 };

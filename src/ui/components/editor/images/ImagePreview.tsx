@@ -31,7 +31,10 @@ export const ImagePreview: React.FC<PropType> = ({
       }}
     >
       <img className={`img-preview ${selectedImageId === imageId ? 'active': ''}`} src={imageUrl} alt={`Image ${imageName}`} />
-      <div className="text">{`[${imageId}] ${shortName}`}</div>
+      <div className="text">
+        <span className="image-id">{imageId}</span>
+        <span>{shortName}</span>
+      </div>
     </div>
   );
 };

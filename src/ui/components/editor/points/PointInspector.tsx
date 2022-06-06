@@ -56,7 +56,7 @@ export const PointInspector: React.FC<PointInspectorPropType> = ({
         <div className="point-global">
           {additionalGlobalFields}
           <div className="linked-img-container">
-            <div className="linked-img-text"> Images linked to TP</div>
+            <div className="linked-img-text">Linked images:</div>
             <div className="linked-img">
               {linkedImg.map((img) => (
                 <ImagePreview

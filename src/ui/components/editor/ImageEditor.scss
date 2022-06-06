@@ -1,6 +1,6 @@
 @use "../../styles/MainStyle" as *;
 
-$canvas-background-color: #696969;
+$canvas-background-color: darken($main-color-dark, 7%);
 
 .editor-img-container {
     @include stretchy;
@@ -14,12 +14,26 @@ $canvas-background-color: #696969;
         align-items: end;
         padding: 10px 5px;
 
-        .img-title {
-            font-size: 22px;
-            font-family: $main-font;
-            font-style: normal;
-            font-weight: 400;
-            color: $main-color-dark;
+        .img-title-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            gap: 10px;
+
+            .img-title-id {
+                font-size: 30px;
+                padding-left: 5px;
+                padding-right: 5px;
+                background-color: $main-color-lighter;
+                color: $main-color-dark;
+                border-radius: $border-radius;
+            }
+
+            .img-title {
+                font-size: 28px;
+                font-family: $main-font;
+                color: $main-color-lighter;
+            }
         }
 
         .img-controls {
@@ -35,6 +49,11 @@ $canvas-background-color: #696969;
 
             input[type= 'range'] {
                 width: 300px;
+                background-color: $main-color-accent;
+            }
+
+            input[type= 'checkbox'] {
+                background-color: $main-color-accent;
             }
 
             .img-controls-label {

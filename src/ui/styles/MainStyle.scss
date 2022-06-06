@@ -1,23 +1,28 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,bold,italic&subset=latin,latin-ext');
 //@import "~bootstrap/scss/bootstrap";
 
-$main-color-dark: #103D3E;
-$main-color-light: #C3F1F1;
-$main-color-lighter: #E6F4F1;
-$main-color-accent: #C75314;
+$main-color-dark: #252422;
+$main-color-medium: #403D39;
+$main-color-light: #CCC5B9;
+$main-color-lighter: #FFFCF2;
+$main-color-accent: #EB5E28;
 
 $tp-color: orange;
 $gcp-color: magenta;
-$sp-color: gold;
 
-$tp-selected-color: gold;
-$gcp-selected-color: gold;
+$selected-tp-color: complement($tp-color);
+$selected-gcp-color: complement($gcp-color);
+$selected-image-color: #ffff00;
 
-$point-dragged-color: blue;
-$point-dragged-right-color: lime;
-$point-dragged-bottom-color: red;
+$point-dragged-color: #ffff00;
+$point-dragged-right-color: #ffff00;
+$point-dragged-bottom-color: #ffff00;
 
-$main-font: 'Roboto Slab', serif;
+$main-font: "Helvetica Neue", sans-serif;
+$border-radius: 5px;
+
+$medium-color-button-background: darken($main-color-medium, 6%);
+$medium-color-button-background-hover: lighten($medium-color-button-background, 18%);
 
 @mixin flex-container($direction: row) {
   display: flex;
@@ -33,12 +38,29 @@ $main-font: 'Roboto Slab', serif;
   flex: 1 1 auto !important;
 }
 
+* {
+  color: $main-color-lighter;
+  font-family: $main-font;
+}
+
 html, body, #root, .pages-container {
   height: 100%;
+  background-color: $main-color-dark;
 }
 
 body {
   margin: 0;
+}
+
+button {
+  color: $main-color-lighter;
+  background-color: $main-color-medium;
+  border-radius: $border-radius;
+  border: none;
+}
+
+button:hover {
+  background-color: lighten($main-color-medium, 10%);
 }
 
 .pages-container {
@@ -48,6 +70,30 @@ body {
 @mixin page-mixin {
   align-self: stretch;
   flex-grow: 1;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  border-radius: $border-radius;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: $main-color-medium;
+  border-top-right-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: $border-radius;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 //@import "src/ui/components/PageMenu";
