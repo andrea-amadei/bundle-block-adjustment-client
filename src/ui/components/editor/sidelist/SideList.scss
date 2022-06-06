@@ -20,6 +20,34 @@
 
     .source-group {
 
+      .group-header {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        align-items: flex-end;
+
+        .add-btn {
+          padding: 1px;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #69db7c;
+          border: 1.5px solid black;
+          cursor: pointer;
+
+          &:hover {
+            background-color: #2f9e44;
+          }
+
+          .btn {
+            font-size: 15px;
+          }
+
+        }
+
+      }
+
       .divider {
         margin-top: 3px;
         margin-bottom: 5px;

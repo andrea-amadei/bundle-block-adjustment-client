@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from "react";
 import './PointInspector.scss';
 import { InputField } from '../../common/InputField';
 import { FieldsContainer } from '../../common/FieldsContainer';
 import { ImagePreview } from '../images/ImagePreview';
+import { LinkNewImgPopup } from "./LinkNewImagePopup";
+import { useSelector } from "react-redux";
+import { selectAllImages } from "../../../../core/model/slices/imageListSlice";
 
 interface PointInspectorPropType {
   pointType: string;
@@ -31,8 +34,23 @@ export const PointInspector: React.FC<PointInspectorPropType> = ({
   setPointY,
   additionalGlobalFields,
 }) => {
+
+  const imageList = useSelector(selectAllImages);
+
+  const [showLinkNewImgPopup, setShowNewImgPopup] = useState(false);
+
   return (
     <div className="point-inspector-component">
+      {showLinkNewImgPopup &&
+        <LinkNewImgPopup
+          show={showLinkNewImgPopup}
+          hidePopup={() => setShowNewImgPopup(false)}
+          pointType={pointType}
+          pointId={pointId}
+          images={imageList.map( img => ({title: img.name, id: img.id, src: img.path}))}
+          initiallySelectedImagesId={linkedImg.map( img => img.id)}
+        />
+      }
       <div className="header">{`${pointType} ${pointId}`}</div>
       <FieldsContainer title="Image based TP properties">
         <div className="point-local">
@@ -56,7 +74,12 @@ export const PointInspector: React.FC<PointInspectorPropType> = ({
         <div className="point-global">
           {additionalGlobalFields}
           <div className="linked-img-container">
-            <div className="linked-img-text"> Images linked to TP</div>
+            <div className="group-header">
+              <div className="linked-img-text"> Images linked to TP</div>
+              <div className="add-btn" onClick={() => setShowNewImgPopup(true)}>
+                <span className="material-symbols-outlined btn"> add </span>
+              </div>
+            </div>
             <div className="linked-img">
               {linkedImg.map((img) => (
                 <ImagePreview

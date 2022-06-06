@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import { PointSummary } from '../points/PointSummary';
 import './SideList.scss';
 import { Button } from 'react-bootstrap';
 import { PointOnImage } from '../../../../core/model/slices/common/interfaces';
+import { useOnClickOutsideRef } from "../../../../utils/useOnClickOutside";
 
 interface PropType {
   pointType: 'TP' | 'GCP';
@@ -21,6 +22,11 @@ const POINTS_SOURCE_LABEL = {
 
 export const SideList: React.FC<PropType> = ({ pointType, points }) => {
   const [isCompact, setIsCompact] = useState(false);
+  const [showOptionsForPointId, setShowOptionsForPointId] = useState<number | null>(null);
+  useEffect(
+    () => { if(isCompact) setShowOptionsForPointId(null);},
+    [isCompact]
+  );
 
   let compactBtn;
   if (isCompact) {
@@ -45,7 +51,14 @@ export const SideList: React.FC<PropType> = ({ pointType, points }) => {
           .filter(([source, pointList]) => pointList.length > 0)
           .map(([source, pointList]) => (
             <div className="source-group">
-              {POINTS_SOURCE_LABEL[source as keyof typeof POINTS_SOURCE_LABEL]}
+              <div className="group-header">
+                {POINTS_SOURCE_LABEL[source as keyof typeof POINTS_SOURCE_LABEL]}
+                {source === 'manual' &&
+                  <div className="add-btn">
+                    <span className="material-symbols-outlined btn"> add </span>
+                  </div>
+                }
+              </div>
               <hr className="divider" />
               <div className={`point-side-list ${isCompact ? 'compact' : ''}`}>
                 {pointList.map((tp) => (
@@ -56,6 +69,9 @@ export const SideList: React.FC<PropType> = ({ pointType, points }) => {
                       'key-hidden': `(${tp.x}, ${tp.y})`,
                     }}
                     compact={isCompact}
+                    showOptions={showOptionsForPointId === tp.pointId}
+                    enableShowOptions={() => setShowOptionsForPointId(tp.pointId)}
+                    disableShowOptions={() => setShowOptionsForPointId(null)}
                   />
                 ))}
               </div>
