@@ -50,7 +50,7 @@ export const SideList: React.FC<PropType> = ({ pointType, points }) => {
         {Object.entries(points)
           .filter(([source, pointList]) => pointList.length > 0)
           .map(([source, pointList]) => (
-            <div className="source-group" key={source}>>
+            <div className="source-group" key={source}>
               <div className="group-header">
                 {POINTS_SOURCE_LABEL[source as keyof typeof POINTS_SOURCE_LABEL]}
                 {source === 'manual' &&

@@ -13,9 +13,6 @@ export function PageMenu(props) {
       <NavLink className="page-menu-nav-link" to="results">
         Compute results
       </NavLink>
-      <NavLink className="page-menu-nav-link rightSeparator" to="test">
-        Test
-      </NavLink>
     </div>
   );
 }
