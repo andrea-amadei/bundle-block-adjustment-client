@@ -32,7 +32,7 @@ export const LinkNewImgPopup: React.FC<PointInspectorPropType> = ({
         <div className="content">
           {
             images.map(img => (
-              <div className="img-container" onClick={() => {
+              <div className="img-container" key={img.id} onClick={() => {
                 if (selectedImageIds.includes(img.id))
                   setSelectedImageIds(selectedImageIds.filter(id => id !== img.id));
                 else

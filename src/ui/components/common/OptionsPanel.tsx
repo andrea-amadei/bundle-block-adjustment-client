@@ -24,7 +24,13 @@ export const OptionsPanel: React.FC<PropType> = (
         <div className="pointer" />
         <div className="pointer-bg" />
         {options.map((option, index) => (
-          <div className={`option ${optionClicked === index ? "clicked" : ""}`} onClick={option.onClick} onMouseDown={() => setOptionClicked(index)} onMouseUp={() => setOptionClicked(null)}>
+          <div
+            className={`option ${optionClicked === index ? 'clicked' : ''}`}
+            key={index}
+            onClick={option.onClick}
+            onMouseDown={() => setOptionClicked(index)}
+            onMouseUp={() => setOptionClicked(null)}
+          >
             {option.text}
           </div>
         ))}
