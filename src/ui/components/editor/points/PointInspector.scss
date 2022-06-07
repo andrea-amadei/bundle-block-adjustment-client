@@ -5,11 +5,12 @@
   flex-direction: column;
   padding: 10px;
   background: $main-color-medium;
-  justify-content: space-between;
+  align-content: flex-start;
+  gap: 10px;
   width: 100%;
   height: 100%;
 
-  .header {
+  .point-inspector-header {
 
   }
 

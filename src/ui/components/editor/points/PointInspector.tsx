@@ -51,8 +51,8 @@ export const PointInspector: React.FC<PointInspectorPropType> = ({
           initiallySelectedImagesId={linkedImg.map( img => img.id)}
         />
       }
-      <div className="header">{`${pointType} ${pointId}`}</div>
-      <FieldsContainer title="Image based TP properties">
+      <div className="point-inspector-header">{`${pointType} ${pointId}`}</div>
+      <FieldsContainer title={`Image based ${pointType} properties`}>
         <div className="point-local">
           <div className="point-position">
             <InputField
@@ -70,7 +70,7 @@ export const PointInspector: React.FC<PointInspectorPropType> = ({
           </div>
         </div>
       </FieldsContainer>
-      <FieldsContainer title="Global TP properties">
+      <FieldsContainer title={`Global ${pointType} properties`}>
         <div className="point-global">
           {additionalGlobalFields}
           <div className="linked-img-container">
