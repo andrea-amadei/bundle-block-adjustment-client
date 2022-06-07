@@ -3,7 +3,7 @@
 .img-thumbnail{
   cursor: pointer;
 
-  position: static;
+  position: relative;
   left: 0;
   right: 0;
 
@@ -29,4 +29,19 @@
     border-radius: $border-radius;
     //border: 1px solid $main-color-dark;
   }
+
+  .img-remove {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 2px;
+    display: flex;
+
+    margin: 2px;
+
+    span {
+      font-size: 20px;
+    }
+  }
+
 }

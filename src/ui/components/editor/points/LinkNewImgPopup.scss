@@ -1,3 +1,4 @@
+@use "/src/ui/styles/MainStyle" as *;
 
 .link-img-popup {
 
@@ -13,8 +14,8 @@
     width: 85%;
     max-height: 85%;
     border-radius: 15px;
-    border: 2px solid #0b7285;
-    background-color: #e3fafc;
+    border: 2px solid $main-color-dark;
+    background-color: lighten($main-color-medium, 4%);
     z-index: 40;
 
     position: absolute;
@@ -31,14 +32,15 @@
       height: 30px;
       font-size: 20px;
       padding: 20px 15px;
-      background-color: #15aabf;
+      background-color: darken($main-color-medium, 4%);
       display: flex;
       flex-direction: row;
       align-items: center;
+      color: $main-color-lighter;
     }
 
     hr {
-      border: 1px solid #0b7285;
+      border: 1px solid $main-color-dark;
       margin: 0;
     }
 
@@ -68,7 +70,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 8px;
+            border-radius: $border-radius;
           }
 
           .selected {
@@ -80,11 +82,11 @@
             align-items: center;
             z-index: 100;
             background-color: rgba(73,80,87, 0.6); //rgba(241,243,245, 0.6);
-            border-radius: 8px;
+            border-radius: $border-radius;
 
             .icon {
               font-size: 60px;
-              color: #40c057;
+              color: lighten($main-color-accent, 10%);
             }
           }
 
@@ -113,25 +115,24 @@
 
       button {
         padding: 7px 8px;
-        border-radius: 7px;
+        border-radius: $border-radius;
         border: 1px solid #212529;
-        cursor: pointer;
 
         &.cancel {
-          background-color: #f1f3f5;
+          background-color: darken($main-color-medium, 4%);
 
           &:hover {
-            background-color: #ced4da;
+            background-color: lighten($main-color-medium, 2%);
           }
 
         }
 
         &.confirm {
-          background-color: #19a5b9;
+          background-color: $main-color-accent;
           padding: 7px 10px;
 
           &:hover {
-            background-color: #0b7285;
+            background-color: lighten($main-color-accent, 6%);
           }
 
         }

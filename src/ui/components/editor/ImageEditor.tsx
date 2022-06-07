@@ -8,6 +8,7 @@ import { selectImageById } from '../../../core/model/slices/imageListSlice';
 import { selectTiePointsOnImage } from '../../../core/model/slices/tiePointsSlice';
 import { selectGroundControlPointsOnImage } from '../../../core/model/slices/groundControlPointsSlice';
 import { PointMarker } from './points/PointMarker';
+import { MultiOptionsToggles } from '../common/MultiOptionsToggles';
 
 // eslint-disable-next-line import/prefer-default-export
 export function ImageEditor() {
@@ -21,7 +22,9 @@ export function ImageEditor() {
   const selectedImage = useSelector(selectImageById(selectedImageId));
 
   const tpList = useSelector(selectTiePointsOnImage(selectedImageId));
-  const gcpList = useSelector(selectGroundControlPointsOnImage(selectedImageId));
+  const gcpList = useSelector(
+    selectGroundControlPointsOnImage(selectedImageId)
+  );
 
   const canvasRef = useRef(null);
   const groupRef = useRef(null);
@@ -53,7 +56,9 @@ export function ImageEditor() {
   };
 
   useLayoutEffect(() => {
-    scale = 0.5 * Math.min(
+    scale =
+      0.5 *
+      Math.min(
         canvasRef.current.clientWidth / groupRef.current.clientWidth,
         canvasRef.current.clientHeight / groupRef.current.clientHeight
       );
@@ -95,8 +100,14 @@ export function ImageEditor() {
 
       window.addEventListener('keypress', handleKeyDown);
 
-      groupRef.current.removeEventListener('mousedown', wzoom.dragScrollable._grabHandler);
-      groupRef.current.addEventListener('mousedown', wzoom.dragScrollable._grabHandler);
+      groupRef.current.removeEventListener(
+        'mousedown',
+        wzoom.dragScrollable._grabHandler
+      );
+      groupRef.current.addEventListener(
+        'mousedown',
+        wzoom.dragScrollable._grabHandler
+      );
     }
   };
 
@@ -115,28 +126,58 @@ export function ImageEditor() {
             <span className="img-title-id">{selectedImage.id}</span>
             <span className="img-title">{selectedImage.name}</span>
           </div>
+
           <div className="img-controls">
-            <div className="img-controls-points" style={{ marginRight: '5%' }}>
+            <MultiOptionsToggles
+              options={[
+                { text: 'ALL', onSelected: () => {} },
+                { text: 'TP', onSelected: () => {} },
+                { text: 'GCP', onSelected: () => {} },
+                { text: 'NONE', onSelected: () => {} },
+              ]}
+            />
+
+            {/*             <div className="img-controls-points" style={{ marginRight: '5%' }}>
               <input type="checkbox" id="tp-checkbox" checked={isTPVisible} onChange={() => setTPVisible(!isTPVisible)} />
               <label htmlFor="tp-checkbox">TP</label>
               <input type="checkbox" id="gcp-checkbox" checked={isGCPVisible} onChange={() => setGCPVisible(!isGCPVisible)} />
               <label htmlFor="gcp-checkbox">GCP</label>
               <button onClick={() => setLocked(!isLocked)}>{isLocked ? 'X' : '_'}</button>
+            </div> */}
+            <div className="zoom-container">
+              <span className="zoom-label material-symbols-outlined">
+                search
+              </span>
+              <div className="zoom-range-input-container">
+                <input
+                  type="range"
+                  ref={inputRangeRef}
+                  value={zoomValue}
+                  onInput={() => {
+                    for(let i = 0; i < 10; i++) {
+                     if( Number(inputRangeRef.current.value) > wzoom.content.currentScale)
+                       wzoom.zoomUp();
+                     else
+                      wzoom.zoomDown();
+                    }
+                  }}
+                />
+              </div>
+              <button className="zoom-btn" onClick={() => wzoom?.zoomDown()}>-</button>
+              <button className="zoom-btn" onClick={() => wzoom?.zoomUp()}>+</button>
             </div>
-            <span className="img-controls-label">Zoom</span>
-            <input type="range" ref={inputRangeRef} value={zoomValue} onInput={() =>
-                Number(inputRangeRef.current.value) > wzoom.content.currentScale
-                  ? wzoom.zoomUp()
-                  : wzoom.zoomDown()
-              }
-            />
-            <button onClick={() => wzoom?.zoomUp()}>+</button>
-            <button onClick={() => wzoom?.zoomDown()}>-</button>
+
           </div>
+
         </div>
         <div className="editor-canvas" ref={canvasRef}>
           <div className="editor-group" ref={groupRef}>
-            <img className="editor-img" ref={imgRef} src={selectedImage.path} alt={selectedImage.path}/>
+            <img
+              className="editor-img"
+              ref={imgRef}
+              src={selectedImage.path}
+              alt={selectedImage.path}
+            />
             <div className="editor-points">
               {isTPVisible
                 ? tpList.map((tp) => (
@@ -145,8 +186,15 @@ export function ImageEditor() {
                       zoomValue={zoomValue}
                       wzoom={wzoom}
                       type="TP"
-                      isMovable={!isLocked && selectedPointType === "TP" && selectedPointId === tp.pointId}
-                      isSelected={selectedPointType === "TP" && selectedPointId === tp.pointId}
+                      isMovable={
+                        !isLocked &&
+                        selectedPointType === 'TP' &&
+                        selectedPointId === tp.pointId
+                      }
+                      isSelected={
+                        selectedPointType === 'TP' &&
+                        selectedPointId === tp.pointId
+                      }
                       key={tp.pointId}
                     />
                   ))
@@ -158,8 +206,15 @@ export function ImageEditor() {
                       zoomValue={zoomValue}
                       wzoom={wzoom}
                       type="GCP"
-                      isMovable={!isLocked && selectedPointType === "GCP" && selectedPointId === gcp.pointId}
-                      isSelected={selectedPointType === "GCP" && selectedPointId === gcp.pointId}
+                      isMovable={
+                        !isLocked &&
+                        selectedPointType === 'GCP' &&
+                        selectedPointId === gcp.pointId
+                      }
+                      isSelected={
+                        selectedPointType === 'GCP' &&
+                        selectedPointId === gcp.pointId
+                      }
                       key={gcp.pointId}
                     />
                   ))

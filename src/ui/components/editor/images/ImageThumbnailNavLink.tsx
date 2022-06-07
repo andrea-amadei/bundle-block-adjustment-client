@@ -20,6 +20,10 @@ export const ImageThumbnailNavLink: React.FC<PropsType> = (props) => {
   const tpOnImage = useSelector(selectTiePointsOnImage(imgId));
   const gcpOnImage = useSelector(selectGroundControlPointsOnImage(imgId));
 
+  function onRemoveImg(e) {
+    e.stopPropagation();
+  }
+
   return (
     <div
       key={imgId}
@@ -41,6 +45,11 @@ export const ImageThumbnailNavLink: React.FC<PropsType> = (props) => {
         setSearchParams(searchParams);
       }}
     >
+      <button className="img-remove" onClick={onRemoveImg}>
+        <span className="material-symbols-outlined">
+          close
+        </span>
+      </button>
       <img src={imgSrc} alt={imgSrc} />
       {title && <div className="img-title">{title}</div>}
     </div>

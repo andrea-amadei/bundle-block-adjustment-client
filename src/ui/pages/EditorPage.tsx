@@ -5,7 +5,7 @@ import { ImageEditor } from 'ui/components/editor/ImageEditor';
 import { CardLayoutTabsPanel } from '../components/common/CardLayoutTabsPanel';
 import { PointInspectorTP } from '../components/editor/points/PointInspectorTP';
 import { PointInspectorGCP } from '../components/editor/points/PointInspectorGCP';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { SideListTP } from '../components/editor/sidelist/SideListTP';
 import { SideListGCP } from '../components/editor/sidelist/SideListGCP';
 import { selectAllImages } from '../../core/model/slices/imageListSlice';
@@ -59,6 +59,10 @@ export function EditorPage() {
       <div className="editor-page">
         <div className="image-list">
           {/* <div className="title">Image list</div> */}
+          <div className="add-img-box">
+            <span className="material-symbols-outlined btn"> add </span>
+            add new image
+          </div>
           <div className="list">
             {imgList.map(({ id, name, path }) => (
               <ImageThumbnailNavLink

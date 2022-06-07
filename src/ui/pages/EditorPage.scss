@@ -30,11 +30,37 @@
     align-items: center;
 
     padding: 15px 15px;
-    gap: 8px;
+    gap: 14px;
 
     overflow-x: inherit;
     overflow-y: scroll;
     flex: 1;
+
+    .add-img-box {
+      font-family: $main-font;
+      color: darken($main-color-light, 6%);
+      display: flex;
+      flex-direction: row;
+      font-size: 15px;
+      align-items: center;
+      line-height: 0;
+      gap: 1px;
+      cursor: default;
+
+      span {
+        color: darken($main-color-light, 6%);
+        font-size: 20px;
+      }
+
+      &:hover {
+        color: lighten($main-color-light, 18%);
+
+        span {
+          color: lighten($main-color-light, 18%);
+        }
+
+      }
+    }
 
     .title{
       font-size: 22px;

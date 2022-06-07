@@ -1,10 +1,15 @@
+@use "/src/ui/styles/MainStyle" as *;
+
+$panel-bg-color: lighten($medium-color-button-background, 20%);
+$panel-bg-color-hover: lighten($medium-color-button-background, 35%);
+$panel-border-size: 1px;
 
 .options-panel-container {
   position: absolute;
   transform: translateX(-50%) translateY(10px);
   border-radius: 7px;
-  background-color: #91acc7;
-  border: 1px solid black;
+  background-color: $panel-bg-color;
+  border: $panel-border-size solid $main-color-dark;
   width: 170px;
 
   display: flex;
@@ -24,9 +29,9 @@
     transform: translateX(-50%) translateY(-50%) translateY(3px) rotate(45deg);
     width: 20px;
     height: 20px;
-    background-color: #91acc7;
+    background-color: $panel-bg-color;
     z-index: 9;
-    border: 1px solid black;
+    border: $panel-border-size solid black;
 
   }
 
@@ -41,7 +46,7 @@
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #91acc7;
+    background-color: $panel-bg-color;
     z-index: 10;
   }
 
@@ -53,10 +58,12 @@
     text-align: center;
     padding: 3px 5px;
     z-index: 11;
-    cursor: pointer;
+    font-family: $main-font;
+    color: $main-color-lighter;
+
 
     &:not(:last-child) {
-      border-bottom: 1px solid black;
+      border-bottom: $panel-border-size solid black;
     }
 
     &:nth-child(3) {
@@ -68,7 +75,7 @@
     }
 
     &:hover {
-      background-color: #66798c;
+      background-color: $panel-bg-color-hover;
     }
 
     &.clicked {
