@@ -1,15 +1,20 @@
 @use "/src/ui/styles/MainStyle" as *;
 
-$panel-bg-color: lighten($medium-color-button-background, 20%);
-$panel-bg-color-hover: lighten($medium-color-button-background, 35%);
+//$panel-bg-color: lighten($medium-color-button-background, 20%);
+//$panel-bg-color-hover: lighten($medium-color-button-background, 35%);
+$panel-bg-color: $main-color-dark;
+$panel-bg-color-hover: $main-color-light;
+$panel-font-color: $main-color-light;
+$panel-font-color-hover: $main-color-dark;
 $panel-border-size: 1px;
 
 .options-panel-container {
   position: absolute;
   transform: translateX(-50%) translateY(10px);
-  border-radius: 7px;
+  border-radius: $border-radius;
+  color: $panel-font-color;
   background-color: $panel-bg-color;
-  border: $panel-border-size solid $main-color-dark;
+  border: none;
   width: 170px;
 
   display: flex;
@@ -31,8 +36,7 @@ $panel-border-size: 1px;
     height: 20px;
     background-color: $panel-bg-color;
     z-index: 9;
-    border: $panel-border-size solid black;
-
+    border: none;
   }
 
   &.right .pointer {
@@ -55,26 +59,22 @@ $panel-border-size: 1px;
   }
 
   .option {
-    text-align: center;
+    text-align: left;
     padding: 3px 5px;
     z-index: 11;
     font-family: $main-font;
-    color: $main-color-lighter;
-
-
-    &:not(:last-child) {
-      border-bottom: $panel-border-size solid black;
-    }
+    color: $panel-font-color;
 
     &:nth-child(3) {
-      border-radius: 7px 7px 0 0;
+      border-radius: $border-radius $border-radius 0 0;
     }
 
     &:last-child {
-      border-radius: 0 0 7px 7px;
+      border-radius: 0 0 $border-radius $border-radius;
     }
 
     &:hover {
+      color: $panel-font-color-hover;
       background-color: $panel-bg-color-hover;
     }
 

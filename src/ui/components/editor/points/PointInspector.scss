@@ -38,12 +38,12 @@
 
       .add-btn {
         padding: 1px;
-        border-radius: $border-radius;
+        border-radius: $border-radius * 0.5;
         display: flex;
         align-items: center;
         justify-content: center;
         background-color: $main-color-accent;
-        border: 1.5px solid $main-color-dark;
+        border: none;
         cursor: default;
 
         &:hover {

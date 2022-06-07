@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 import './PointSummary.scss';
 import { useSearchParams } from 'react-router-dom';
-import { useOnClickOutsideRef } from "../../../../utils/useOnClickOutside";
-import { OptionsPanel } from "../../common/OptionsPanel";
+import { useOnClickOutsideRef } from '../../../../utils/useOnClickOutside';
+import { OptionsPanel } from '../../common/OptionsPanel';
 
 interface PropType {
   type: string;
@@ -60,17 +60,17 @@ function renderContent(
       </div>
       <div className="gear-container" onClick={enableShowOptions}>
         <span className="material-symbols-outlined">settings</span>
-          <div className="options-position">
-            <OptionsPanel
-              arrow="right"
-              options={[
-                {text: `Unlink ${type} from current image`, onClick: () => {} },
-                {text: `Delete ${type}`, onClick: () => {} }
-              ]}
-              showOptions={showOptions}
-              hideOptions={disableShowOptions}
-            />
-          </div>
+        <div className="options-position">
+          <OptionsPanel
+            arrow="right"
+            options={[
+              { text: `Unlink ${type} from current image`, onClick: () => {} },
+              { text: `Delete ${type}`, onClick: () => {} },
+            ]}
+            showOptions={showOptions}
+            hideOptions={disableShowOptions}
+          />
+        </div>
       </div>
     </>
   );
@@ -83,7 +83,7 @@ export const PointSummary: React.FC<PropType> = ({
   additionalInfo,
   showOptions,
   enableShowOptions,
-  disableShowOptions
+  disableShowOptions,
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedPointId = parseInt(searchParams.get('pointId') as string);

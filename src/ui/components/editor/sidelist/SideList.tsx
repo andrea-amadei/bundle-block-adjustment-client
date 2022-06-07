@@ -32,13 +32,13 @@ export const SideList: React.FC<PropType> = ({ pointType, points }) => {
   if (isCompact) {
     compactBtn = (
       <Button className="compact-btn" onClick={() => setIsCompact(false)}>
-        {'<->'}
+        <span className="material-symbols-outlined">expand_more</span>
       </Button>
     );
   } else {
     compactBtn = (
       <Button className="compact-btn" onClick={() => setIsCompact(true)}>
-        {'>-<'}
+        <span className="material-symbols-outlined">expand_less</span>
       </Button>
     );
   }
