@@ -1,6 +1,12 @@
 const { contextBridge, ipcRenderer } = require('electron');
+
 contextBridge.exposeInMainWorld('electron', {
-  log: (text) => ipcRenderer.send('log', text),
+  // MAIN -> RENDER
+  logToRenderer: (callback) => ipcRenderer.on('log:renderer', callback),
+
+  // RENDERER -> MAIN
+  // Logger
+  logToMain: (text) => ipcRenderer.send('log:main', text),
 
   // fs.ts
   getPath: () => ipcRenderer.invoke('getPath:main'),
@@ -16,4 +22,13 @@ contextBridge.exposeInMainWorld('electron', {
 
   // filePicker.ts
   openFilePicker: () => ipcRenderer.invoke('filePicker:open'),
+  saveFilePicker: () => ipcRenderer.invoke('filePicker:save'),
+
+  // export.ts
+  exportTPImageTable: (data) => ipcRenderer.send('export:tp', data),
+  exportGCPImageTable: (data) => ipcRenderer.send('export:gcp_img', data),
+  exportGCPObjectTable: (data) => ipcRenderer.send('export:gcp_obj', data),
+  exportCameraPositionTable: (data) => ipcRenderer.send('export:camera', data),
+  exportPointCloudTable: (data) => ipcRenderer.send('export:cloud', data),
+  exportCameraSettingsTable: (data) => ipcRenderer.send('export:settings', data),
 });

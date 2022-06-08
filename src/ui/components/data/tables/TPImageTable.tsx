@@ -4,28 +4,13 @@ import { selectAllTiePoints } from '../../../../core/model/slices/tiePointsSlice
 export function TPImageTable() {
   const tpList = useSelector(selectAllTiePoints);
 
-  function exportToCSV() {
-    const data = tpList.flatMap((tp) =>
-      tp.linkedPoints.map((lp) => [
-        lp.pointId,
-        lp.imageId,
-        lp.x,
-        lp.y,
-        lp.source,
-      ])
-    );
-
-    window.electron
-      .convertDataToCSV(data)
-      .then((result: string) => console.log(result))
-      .catch((error: Error) => console.log(error));
-  }
-
   return (
     <>
       <div className="buttons-row">
         <button onClick={() => console.log('Click!')}>Import from CSV</button>
-        <button onClick={() => exportToCSV()}>Export to CSV</button>
+        <button onClick={() => window.electron.exportTPImageTable(tpList)}>
+          Export to CSV
+        </button>
       </div>
       <table>
         <thead>
