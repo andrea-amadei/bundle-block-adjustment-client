@@ -128,6 +128,18 @@ export function ImageEditor() {
           </div>
 
           <div className="img-controls">
+            <button className="lock" onClick={() => setLocked(!isLocked)}>
+              {
+                isLocked ?
+                  <span className="active icon material-symbols-outlined">
+                    lock
+                  </span>
+                :
+                  <span className="icon material-symbols-outlined">
+                    lock_open
+                  </span>
+              }
+            </button>
             <MultiOptionsToggles
               options={[
                 { text: 'ALL', onSelected: () => {} },
@@ -154,11 +166,12 @@ export function ImageEditor() {
                   ref={inputRangeRef}
                   value={zoomValue}
                   onInput={() => {
-                    for(let i = 0; i < 10; i++) {
-                     if( Number(inputRangeRef.current.value) > wzoom.content.currentScale)
-                       wzoom.zoomUp();
-                     else
-                      wzoom.zoomDown();
+                    if( Number(inputRangeRef.current.value) > wzoom.content.currentScale) {
+                      for(let i = 0; Number(inputRangeRef.current.value) > wzoom.content.currentScale && i < 100; i++)
+                        wzoom.zoomUp();
+                    } else {
+                      for(let i = 0; Number(inputRangeRef.current.value) < wzoom.content.currentScale && i < 100; i++)
+                        wzoom.zoomDown();
                     }
                   }}
                 />
