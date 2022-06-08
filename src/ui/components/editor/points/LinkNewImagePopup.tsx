@@ -32,7 +32,7 @@ export const LinkNewImgPopup: React.FC<PointInspectorPropType> = ({
         <div className="content">
           {
             images.map(img => (
-              <div className="img-container" onClick={() => {
+              <div className="img-container" key={img.id} onClick={() => {
                 if (selectedImageIds.includes(img.id))
                   setSelectedImageIds(selectedImageIds.filter(id => id !== img.id));
                 else
@@ -48,14 +48,17 @@ export const LinkNewImgPopup: React.FC<PointInspectorPropType> = ({
                     </div>
                   }
                 </div>
-                <div className="title">{`[${img.id}] ${img.title}`}</div>
+                <div className="title image-id">
+                  <span className="image-id">{img.id}</span>
+                  <span className="title">{img.title}</span>
+                </div>
               </div>
             ))
           }
         </div>
         <div className="footer">
-          <button className="cancel" onClick={hidePopup} >Annulla</button>
-          <button className="confirm" onClick={() => setLinkedImg(selectedImageIds)} >Conferma</button>
+          <button className="cancel" onClick={hidePopup} >Cancel</button>
+          <button className="confirm" onClick={() => setLinkedImg(selectedImageIds)} >Select</button>
         </div>
       </div>
     </div>

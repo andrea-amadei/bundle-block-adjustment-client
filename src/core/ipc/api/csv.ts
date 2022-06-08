@@ -5,7 +5,7 @@ export function convertDataToCSV(data: any[][]): Promise<string> {
     const result: string[] = [];
 
     const stringifier = stringify({
-      delimiter: ':',
+      delimiter: ';',
     });
 
     stringifier.on('readable', () => {

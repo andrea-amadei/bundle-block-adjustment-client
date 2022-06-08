@@ -28,7 +28,7 @@ export function CameraSettingsTable() {
     <>
       <div className="buttons-row">
         <button onClick={() => console.log('Click!')}>Import from CSV</button>
-        <button onClick={() => console.log('Click!')}>Export to CSV</button>
+        <button onClick={() => window.electron.exportCameraSettingsTable({ xi0, eta0, c, k1, k2, k3, p1, p2, a1, a2 })}>Export to CSV</button>
       </div>
       <table>
         <thead>

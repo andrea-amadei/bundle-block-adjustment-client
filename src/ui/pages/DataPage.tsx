@@ -1,12 +1,12 @@
 import  './DataPage.scss'
 import { useState } from 'react';
 import { CardLayoutTabsPanel } from '../components/common/CardLayoutTabsPanel';
-import { CameraSettingsTable } from '../components/editor/tables/CameraSettingsTable';
-import { GCPObjectTable } from '../components/editor/tables/GCPObjectTable';
-import { GCPImageTable } from '../components/editor/tables/GCPImageTable';
-import { TPImageTable } from '../components/editor/tables/TPImageTable';
-import { CameraPositionTable } from '../components/editor/tables/CameraPositionTable';
-import { PointCloudTable } from '../components/editor/tables/PointCloudTable';
+import { CameraSettingsTable } from '../components/data/tables/CameraSettingsTable';
+import { GCPObjectTable } from '../components/data/tables/GCPObjectTable';
+import { GCPImageTable } from '../components/data/tables/GCPImageTable';
+import { TPImageTable } from '../components/data/tables/TPImageTable';
+import { CameraPositionTable } from '../components/data/tables/CameraPositionTable';
+import { PointCloudTable } from '../components/data/tables/PointCloudTable';
 
 export function DataPage() {
   const [activeSideTab, setActiveSideTab] = useState('camera');

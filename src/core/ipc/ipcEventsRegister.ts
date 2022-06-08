@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron';
-import { openFilePicker } from './api/filePicker';
+import { openFilePicker, saveFilePicker } from './api/filePicker';
 import {
   getPath,
   getSavesPath,
@@ -10,12 +10,17 @@ import {
   writeTextFileInSaves
 } from './api/fs';
 import { convertDataToCSV } from './api/csv';
+import {
+  exportCameraPositionTable,
+  exportCameraSettingsTable,
+  exportGCPImageTable, exportGCPObjectTable, exportPointCloudTable,
+  exportTPImageTable
+} from './api/export';
 
 export default function registerIpcEvents() {
-  ipcMain.on('log', async (_event, arg) => {
+  // log
+  ipcMain.on('log:main', async (_event, arg) => {
     const msgTemplate = (message: string) => `[IPC Log] ${message}`;
-
-    // eslint-disable-next-line no-console
     console.log(msgTemplate(arg));
   });
 
@@ -33,4 +38,13 @@ export default function registerIpcEvents() {
 
   // filePicker.ts
   ipcMain.handle('filePicker:open', async (_event, arg) => openFilePicker(arg));
+  ipcMain.handle('filePicker:save', async (_event, arg) => saveFilePicker(arg));
+
+  // export.ts
+  ipcMain.on('export:tp', async (_event, arg) => exportTPImageTable(arg));
+  ipcMain.on('export:gcp_img', async (_event, arg) => exportGCPImageTable(arg));
+  ipcMain.on('export:gcp_obj', async (_event, arg) => exportGCPObjectTable(arg));
+  ipcMain.on('export:camera', async (_event, arg) => exportCameraPositionTable(arg));
+  ipcMain.on('export:cloud', async (_event, arg) => exportPointCloudTable(arg));
+  ipcMain.on('export:settings', async (_event, arg) => exportCameraSettingsTable(arg));
 }

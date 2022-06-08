@@ -17,10 +17,12 @@ export default function App() {
     //   })
     //   .catch((error: Error) => console.log(error));
 
-    window.electron
-      .writeTextFileInSaves('test.txt', ['row1', 'row2'])
-      .then(() => console.log('DONE!'))
-      .catch((error: Error) => console.log(error));
+    // window.electron
+    //   .writeTextFileInSaves('test.txt', ['row1', 'row2'])
+    //   .then(() => console.log('DONE!'))
+    //   .catch((error: Error) => console.log(error));
+
+    window.electron.logToRenderer((_event, text: string) => console.log(text));
   });
 
   return (

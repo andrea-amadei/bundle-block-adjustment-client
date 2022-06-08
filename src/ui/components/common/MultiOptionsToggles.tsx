@@ -23,6 +23,7 @@ export const MultiOptionsToggles: React.FC<PropType> = ({initiallySelectedOption
       {options.map( (opt, optIndex) => (
         <button
           className={`toggle ${selectedOptionIndex === optIndex ? "selected" : ""}` }
+          key={optIndex}
           onClick={() => {
             setSelectedOptionIndex(optIndex);
             opt.onSelected();

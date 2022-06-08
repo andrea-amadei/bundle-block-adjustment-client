@@ -32,23 +32,25 @@
         flex-direction: row;
         gap: 5px;
         align-items: flex-end;
+        font-size: 20px;
 
         .add-btn {
           padding: 1px;
-          border-radius: $border-radius;
+          margin-left: 5px;
+          border-radius: $border-radius * 0.5;
           display: flex;
           align-items: center;
           justify-content: center;
           background-color: $main-color-accent;
-          border: 1.5px solid $main-color-dark;
+          border: none;
           cursor: default;
 
           &:hover {
-            background-color: lighten($main-color-accent, 18%);
+            background-color: lighten($main-color-accent, 10%);
           }
 
           .btn {
-            font-size: 15px;
+            font-size: 25px;
           }
 
         }
