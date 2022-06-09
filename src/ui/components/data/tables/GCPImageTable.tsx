@@ -8,7 +8,7 @@ export function GCPImageTable() {
     <>
       <div className="buttons-row">
         <button onClick={() => console.log('Click!')}>Import from CSV</button>
-        <button onClick={() => window.electron.exportGCPImageTable(gcpList)}>Export to CSV</button>
+        <button onClick={() => window.electron.exportGCPImageTable(gcpList, true)}>Export to CSV</button>
       </div>
       <table>
         <thead>

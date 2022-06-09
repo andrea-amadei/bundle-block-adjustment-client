@@ -8,7 +8,7 @@ export function TPImageTable() {
     <>
       <div className="buttons-row">
         <button onClick={() => console.log('Click!')}>Import from CSV</button>
-        <button onClick={() => window.electron.exportTPImageTable(tpList)}>
+        <button onClick={() => window.electron.exportTPImageTable(tpList, true)}>
           Export to CSV
         </button>
       </div>
