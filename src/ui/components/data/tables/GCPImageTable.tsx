@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
-import { selectAllGroundControlPoints } from '../../../../core/model/slices/groundControlPointsSlice';
+import { selectGroundControlPointList } from '../../../../core/model/slices/groundControlPointsSlice';
 
 export function GCPImageTable() {
-  const gcpList = useSelector(selectAllGroundControlPoints);
+  const gcpList = useSelector(selectGroundControlPointList);
 
   return (
     <>
@@ -22,7 +22,7 @@ export function GCPImageTable() {
         </thead>
         <tbody>
           {gcpList.map((gcp) =>
-            gcp.linkedPoints.map((lp) => (
+            gcp.linkedImages.map((lp) => (
               <tr key={`${gcp.pointId},${lp.imageId}`}>
                 <td>{gcp.pointId}</td>
                 <td>{lp.imageId}</td>

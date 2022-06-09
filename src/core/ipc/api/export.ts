@@ -62,7 +62,7 @@ export async function exportToCSV(defaultName: string, chooseLocation: boolean, 
 export function exportTPImageTable(data: TiePoint[], chooseLocation: boolean) {
   exportToCSV('tp_img.csv', chooseLocation, () =>
     data.flatMap((tp) =>
-      tp.linkedPoints.map((lp) => [
+      tp.linkedImages.map((lp) => [
         tp.pointId,
         lp.imageId,
         lp.x,
@@ -76,7 +76,7 @@ export function exportTPImageTable(data: TiePoint[], chooseLocation: boolean) {
 export function exportGCPImageTable(data: GroundControlPoint[], chooseLocation: boolean) {
   exportToCSV('gcp_img.csv', chooseLocation, () =>
     data.flatMap((gcp) =>
-      gcp.linkedPoints.map((lp) => [
+      gcp.linkedImages.map((lp) => [
         gcp.pointId,
         lp.imageId,
         lp.x,

@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
-import { selectAllTiePoints } from '../../../../core/model/slices/tiePointsSlice';
+import { selectTiePointList } from '../../../../core/model/slices/tiePointsSlice';
 
 export function TPImageTable() {
-  const tpList = useSelector(selectAllTiePoints);
+  const tpList = useSelector(selectTiePointList);
 
   return (
     <>
@@ -24,7 +24,7 @@ export function TPImageTable() {
         </thead>
         <tbody>
           {tpList.map((tp) =>
-            tp.linkedPoints.map((lp) => (
+            tp.linkedImages.map((lp) => (
               <tr key={`${lp.pointId},${lp.imageId}`}>
                 <td>{tp.pointId}</td>
                 <td>{lp.imageId}</td>

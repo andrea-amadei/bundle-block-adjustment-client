@@ -2,11 +2,12 @@ import { PointInspector } from './PointInspector';
 import { useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
+  selectLinkedImagesListForTiePoint,
   selectTiePointById,
   selectTiePointOnImageById,
   setLinkedPointX,
-  setLinkedPointY,
-} from '../../../../core/model/slices/tiePointsSlice';
+  setLinkedPointY
+} from "../../../../core/model/slices/tiePointsSlice";
 import { store } from '../../../../core/model/store';
 import { selectImagesMap } from '../../../../core/model/slices/imageListSlice';
 
@@ -17,7 +18,8 @@ export function PointInspectorTP() {
 
   const point = useSelector(selectTiePointById(selectedPointId));
   const pointOnImage = useSelector(selectTiePointOnImageById(selectedPointId, selectedImageId));
-  const images = useSelector(selectImagesMap);
+  const linkedImages = useSelector(selectLinkedImagesListForTiePoint(selectedPointId));
+  const allImages = useSelector(selectImagesMap);
 
   return (
     <PointInspector
@@ -28,10 +30,10 @@ export function PointInspectorTP() {
       setPointX={(x) => store.dispatch(setLinkedPointX(selectedPointId, selectedImageId, parseInt(x)))}
       pointY={pointOnImage.y}
       setPointY={(y) => store.dispatch(setLinkedPointY(selectedPointId, selectedImageId, parseInt(y)))}
-      linkedImg={point.linkedPoints.map((lp) => ({
+      linkedImg={linkedImages.map((lp) => ({
         id: lp.imageId,
-        name: images[lp.imageId].name,
-        url: images[lp.imageId].path,
+        name: allImages[lp.imageId].name,
+        url: allImages[lp.imageId].path,
       }))}
     />
   );

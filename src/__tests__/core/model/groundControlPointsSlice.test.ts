@@ -23,7 +23,7 @@ export default () =>
       const newPointId = 42;
       const newPoint: GroundControlPoint = {
         pointId: newPointId,
-        linkedPoints: [],
+        linkedImages: [],
         x: 1,
         y: 2,
         z: 3,
@@ -44,7 +44,7 @@ export default () =>
       const initialState: GroundControlPoint[] = [
         {
           pointId: newPointId,
-          linkedPoints: [],
+          linkedImages: [],
           x: 1,
           y: 2,
           z: 3,
@@ -99,7 +99,7 @@ export default () =>
       const initialState: GroundControlPoint[] = [
         {
           pointId: newPointId,
-          linkedPoints: [],
+          linkedImages: [],
           x: 1,
           y: 2,
           z: 3,
@@ -109,7 +109,7 @@ export default () =>
       const finalState: GroundControlPoint[] = [
         {
           pointId: newPointId,
-          linkedPoints: [newImage],
+          linkedImages: [newImage],
           x: 1,
           y: 2,
           z: 3,
@@ -117,7 +117,7 @@ export default () =>
       ];
 
       expect(
-        reducer(initialState, addLinkedPointByPointId(newPointId, newImage))
+        reducer(initialState, addLinkedPointByPointId(newImage))
       ).toEqual(finalState);
 
       expect(
@@ -131,7 +131,7 @@ export default () =>
       const initialState: GroundControlPoint[] = [
         {
           pointId: newPointId,
-          linkedPoints: [
+          linkedImages: [
             {
               pointId: newPointId,
               imageId: newImageId,
@@ -193,7 +193,7 @@ export default () =>
       const initialState: GroundControlPoint[] = [
         {
           pointId: newPointId,
-          linkedPoints: [
+          linkedImages: [
             {
               pointId: newPointId,
               imageId: newImageId,
@@ -219,19 +219,6 @@ export default () =>
       expect(() =>
         reducer(initialState, setZByPointId(newPointId + 1, 0))
       ).toThrow();
-
-      expect(() =>
-        reducer(
-          initialState,
-          addLinkedPointByPointId(newPointId + 1, {
-            pointId: newPointId,
-            imageId: 2,
-            x: 2,
-            y: 3,
-            source: 'MANUAL',
-          })
-        )
-      ).toThrow(Error);
 
       expect(() =>
         reducer(initialState, removeLinkedPointByPointId(newPointId + 1, 1))
@@ -260,7 +247,7 @@ export default () =>
       const initialState: GroundControlPoint[] = [
         {
           pointId: newPointId,
-          linkedPoints: [
+          linkedImages: [
             {
               pointId: newPointId,
               imageId: newImageId,
@@ -280,7 +267,7 @@ export default () =>
           initialState,
           addPoint({
             pointId: newPointId,
-            linkedPoints: [],
+            linkedImages: {},
             x: 1,
             y: 2,
             z: 3,
@@ -291,7 +278,7 @@ export default () =>
       expect(() =>
         reducer(
           initialState,
-          addLinkedPointByPointId(newPointId, {
+          addLinkedPointByPointId({
             pointId: newPointId,
             imageId: newImageId,
             x: 1,
@@ -302,38 +289,4 @@ export default () =>
       ).toThrow();
     });
 
-    test('should throw an error when trying to add a linked image with a different Point ID', () => {
-      const newPointId = 42;
-      const newImageId = 3;
-      const initialState: GroundControlPoint[] = [
-        {
-          pointId: newPointId,
-          linkedPoints: [
-            {
-              pointId: newPointId,
-              imageId: newImageId,
-              x: 1,
-              y: 2,
-              source: 'MANUAL',
-            },
-          ],
-          x: 1,
-          y: 2,
-          z: 3,
-        },
-      ];
-
-      expect(() =>
-        reducer(
-          initialState,
-          addLinkedPointByPointId(newPointId, {
-            pointId: newPointId + 1,
-            imageId: newImageId,
-            x: 1,
-            y: 2,
-            source: 'MANUAL',
-          })
-        )
-      ).toThrow();
-    });
   });

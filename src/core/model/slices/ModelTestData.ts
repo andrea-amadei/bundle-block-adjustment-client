@@ -1,5 +1,5 @@
-import { TiePoint } from './tiePointsSlice';
-import { GroundControlPoint } from './groundControlPointsSlice';
+import { TiePointMap } from './tiePointsSlice';
+import { GroundControlPointMap } from './groundControlPointsSlice';
 
 export const imgTest = {
   1: {
@@ -25,119 +25,119 @@ export const imgTest = {
   },
 };
 
-export const tpTest: TiePoint[] = [
-  {
+export const tpTest: TiePointMap = {
+  0: {
     pointId: 0,
-    linkedPoints: [
-      {
+    linkedImages: {
+      1: {
         pointId: 0,
         x: 1,
         y: 1,
         imageId: 1,
         source: 'MANUAL',
       },
-      {
+      2: {
         pointId: 0,
         x: 10,
         y: 10,
         imageId: 2,
         source: 'MANUAL',
       },
-      {
+      3: {
         pointId: 0,
         x: 15,
         y: 15,
         imageId: 3,
         source: 'MANUAL',
       },
-    ],
+    },
   },
-  {
+  1: {
     pointId: 1,
-    linkedPoints: [
-      {
+    linkedImages: {
+      1: {
         pointId: 1,
         x: 4,
         y: 8,
         imageId: 1,
         source: 'IMPORTED',
       },
-      {
+      2: {
         pointId: 1,
         x: 8,
         y: 16,
         imageId: 2,
         source: 'MANUAL',
       },
-    ],
+    },
   },
-  {
+  2: {
     pointId: 2,
-    linkedPoints: [
-      {
+    linkedImages: {
+      1: {
         pointId: 2,
         x: 15,
         y: 30,
         imageId: 1,
         source: 'MANUAL',
       },
-    ],
+    },
   },
-  {
+  3: {
     pointId: 3,
-    linkedPoints: [
-      {
+    linkedImages: {
+      5: {
         pointId: 3,
         x: 30,
         y: 30,
         imageId: 5,
         source: 'IMPORTED',
       },
-    ],
+    },
   },
-  {
+  4: {
     pointId: 4,
-    linkedPoints: [
-      {
+    linkedImages: {
+      5: {
         pointId: 4,
         x: 100,
         y: 20,
         imageId: 5,
         source: 'IMPORTED',
       },
-    ],
+    },
   },
-];
+};
 
-export const gcpTest: GroundControlPoint[] = [
-  {
+export const gcpTest: GroundControlPointMap = {
+  0: {
     pointId: 0,
     x: 20,
     y: 40,
     z: 60,
-    linkedPoints: [
-      {
+    linkedImages: {
+      1: {
         pointId: 0,
         x: 180,
         y: 180,
         imageId: 1,
         source: 'MANUAL',
       },
-    ],
+    },
   },
-  {
+  1: {
     pointId: 1,
     x: 50,
     y: 60,
     z: 70,
-    linkedPoints: [
-      {
+    linkedImages: {
+      1: {
         pointId: 1,
         x: 190,
         y: 200,
         imageId: 1,
         source: 'MANUAL',
       },
-    ],
+    },
   },
-];
+};
