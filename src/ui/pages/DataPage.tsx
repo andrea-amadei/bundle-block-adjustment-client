@@ -62,7 +62,7 @@ export function DataPage() {
             tabId: 'img',
             label: (
               <div className="tab-link" onClick={() => setActiveSideTab('img')}>
-                Images
+                Camera Positions
               </div>
             ),
           },

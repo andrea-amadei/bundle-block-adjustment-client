@@ -53,7 +53,7 @@ export function NotificationBanner() {
       setFadeTimeout(setTimeout(() => startFadeout(), showingTime));
     }
 
-    if (message.symbol === null || message.symbol === '')
+    if (message.symbol === null || message.symbol === undefined || message.symbol === '')
       symbol = symbols[message.status];
     else
       symbol = message.symbol;

@@ -3,11 +3,11 @@ import { useState } from 'react';
 import {
   addNewMessage,
   selectNextMessage,
-  selectQueueLength
+  selectQueueLength,
 } from '../../core/model/slices/messages/messageQueueSlice';
 import { store } from '../../core/model/store';
 
-export function ResultsPage() {
+export function TestingPage() {
   const lastMessage = useSelector(selectNextMessage);
   const length = useSelector(selectQueueLength);
 
@@ -20,7 +20,7 @@ export function ResultsPage() {
       <h1>Notifications Testing Center</h1>
       <div>{`Last message: ${lastMessage?.status}, ${lastMessage?.symbol}, ${lastMessage?.message}`}</div>
       <div>{`Queue length: ${length}`}</div>
-      <hr />
+      <br />
       <select name="status" style={{backgroundColor: 'black'}} onChange={(event) => setStatus(event.target.value)}>
         <option value="success">Success</option>
         <option value="error">Error</option>
@@ -30,7 +30,8 @@ export function ResultsPage() {
       <input type="text" style={{backgroundColor: 'black'}} onChange={(event) => setMessage(event.target.value)} value={message} />
       <input type="text" style={{backgroundColor: 'black'}} onChange={(event) => setSymbol(event.target.value)} value={symbol} />
       <br />
-      <button onClick={() => store.dispatch(addNewMessage({message, status, symbol}))}>SEND NOTIFICATION</button>
+      <button style={{width: '150px', height: '40px'}} onClick={() => store.dispatch(addNewMessage({message, status, symbol}))}>SEND NOTIFICATION</button>
+      <hr />
     </div>
   );
 }

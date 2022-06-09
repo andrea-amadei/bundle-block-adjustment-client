@@ -9,9 +9,9 @@ import {
   addNewMessage,
   Message,
 } from '../core/model/slices/messages/messageQueueSlice';
-import { store } from '../core/model/store';
 import { NotificationBanner } from '../ui/components/common/NotificationBanner';
-import { ResultsPage } from '../ui/pages/ResultsPage';
+import { TestingPage } from '../ui/pages/TestingPage';
+import { store } from '../core/model/store';
 
 export default function App() {
   useEffect(() => {
@@ -30,7 +30,8 @@ export default function App() {
             <Route index element={<EditorPage />} />
             <Route path="editor" element={<EditorPage />} />
             <Route path="data" element={<DataPage />} />
-            <Route path="results" element={<ResultsPage />} />
+            <Route path="results" element={<h1>In development</h1>} />
+            <Route path="testing" element={<TestingPage />} />
             <Route path="*" element={<h2>Not defined</h2>} />
           </Route>
         </Routes>

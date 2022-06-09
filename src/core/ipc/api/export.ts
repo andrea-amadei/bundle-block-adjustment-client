@@ -17,7 +17,7 @@ export async function exportToCSV(defaultName: string, chooseLocation: boolean, 
         title: 'Save file',
         defaultPath: defaultName,
         filters: [
-          { name: 'CSV', extensions: ['cvs'] },
+          { name: 'CSV', extensions: ['csv'] },
           { name: 'All Files', extensions: ['*'] },
         ],
         properties: ['createDirectory', 'showOverwriteConfirmation'],
@@ -36,21 +36,21 @@ export async function exportToCSV(defaultName: string, chooseLocation: boolean, 
                 symbol: chooseLocation ? 'save_as' : 'save',
               } as Message);
             })
-            .catch((error: Error) => {
+            .catch(() => {
               getMainWindow()?.webContents.send('notify', {
                 message: 'Could not save file...',
                 status: 'error',
               } as Message);
             });
         })
-        .catch((error) => {
+        .catch(() => {
           getMainWindow()?.webContents.send('notify', {
             message: 'Could not convert data to CSV...',
             status: 'error',
           } as Message);
         });
     })
-    .catch((error: Error) => {
+    .catch(() => {
       getMainWindow()?.webContents.send('notify', {
         message: 'Action cancelled...',
         status: 'warning',
