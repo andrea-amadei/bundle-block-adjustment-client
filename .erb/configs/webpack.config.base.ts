@@ -23,6 +23,12 @@ const configuration: webpack.Configuration = {
             transpileOnly: true,
           },
         },
+        rules: [
+          {
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader', 'sass-loader'],
+          },
+        ],
       },
     ],
   },

@@ -8,7 +8,7 @@ export function TPImageTable() {
     <>
       <div className="buttons-row">
         <button onClick={() => console.log('Click!')}>Import from CSV</button>
-        <button onClick={() => window.electron.exportTPImageTable(tpList)}>
+        <button onClick={() => window.electron.exportTPImageTable(tpList, true)}>
           Export to CSV
         </button>
       </div>
@@ -24,13 +24,13 @@ export function TPImageTable() {
         </thead>
         <tbody>
           {tpList.map((tp) =>
-            tp.linkedImages.map((lp) => (
-              <tr key={`${lp.pointId},${lp.imageId}`}>
-                <td>{tp.pointId}</td>
-                <td>{lp.imageId}</td>
-                <td>{lp.x}</td>
-                <td>{lp.y}</td>
-                <td>{lp.source.toUpperCase()}</td>
+            Object.entries(tp.linkedImages).map(([, p]) => (
+              <tr key={`${p.pointId},${p.imageId}`}>
+                <td>{p.pointId}</td>
+                <td>{p.imageId}</td>
+                <td>{p.x}</td>
+                <td>{p.y}</td>
+                <td>{p.source.toUpperCase()}</td>
               </tr>
             ))
           )}

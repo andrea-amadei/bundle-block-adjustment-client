@@ -1,0 +1,124 @@
+@use "../../styles/MainStyle" as *;
+
+$success-color: green;
+$error-color: red;
+$warning-color: orange;
+$info-color: blue;
+
+$banner-width: 500px;
+$banner-height: 100px;
+
+$fadein-time-ms: 50;
+$show-time-ms: 5000;
+$fadeout-time-ms: 200;
+
+// FIXME: :export is supposed to be a standard SCSS feature, but here it doesn't work
+//        I'm using an ID instead
+:export {
+  fadeInTime: $fadein-time-ms;
+  fadeOutTime: $fadeout-time-ms;
+  showTime: $show-time-ms;
+}
+
+@-webkit-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@-webkit-keyframes fadeout {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+.notification-banner {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  position: absolute;
+  z-index: 100;
+
+  left: 15px;
+  bottom: 5%;
+  width: $banner-width;
+  height: $banner-height;
+  overflow: hidden;
+
+  -webkit-animation: fadein 300ms;
+
+  color: $main-color-lighter;
+  border-radius: $border-radius;
+
+  .notification-symbol {
+    text-align: center;
+    padding-top: 30px;
+    height: 100%;
+    width: 20%;
+    background-color: rgba(0, 0, 0, 0.15);
+
+    span {
+      font-size: 40px;
+    }
+  }
+
+  .notification-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 80%;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    .notification-message {
+      font-size: 20px;
+      margin-top: 10px;
+      height: auto;
+      width: 100%;
+    }
+
+    .notification-other {
+      height: 1em;
+      width: 100%;
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+  }
+
+  .notification-close {
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: $border-radius * 0.5;
+    margin-right: 5px;
+    margin-top: -65px;
+    cursor: pointer;
+  }
+
+  .notification-close:hover {
+    background-color: rgba(0, 0, 0, 0.30);
+  }
+
+  &.success {
+    background-color: $success-color;
+  }
+
+  &.error {
+    background-color: $error-color;
+  }
+
+  &.warning {
+    background-color: $warning-color;
+  }
+
+  &.info {
+    background-color: $info-color;
+  }
+
+  &.fading {
+    -webkit-animation: fadeout 1000ms;
+  }
+
+  &.hidden {
+    display: none;
+  }
+}

@@ -41,10 +41,10 @@ export default function registerIpcEvents() {
   ipcMain.handle('filePicker:save', async (_event, arg) => saveFilePicker(arg));
 
   // export.ts
-  ipcMain.on('export:tp', async (_event, arg) => exportTPImageTable(arg));
-  ipcMain.on('export:gcp_img', async (_event, arg) => exportGCPImageTable(arg));
-  ipcMain.on('export:gcp_obj', async (_event, arg) => exportGCPObjectTable(arg));
-  ipcMain.on('export:camera', async (_event, arg) => exportCameraPositionTable(arg));
-  ipcMain.on('export:cloud', async (_event, arg) => exportPointCloudTable(arg));
-  ipcMain.on('export:settings', async (_event, arg) => exportCameraSettingsTable(arg));
+  ipcMain.on('export:tp', async (_event, arg1, arg2) => exportTPImageTable(arg1, arg2));
+  ipcMain.on('export:gcp_img', async (_event, arg1, arg2) => exportGCPImageTable(arg1, arg2));
+  ipcMain.on('export:gcp_obj', async (_event, arg1, arg2) => exportGCPObjectTable(arg1, arg2));
+  ipcMain.on('export:camera', async (_event, arg1, arg2) => exportCameraPositionTable(arg1, arg2));
+  ipcMain.on('export:cloud', async (_event, arg1, arg2) => exportPointCloudTable(arg1, arg2));
+  ipcMain.on('export:settings', async (_event, arg1, arg2) => exportCameraSettingsTable(arg1, arg2));
 }

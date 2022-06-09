@@ -8,7 +8,7 @@ export function GCPObjectTable() {
     <>
       <div className="buttons-row">
         <button onClick={() => console.log('Click!')}>Import from CSV</button>
-        <button onClick={() => window.electron.exportGCPObjectTable(gcpList)}>Export to CSV</button>
+        <button onClick={() => window.electron.exportGCPObjectTable(gcpList, true)}>Export to CSV</button>
       </div>
       <table>
         <thead>
