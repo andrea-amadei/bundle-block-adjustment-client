@@ -4,6 +4,7 @@ import './SideList.scss';
 import { Button } from 'react-bootstrap';
 import { PointOnImage } from '../../../../core/model/slices/common/interfaces';
 import { useOnClickOutsideRef } from "../../../../utils/useOnClickOutside";
+import { useSearchParams } from "react-router-dom";
 
 interface PropType {
   pointType: 'TP' | 'GCP';
