@@ -10,7 +10,8 @@ import {
   setZByPointId,
   setLinkedPointX,
   setLinkedPointY,
-} from '../../../../core/model/slices/groundControlPointsSlice';
+  selectLinkedImagesListForGroundControlPoint
+} from "../../../../core/model/slices/groundControlPointsSlice";
 import { InputField } from '../../common/InputField';
 import { useSearchParams } from 'react-router-dom';
 
@@ -23,6 +24,7 @@ export function PointInspectorGCP() {
   const pointOnImage = useSelector(
     selectGroundControlPointsOnImageById(selectedPointId, selectedImageId)
   );
+  const linkedImages = useSelector(selectLinkedImagesListForGroundControlPoint(selectedPointId));
   const images = useSelector(selectImagesMap);
 
   return (
@@ -34,7 +36,7 @@ export function PointInspectorGCP() {
       setPointX={(x) => store.dispatch(setLinkedPointX(selectedPointId, selectedImageId, parseInt(x)))}
       pointY={pointOnImage.y}
       setPointY={(y) => store.dispatch(setLinkedPointY(selectedPointId, selectedImageId, parseInt(y)))}
-      linkedImg={point.linkedPoints.map((lp) => ({
+      linkedImg={linkedImages.map((lp) => ({
         id: lp.imageId,
         name: images[lp.imageId].name,
         url: images[lp.imageId].path,

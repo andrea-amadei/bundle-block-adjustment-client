@@ -18,7 +18,7 @@ export default () =>
 
     test('should add and remove a point correctly', () => {
       const newPointId = 42;
-      const newPoint: TiePoint = { pointId: newPointId, linkedPoints: [] };
+      const newPoint: TiePoint = { pointId: newPointId, linkedImages: [] };
 
       const initialState: TiePoint[] = [];
       const finalState: TiePoint[] = [newPoint];
@@ -43,15 +43,15 @@ export default () =>
       };
 
       const initialState: TiePoint[] = [
-        { pointId: newPointId, linkedPoints: [] },
+        { pointId: newPointId, linkedImages: [] },
       ];
 
       const finalState: TiePoint[] = [
-        { pointId: newPointId, linkedPoints: [newImage] },
+        { pointId: newPointId, linkedImages: [newImage] },
       ];
 
       expect(
-        reducer(initialState, addLinkedPointByPointId(newPointId, newImage))
+        reducer(initialState, addLinkedPointByPointId(newImage))
       ).toEqual(finalState);
 
       expect(
@@ -65,7 +65,7 @@ export default () =>
       const initialState: TiePoint[] = [
         {
           pointId: newPointId,
-          linkedPoints: [
+          linkedImages: [
             {
               pointId: newPointId,
               imageId: newImageId,
@@ -118,7 +118,7 @@ export default () =>
       const initialState: TiePoint[] = [
         {
           pointId: newPointId,
-          linkedPoints: [
+          linkedImages: [
             {
               pointId: newPointId,
               imageId: newImageId,
@@ -129,19 +129,6 @@ export default () =>
           ],
         },
       ];
-
-      expect(() =>
-        reducer(
-          initialState,
-          addLinkedPointByPointId(newPointId + 1, {
-            pointId: newPointId,
-            imageId: 2,
-            x: 2,
-            y: 3,
-            source: 'MANUAL',
-          })
-        )
-      ).toThrow(Error);
 
       expect(() =>
         reducer(initialState, removeLinkedPointByPointId(newPointId + 1, 1))
@@ -174,7 +161,7 @@ export default () =>
       const initialState: TiePoint[] = [
         {
           pointId: newPointId,
-          linkedPoints: [
+          linkedImages: [
             {
               pointId: newPointId,
               imageId: newImageId,
@@ -189,14 +176,14 @@ export default () =>
       expect(() =>
         reducer(
           initialState,
-          addPoint({ pointId: newPointId, linkedPoints: [] })
+          addPoint({ pointId: newPointId, linkedImages: {} })
         )
       ).toThrow();
 
       expect(() =>
         reducer(
           initialState,
-          addLinkedPointByPointId(newPointId, {
+          addLinkedPointByPointId({
             pointId: newPointId,
             imageId: newImageId,
             x: 1,
@@ -207,35 +194,4 @@ export default () =>
       ).toThrow();
     });
 
-    test('should throw an error when trying to add a linked image with a different Point ID', () => {
-      const newPointId = 42;
-      const newImageId = 3;
-      const initialState: TiePoint[] = [
-        {
-          pointId: newPointId,
-          linkedPoints: [
-            {
-              pointId: newPointId,
-              imageId: newImageId,
-              x: 1,
-              y: 2,
-              source: 'MANUAL',
-            },
-          ],
-        },
-      ];
-
-      expect(() =>
-        reducer(
-          initialState,
-          addLinkedPointByPointId(newPointId, {
-            pointId: newPointId + 1,
-            imageId: newImageId,
-            x: 1,
-            y: 2,
-            source: 'MANUAL',
-          })
-        )
-      ).toThrow();
-    });
   });

@@ -1,125 +1,1 @@
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { PointOnImage, VirtualPoint } from './common/interfaces';
-import type { RootState } from '../store';
-import {
-  addLinkedPointCommon,
-  addPointCommon,
-  removeLinkedPointCommon,
-  removePointCommon,
-  setLinkedPointXCommon,
-  setLinkedPointYCommon,
-} from './common/reducers';
-import { tpTest } from "./ModelTestData";
-
-export type TiePoint = VirtualPoint<PointOnImage>;
-
-export const tiePointsSlice = createSlice({
-  name: 'tiePoints',
-
-  // TODO: perhaps it is better to convert the state to a map?
-  //initialState: [] as TiePoint[],
-  initialState: tpTest as TiePoint[],
-
-  reducers: {
-    addPoint: (state: TiePoint[], action: PayloadAction<TiePoint>) =>
-      addPointCommon(state, action),
-
-    removePointByPointId: (state: TiePoint[], action: PayloadAction<number>) =>
-      removePointCommon(state, action),
-
-    addLinkedPointByPointId: {
-      prepare: (id: number, image: PointOnImage) => ({
-        payload: { id, image },
-      }),
-
-      reducer: (
-        state: TiePoint[],
-        action: PayloadAction<{ id: number; image: PointOnImage }>
-      ) => addLinkedPointCommon(state, action),
-    },
-
-    removeLinkedPointByPointId: {
-      prepare: (pointId: number, imageId: number) => ({
-        payload: { pointId, imageId },
-      }),
-
-      reducer: (
-        state: TiePoint[],
-        action: PayloadAction<{ pointId: number; imageId: number }>
-      ) => removeLinkedPointCommon(state, action),
-    },
-
-    setLinkedPointX: {
-      prepare: (pointId: number, imageId: number, x: number) => ({
-        payload: { pointId, imageId, x },
-      }),
-
-      reducer: (
-        state: TiePoint[],
-        action: PayloadAction<{ pointId: number; imageId: number; x: number }>
-      ) => setLinkedPointXCommon(state, action),
-    },
-
-    setLinkedPointY: {
-      prepare: (pointId: number, imageId: number, y: number) => ({
-        payload: { pointId, imageId, y },
-      }),
-
-      reducer: (
-        state: TiePoint[],
-        action: PayloadAction<{ pointId: number; imageId: number; y: number }>
-      ) => setLinkedPointYCommon(state, action),
-    },
-  },
-});
-
-export const {
-  addPoint,
-  removePointByPointId,
-  addLinkedPointByPointId,
-  removeLinkedPointByPointId,
-  setLinkedPointX,
-  setLinkedPointY,
-} = tiePointsSlice.actions;
-
-export const selectAllTiePoints = (state: RootState) =>
-  state.tiePoints as TiePoint[];
-
-export const selectTiePointById = (id: number) => (state: RootState) =>
-  state.tiePoints[id] as TiePoint;
-
-const _selectImageId = (_state: RootState, {imageId}: {imageId: number | undefined}) => imageId;
-const _selectTiePointsOnImage = createSelector(
-  [selectAllTiePoints, _selectImageId],
-  (points, imageId) => points
-    .flatMap(point => point.linkedPoints)
-    .filter(pointOnImage => pointOnImage.imageId === imageId)
-);
-export const selectTiePointsOnImage = (imageId: number | undefined) => (state: RootState) =>
-  _selectTiePointsOnImage(state, {imageId}) as PointOnImage[];
-
-const _selectPointSourceType = (_state: RootState, {pointSourceType}: {pointSourceType: string | undefined}) => pointSourceType;
-const _selectTiePointsOnImageBySourceType = createSelector(
-  [_selectTiePointsOnImage, _selectPointSourceType],
-  (tpOnImageList, source) => tpOnImageList
-    .filter(tp => tp.source === source)
-);
-export const selectTiePointsOnImageBySourceType = (imageId: number | undefined, pointSourceType: string | undefined) => (state: RootState) =>
-  _selectTiePointsOnImageBySourceType(state, {imageId, pointSourceType}) as PointOnImage[];
-
-const _selectPointId = (_state: RootState, {pointId}: {pointId: number | undefined}) => pointId;
-const _selectTiePointOnImageById = createSelector(
-  [selectAllTiePoints, _selectPointId, _selectImageId],
-  (tpList, pointId, imageId) => {
-    if(pointId !== undefined)
-      return tpList[pointId].linkedPoints.filter(
-        (pointOnImage) => pointOnImage.imageId === imageId
-      )[0] as PointOnImage;
-    return undefined;
-  }
-);
-export const selectTiePointOnImageById = (pointId: number | undefined, imageId: number | undefined) => (state: RootState) =>
-  _selectTiePointOnImageById(state, {pointId, imageId}) as PointOnImage;
-
-
-export default tiePointsSlice.reducer;
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";import { PointOnImage, ImagesLinkedPoint } from './common/interfaces';import type { RootState } from '../store';import {  addLinkedPointCommon,  addPointCommon,  removeLinkedPointCommon,  removePointCommon,  setLinkedPointXCommon,  setLinkedPointYCommon,} from './common/reducers';import { tpTest } from "./ModelTestData";export type TiePoint = ImagesLinkedPoint<PointOnImage>;export interface TiePointMap {  [id: number]: TiePoint}export const tiePointsSlice = createSlice({  name: 'tiePoints',  initialState: tpTest as TiePointMap,  reducers: {    addPoint: (state: TiePointMap, action: PayloadAction<TiePoint>) =>      addPointCommon(state, action),    removePointByPointId: (state: TiePointMap, action: PayloadAction<number>) =>      removePointCommon(state, action),    addLinkedPointByPointId: (      state: TiePointMap,      action: PayloadAction<PointOnImage>    ) => addLinkedPointCommon(state, action),    removeLinkedPointByPointId: {      prepare: (pointId: number, imageId: number) => ({        payload: { pointId, imageId },      }),      reducer: (        state: TiePointMap,        action: PayloadAction<{ pointId: number; imageId: number }>      ) => removeLinkedPointCommon(state, action),    },    setLinkedPointX: {      prepare: (pointId: number, imageId: number, x: number) => ({        payload: { pointId, imageId, x },      }),      reducer: (        state: TiePointMap,        action: PayloadAction<{ pointId: number; imageId: number; x: number }>      ) => setLinkedPointXCommon(state, action),    },    setLinkedPointY: {      prepare: (pointId: number, imageId: number, y: number) => ({        payload: { pointId, imageId, y },      }),      reducer: (        state: TiePointMap,        action: PayloadAction<{ pointId: number; imageId: number; y: number }>      ) => setLinkedPointYCommon(state, action),    },  },});export const {  addPoint,  removePointByPointId,  addLinkedPointByPointId,  removeLinkedPointByPointId,  setLinkedPointX,  setLinkedPointY,} = tiePointsSlice.actions;export const selectTiePoints = (state: RootState) =>  state.tiePoints as TiePointMap;export const selectTiePointList = (state: RootState) =>  Object.values(state.tiePoints) as TiePoint[];export const selectTiePointById = (id: number) => (state: RootState) =>  state.tiePoints[id] as TiePoint;export const selectLinkedImagesListForTiePoint = (id: number) => (state: RootState) =>  Object.values(state.tiePoints[id].linkedImages) as PointOnImage[];const _selectImageId = (_state: RootState, {imageId}: {imageId: number | undefined}) => imageId;const _selectTiePointsOnImage = createSelector(  [selectTiePointList, _selectImageId],  (points, imageId) => points    .filter(point => imageId !== undefined && imageId in point.linkedImages)    .map(point => point.linkedImages[imageId as number]));export const selectTiePointsOnImage = (imageId: number | undefined) => (state: RootState) =>  _selectTiePointsOnImage(state, {imageId}) as PointOnImage[];const _selectPointSourceType = (_state: RootState, {pointSourceType}: {pointSourceType: string | undefined}) => pointSourceType;const _selectTiePointsOnImageBySourceType = createSelector(  [_selectTiePointsOnImage, _selectPointSourceType],  (tpOnImageList, source) => tpOnImageList    .filter(tp => tp.source === source));export const selectTiePointsOnImageBySourceType = (imageId: number | undefined, pointSourceType: string | undefined) => (state: RootState) =>  _selectTiePointsOnImageBySourceType(state, {imageId, pointSourceType}) as PointOnImage[];const _selectPointId = (_state: RootState, {pointId}: {pointId: number | undefined}) => pointId;const _selectTiePointOnImageById = createSelector(  [selectTiePoints, _selectPointId, _selectImageId],  (tpMap, pointId, imageId) => {    if(pointId !== undefined && imageId !== undefined)      return tpMap[pointId].linkedImages[imageId] as PointOnImage;    return undefined;  });export const selectTiePointOnImageById = (pointId: number | undefined, imageId: number | undefined) => (state: RootState) =>  _selectTiePointOnImageById(state, {pointId, imageId}) as PointOnImage;export default tiePointsSlice.reducer;

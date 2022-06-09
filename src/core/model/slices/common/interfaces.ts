@@ -10,8 +10,10 @@ export interface Point {
   pointId: number;
 }
 
-export interface VirtualPoint<T extends PointOnImage> extends Point {
-  linkedPoints: T[];
+export interface ImagesLinkedPoint<T extends PointOnImage> extends Point {
+  linkedImages: {
+    [imageId: number]: T;
+  };
 }
 
 export interface RealPoint extends Point {

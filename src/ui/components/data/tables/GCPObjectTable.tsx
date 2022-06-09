@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
-import { selectAllGroundControlPoints } from '../../../../core/model/slices/groundControlPointsSlice';
+import { selectGroundControlPointList } from '../../../../core/model/slices/groundControlPointsSlice';
 
 export function GCPObjectTable() {
-  const gcpList = useSelector(selectAllGroundControlPoints);
+  const gcpList = useSelector(selectGroundControlPointList);
 
   return (
     <>
