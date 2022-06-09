@@ -1,7 +1,11 @@
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { SideList } from './SideList';
-import { selectGroundControlPointsOnImageBySourceType } from '../../../../core/model/slices/groundControlPointsSlice';
+import {
+  addNewPointWithLinkedImage,
+  selectGroundControlPointsOnImageBySourceType
+} from "../../../../core/model/slices/groundControlPointsSlice";
+import { store } from "../../../../core/model/store";
 
 export function SideListGCP() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,5 +21,5 @@ export function SideListGCP() {
       selectGroundControlPointsOnImageBySourceType(imgId, 'IMPORTED')
     ),
   };
-  return <SideList pointType="GCP" points={gcpListBySource} />;
+  return <SideList pointType="GCP" points={gcpListBySource} addPoint={() => store.dispatch(addNewPointWithLinkedImage(selectedImageId))} />;
 }

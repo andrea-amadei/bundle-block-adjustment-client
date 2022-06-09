@@ -4,6 +4,8 @@ import './SideList.scss';
 import { Button } from 'react-bootstrap';
 import { PointOnImage } from '../../../../core/model/slices/common/interfaces';
 import { useOnClickOutsideRef } from "../../../../utils/useOnClickOutside";
+import { useSearchParams } from "react-router-dom";
+import { store } from "../../../../core/model/store";
 
 interface PropType {
   pointType: 'TP' | 'GCP';
@@ -12,6 +14,7 @@ interface PropType {
     imported: PointOnImage[];
     auto?: PointOnImage[];
   };
+  addPoint: () => void;
 }
 
 const POINTS_SOURCE_LABEL = {
@@ -20,7 +23,7 @@ const POINTS_SOURCE_LABEL = {
   auto: 'AUTO',
 } as const;
 
-export const SideList: React.FC<PropType> = ({ pointType, points }) => {
+export const SideList: React.FC<PropType> = ({ pointType, points , addPoint}) => {
   const [isCompact, setIsCompact] = useState(false);
   const [showOptionsForPointId, setShowOptionsForPointId] = useState<number | null>(null);
   useEffect(
@@ -48,18 +51,18 @@ export const SideList: React.FC<PropType> = ({ pointType, points }) => {
       <div className="point-side-list-header">{compactBtn}</div>
       <div className="source-groups-container">
         {Object.entries(points)
-          .filter(([source, pointList]) => pointList.length > 0)
+          .filter(([source, pointList]) => pointList.length > 0 || source === 'manual')
           .map(([source, pointList]) => (
             <div className="source-group" key={source}>
               <div className="group-header">
                 {POINTS_SOURCE_LABEL[source as keyof typeof POINTS_SOURCE_LABEL]}
                 {source === 'manual' &&
-                  <div className="add-btn">
+                  <div className="add-btn" onClick={addPoint}>
                     <span className="material-symbols-outlined btn"> add </span>
                   </div>
                 }
               </div>
-              <hr className="divider" />
+              { pointList.length > 0 && <hr className="divider" /> }
               <div className={`point-side-list ${isCompact ? 'compact' : ''}`}>
                 {pointList.map((tp) => (
                   <PointSummary

@@ -5,7 +5,7 @@ import { ImageEditor } from 'ui/components/editor/ImageEditor';
 import { CardLayoutTabsPanel } from '../components/common/CardLayoutTabsPanel';
 import { PointInspectorTP } from '../components/editor/points/PointInspectorTP';
 import { PointInspectorGCP } from '../components/editor/points/PointInspectorGCP';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { SideListTP } from '../components/editor/sidelist/SideListTP';
 import { SideListGCP } from '../components/editor/sidelist/SideListGCP';
 import { selectAllImages } from '../../core/model/slices/imageListSlice';
@@ -20,14 +20,21 @@ export function EditorPage() {
 
   const [activeSideTab, setActiveSideTab] = useState('TP');
 
+  useEffect(() => {
+    if( (selectedPointId || selectedPointId === 0) && selectedPointType)
+      setActiveSideTab(selectedPointType);
+  }, [selectedPointType, selectedPointId])
+
   const imgList = useSelector(selectAllImages);
 
   let sideTabContent;
   if (activeSideTab === 'TP') sideTabContent = <SideListTP />;
   else if (activeSideTab === 'GCP') sideTabContent = <SideListGCP />;
 
+  console.log(selectedImageId);
+
   let contentMainSection;
-  if (selectedImageId) {
+  if (selectedImageId || selectedImageId === 0) {
     contentMainSection = (
       <>
         <ImageEditor key={selectedImageId} />
@@ -75,35 +82,37 @@ export function EditorPage() {
           </div>
         </div>
         <div className="main-section">{contentMainSection}</div>
-        <CardLayoutTabsPanel
-          className="gpc-tp-point-list"
-          tabHeaderList={[
-            {
-              tabId: 'TP',
-              label: (
-                <div
-                  className="tab-link"
-                  onClick={() => setActiveSideTab('TP')}
-                >
-                  TP
-                </div>
-              ),
-            },
-            {
-              tabId: 'GCP',
-              label: (
-                <div
-                  className="tab-link"
-                  onClick={() => setActiveSideTab('GCP')}
-                >
-                  GCP
-                </div>
-              ),
-            },
-          ]}
-          content={sideTabContent}
-          activeTabId={activeSideTab}
-        />
+        {(selectedImageId || selectedImageId === 0) &&
+          <CardLayoutTabsPanel
+            className="gpc-tp-point-list"
+            tabHeaderList={[
+              {
+                tabId: 'TP',
+                label: (
+                  <div
+                    className="tab-link"
+                    onClick={() => setActiveSideTab('TP')}
+                  >
+                    TP
+                  </div>
+                ),
+              },
+              {
+                tabId: 'GCP',
+                label: (
+                  <div
+                    className="tab-link"
+                    onClick={() => setActiveSideTab('GCP')}
+                  >
+                    GCP
+                  </div>
+                ),
+              },
+            ]}
+            content={sideTabContent}
+            activeTabId={activeSideTab}
+          />
+        }
       </div>
     </>
   );
