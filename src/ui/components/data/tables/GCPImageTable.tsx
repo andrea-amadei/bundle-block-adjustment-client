@@ -22,13 +22,13 @@ export function GCPImageTable() {
         </thead>
         <tbody>
           {gcpList.map((gcp) =>
-            gcp.linkedImages.map((lp) => (
-              <tr key={`${gcp.pointId},${lp.imageId}`}>
-                <td>{gcp.pointId}</td>
-                <td>{lp.imageId}</td>
-                <td>{lp.x}</td>
-                <td>{lp.y}</td>
-                <td>{lp.source.toUpperCase()}</td>
+            Object.entries(gcp.linkedImages).map(([, p]) => (
+              <tr key={`${p.pointId},${p.imageId}`}>
+                <td>{p.pointId}</td>
+                <td>{p.imageId}</td>
+                <td>{p.x}</td>
+                <td>{p.y}</td>
+                <td>{p.source.toUpperCase()}</td>
               </tr>
             ))
           )}
