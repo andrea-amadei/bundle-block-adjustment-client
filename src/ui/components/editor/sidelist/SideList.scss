@@ -5,6 +5,7 @@
   flex-direction: column;
   gap: 6px;
   padding: 6px 6px;
+  height: 100%;
 
   .point-side-list-header {
     display: flex;
@@ -20,10 +21,19 @@
     background-color: $medium-color-button-background-hover;
   }
 
+  .source-groups-container-wrapper {
+    position: relative;
+    overflow-y: auto;
+    flex-grow: 1;
+  }
+
   .source-groups-container {
+    position: absolute;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 30px;
+    padding: 0 5px;
 
     .source-group {
 
