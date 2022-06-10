@@ -1,13 +1,19 @@
 import { useSelector } from 'react-redux';
 import { selectAllPoints } from '../../../../core/model/slices/resultSlice';
 
-export function PointCloudTable() {
+export function PointCloudTable(props: { showImportButton: boolean }) {
+  const { showImportButton } = props;
+
   const pointList = useSelector(selectAllPoints);
 
   return (
     <>
       <div className="buttons-row">
-        <button onClick={() => console.log('Click!')}>Import from CSV</button>
+        {showImportButton ? (
+          <button onClick={() => console.log('Click!')}>Import from CSV</button>
+        ) : (
+          <></>
+        )}
         <button onClick={() => window.electron.exportPointCloudTable(pointList, true)}>Export to CSV</button>
       </div>
       <table>

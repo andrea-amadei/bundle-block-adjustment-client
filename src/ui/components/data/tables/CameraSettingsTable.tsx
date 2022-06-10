@@ -12,7 +12,9 @@ import {
   selectXi0,
 } from '../../../../core/model/slices/cameraSlice';
 
-export function CameraSettingsTable() {
+export function CameraSettingsTable(props: { showImportButton: boolean }) {
+  const { showImportButton } = props;
+
   const xi0 = useSelector(selectXi0);
   const eta0 = useSelector(selectEta0);
   const c = useSelector(selectC);
@@ -27,7 +29,11 @@ export function CameraSettingsTable() {
   return (
     <>
       <div className="buttons-row">
-        <button onClick={() => console.log('Click!')}>Import from CSV</button>
+        {showImportButton ? (
+          <button onClick={() => console.log('Click!')}>Import from CSV</button>
+        ) : (
+          <></>
+        )}
         <button onClick={() => window.electron.exportCameraSettingsTable({ xi0, eta0, c, k1, k2, k3, p1, p2, a1, a2 }, true)}>Export to CSV</button>
       </div>
       <table>

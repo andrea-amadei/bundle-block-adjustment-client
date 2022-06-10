@@ -1,13 +1,19 @@
 import { useSelector } from 'react-redux';
 import { selectTiePointList } from '../../../../core/model/slices/tiePointsSlice';
 
-export function TPImageTable() {
+export function TPImageTable(props: { showImportButton: boolean }) {
+  const { showImportButton } = props;
+
   const tpList = useSelector(selectTiePointList);
 
   return (
     <>
       <div className="buttons-row">
-        <button onClick={() => console.log('Click!')}>Import from CSV</button>
+        {showImportButton ? (
+          <button onClick={() => console.log('Click!')}>Import from CSV</button>
+        ) : (
+          <></>
+        )}
         <button onClick={() => window.electron.exportTPImageTable(tpList, true)}>
           Export to CSV
         </button>

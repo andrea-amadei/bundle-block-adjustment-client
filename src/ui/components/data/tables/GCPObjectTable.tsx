@@ -1,13 +1,19 @@
 import { useSelector } from 'react-redux';
 import { selectGroundControlPointList } from '../../../../core/model/slices/groundControlPointsSlice';
 
-export function GCPObjectTable() {
+export function GCPObjectTable(props: { showImportButton: boolean }) {
+  const { showImportButton } = props;
+
   const gcpList = useSelector(selectGroundControlPointList);
 
   return (
     <>
       <div className="buttons-row">
-        <button onClick={() => console.log('Click!')}>Import from CSV</button>
+        {showImportButton ? (
+          <button onClick={() => console.log('Click!')}>Import from CSV</button>
+        ) : (
+          <></>
+        )}
         <button onClick={() => window.electron.exportGCPObjectTable(gcpList, true)}>Export to CSV</button>
       </div>
       <table>

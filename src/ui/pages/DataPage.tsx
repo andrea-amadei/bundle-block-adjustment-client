@@ -10,19 +10,28 @@ import { PointCloudTable } from '../components/data/tables/PointCloudTable';
 
 export function DataPage() {
   const [activeSideTab, setActiveSideTab] = useState('camera');
+  const [enableImport, setEnableImport] = useState(false);
 
   const tables = {
-    camera: <CameraSettingsTable />,
-    gcp_obj: <GCPObjectTable />,
-    gcp_img: <GCPImageTable />,
-    tp_img: <TPImageTable />,
-    img: <CameraPositionTable />,
-    cloud: <PointCloudTable />,
+    camera: <CameraSettingsTable showImportButton={enableImport} />,
+    gcp_obj: <GCPObjectTable showImportButton={enableImport} />,
+    gcp_img: <GCPImageTable showImportButton={enableImport} />,
+    tp_img: <TPImageTable showImportButton={enableImport} />,
+    img: <CameraPositionTable showImportButton={enableImport} />,
+    cloud: <PointCloudTable showImportButton={enableImport} />,
   };
 
   return (
     <div className="data-page">
-      <div className="header-section"></div>
+      <div className="header-section">
+        <h1>Import instructions</h1>
+        <p>
+          Importing single files is susceptible to import order. To avoid
+          conflicts, please follow the strict order of import presented by the
+          tabs below (left to right).
+        </p>
+        <p>Allow importing files <input type="checkbox" onChange={(event) => setEnableImport(event.target.checked)} checked={enableImport} /></p>
+      </div>
       <CardLayoutTabsPanel
         className="main-section"
         tabHeaderList={[

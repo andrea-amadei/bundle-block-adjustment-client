@@ -6,7 +6,7 @@
   @include stretchy;
 
   display: grid;
-  grid-template-rows: 20px auto;
+  grid-template-rows: 200px auto;
   grid-template-areas:
     "a"
     "b";
@@ -15,6 +15,17 @@
 
   .header-section {
     grid-area: a;
+    padding: 10px;
+
+    input[type='checkbox'] {
+      width: 15px;
+      height: 15px;
+      accent-color: $main-color-accent;
+    }
+
+    p {
+      font-size: 20px;
+    }
   }
 
   .main-section {

@@ -1,13 +1,19 @@
 import { useSelector } from 'react-redux';
 import { selectAllCameras } from '../../../../core/model/slices/resultSlice';
 
-export function CameraPositionTable() {
+export function CameraPositionTable(props: { showImportButton: boolean }) {
+  const { showImportButton } = props;
+
   const cameraList = useSelector(selectAllCameras);
 
   return (
     <>
       <div className="buttons-row">
-        <button onClick={() => console.log('Click!')}>Import from CSV</button>
+        {showImportButton ? (
+          <button onClick={() => window.electron.importCameraPositionTable(true)}>Import from CSV</button>
+        ) : (
+          <></>
+        )}
         <button onClick={() => window.electron.exportCameraPositionTable(cameraList, true)}>Export to CSV</button>
       </div>
       <table>
