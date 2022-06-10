@@ -31,7 +31,7 @@ export async function exportToCSV(defaultName: string, chooseLocation: boolean, 
           writeTextFile(selectedPath, [result])
             .then(() => {
               getMainWindow()?.webContents.send('notify', {
-                message: 'File saved succesfully!',
+                message: 'File saved successfully!',
                 status: 'success',
                 symbol: chooseLocation ? 'save_as' : 'save',
               } as Message);
