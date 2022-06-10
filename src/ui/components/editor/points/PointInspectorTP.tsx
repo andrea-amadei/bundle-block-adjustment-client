@@ -21,6 +21,9 @@ export function PointInspectorTP() {
   const linkedImages = useSelector(selectLinkedImagesListForTiePoint(selectedPointId));
   const allImages = useSelector(selectImagesMap);
 
+  if(point === undefined || pointOnImage === undefined)
+    return (<></>);
+
   return (
     <PointInspector
       pointId={selectedPointId}

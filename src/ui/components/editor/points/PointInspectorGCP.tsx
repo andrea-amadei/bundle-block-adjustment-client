@@ -27,6 +27,9 @@ export function PointInspectorGCP() {
   const linkedImages = useSelector(selectLinkedImagesListForGroundControlPoint(selectedPointId));
   const images = useSelector(selectImagesMap);
 
+  if(point === undefined || pointOnImage === undefined)
+    return (<></>);
+
   return (
     <PointInspector
       pointId={selectedPointId}

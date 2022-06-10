@@ -14,6 +14,8 @@ interface PropType {
   showOptions: boolean;
   enableShowOptions: () => void;
   disableShowOptions: () => void;
+  unlinkPoint: () => void;
+  deletePoint: () => void;
 }
 
 function getStyleForPointType(type: string) {
@@ -41,7 +43,9 @@ function renderContent(
   additionalInfo: Map<string, string | number>,
   showOptions: boolean,
   enableShowOptions: () => void,
-  disableShowOptions: () => void
+  disableShowOptions: () => void,
+  unlinkPoint: () => void,
+  deletePoint: () => void
 ) {
   return (
     <>
@@ -64,8 +68,8 @@ function renderContent(
           <OptionsPanel
             arrow="right"
             options={[
-              { text: `Unlink ${type} from current image`, onClick: () => {} },
-              { text: `Delete ${type}`, onClick: () => {} },
+              { text: `Unlink ${type} from current image`, onClick: unlinkPoint},
+              { text: `Delete ${type}`, onClick: deletePoint},
             ]}
             showOptions={showOptions}
             hideOptions={disableShowOptions}
@@ -84,6 +88,8 @@ export const PointSummary: React.FC<PropType> = ({
   showOptions,
   enableShowOptions,
   disableShowOptions,
+  unlinkPoint,
+  deletePoint
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedPointId = parseInt(searchParams.get('pointId') as string);
@@ -97,7 +103,9 @@ export const PointSummary: React.FC<PropType> = ({
       new Map(Object.entries(additionalInfo)),
       showOptions,
       enableShowOptions,
-      disableShowOptions
+      disableShowOptions,
+      unlinkPoint,
+      deletePoint
     );
 
   return (

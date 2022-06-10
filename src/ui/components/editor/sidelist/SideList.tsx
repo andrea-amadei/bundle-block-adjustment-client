@@ -15,6 +15,8 @@ interface PropType {
     auto?: PointOnImage[];
   };
   addPoint: () => void;
+  unlinkPoint: (pointId: number, imageId: number) => void;
+  deletePoint: (pointId: number) => void;
 }
 
 const POINTS_SOURCE_LABEL = {
@@ -23,7 +25,9 @@ const POINTS_SOURCE_LABEL = {
   auto: 'AUTO',
 } as const;
 
-export const SideList: React.FC<PropType> = ({ pointType, points , addPoint}) => {
+export const SideList: React.FC<PropType> = (
+  { pointType, points , addPoint, unlinkPoint, deletePoint}
+) => {
   const [isCompact, setIsCompact] = useState(false);
   const [showOptionsForPointId, setShowOptionsForPointId] = useState<number | null>(null);
   useEffect(
@@ -64,18 +68,20 @@ export const SideList: React.FC<PropType> = ({ pointType, points , addPoint}) =>
               </div>
               { pointList.length > 0 && <hr className="divider" /> }
               <div className={`point-side-list ${isCompact ? 'compact' : ''}`}>
-                {pointList.map((tp) => (
+                {pointList.map((pointOnImg) => (
                   <PointSummary
                     type={pointType}
-                    id={tp.pointId}
+                    id={pointOnImg.pointId}
                     additionalInfo={{
-                      'key-hidden': `(${tp.x}, ${tp.y})`,
+                      'key-hidden': `(${pointOnImg.x}, ${pointOnImg.y})`,
                     }}
                     compact={isCompact}
-                    key={tp.pointId}
-                    showOptions={showOptionsForPointId === tp.pointId}
-                    enableShowOptions={() => setShowOptionsForPointId(tp.pointId)}
+                    key={pointOnImg.pointId}
+                    showOptions={showOptionsForPointId === pointOnImg.pointId}
+                    enableShowOptions={() => setShowOptionsForPointId(pointOnImg.pointId)}
                     disableShowOptions={() => setShowOptionsForPointId(null)}
+                    unlinkPoint={() => unlinkPoint(pointOnImg.pointId, pointOnImg.imageId)}
+                    deletePoint={() => deletePoint(pointOnImg.pointId)}
                   />
                 ))}
               </div>
