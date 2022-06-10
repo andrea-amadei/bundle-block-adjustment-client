@@ -7,15 +7,18 @@ import {
   copyFile,
   copyFileToSaves,
   writeTextFile,
-  writeTextFileInSaves
+  writeTextFileInSaves,
 } from './api/fs';
 import { convertDataToCSV } from './api/csv';
 import {
   exportCameraPositionTable,
   exportCameraSettingsTable,
-  exportGCPImageTable, exportGCPObjectTable, exportPointCloudTable,
+  exportGCPImageTable,
+  exportGCPObjectTable,
+  exportPointCloudTable,
   exportTPImageTable
 } from './api/export';
+import { importCameraPositionTable } from './api/import';
 
 export default function registerIpcEvents() {
   // log
@@ -47,4 +50,7 @@ export default function registerIpcEvents() {
   ipcMain.on('export:camera', async (_event, arg1, arg2) => exportCameraPositionTable(arg1, arg2));
   ipcMain.on('export:cloud', async (_event, arg1, arg2) => exportPointCloudTable(arg1, arg2));
   ipcMain.on('export:settings', async (_event, arg1, arg2) => exportCameraSettingsTable(arg1, arg2));
+
+  // import.ts
+  ipcMain.on('import:camera', async (_event, arg1) => importCameraPositionTable(arg1));
 }

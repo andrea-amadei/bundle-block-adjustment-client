@@ -12,6 +12,7 @@ import {
 import { NotificationBanner } from '../ui/components/common/NotificationBanner';
 import { TestingPage } from '../ui/pages/TestingPage';
 import { store } from '../core/model/store';
+import { CameraPosition } from '../core/model/slices/common/interfaces';
 
 export default function App() {
   useEffect(() => {
@@ -19,6 +20,19 @@ export default function App() {
 
     window.electron.addNotification((_event, message: Message) =>
       store.dispatch(addNewMessage(message))
+    );
+
+    window.electron.addCameraPositionsToModel(
+      (_event, data: CameraPosition[]) => {
+        store.dispatch(addNewMessage({
+            message: 'Successfully imported file!',
+            status: 'success',
+            symbol: 'file_download',
+          })
+        );
+
+        data.forEach((d) => console.log(d));
+      }
     );
   });
 

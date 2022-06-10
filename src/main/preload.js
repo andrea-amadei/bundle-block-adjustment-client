@@ -5,6 +5,8 @@ contextBridge.exposeInMainWorld('electron', {
   logToRenderer: (callback) => ipcRenderer.on('log:renderer', callback),
   addNotification: (callback) => ipcRenderer.on('notify', callback),
 
+  addCameraPositionsToModel: (callback) => ipcRenderer.on('addToModel:camera', callback),
+
   // RENDERER -> MAIN
   // Logger
   logToMain: (text) => ipcRenderer.send('log:main', text),
@@ -32,4 +34,7 @@ contextBridge.exposeInMainWorld('electron', {
   exportCameraPositionTable: (data, chooseLocation) => ipcRenderer.send('export:camera', data, chooseLocation),
   exportPointCloudTable: (data, chooseLocation) => ipcRenderer.send('export:cloud', data, chooseLocation),
   exportCameraSettingsTable: (data, chooseLocation) => ipcRenderer.send('export:settings', data, chooseLocation),
+
+  // import.ts
+  importCameraPositionTable: (chooseLocation) => ipcRenderer.send('import:camera', chooseLocation),
 });
