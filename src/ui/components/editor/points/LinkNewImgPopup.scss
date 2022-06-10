@@ -45,7 +45,7 @@
     }
 
     .content {
-      padding: 15px;
+      padding: 25px 15px 15px;
       flex-grow: 1;
       display: grid;
       gap: 15px;
@@ -113,6 +113,22 @@
 
       }
 
+    }
+
+    .warning {
+      display: flex;
+      height: 20px;
+      align-items: center;
+      flex-direction: row;
+      gap: 2px;
+      font-family: $main-font;
+      color: #ffd43b;
+      margin-left: 18px;
+
+      span {
+        color: #ffd43b;
+        font-size: 18px;
+      }
     }
 
     .footer {

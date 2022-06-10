@@ -56,8 +56,6 @@ export function EditorPage() {
   if (activeSideTab === 'TP') sideTabContent = <SideListTP />;
   else if (activeSideTab === 'GCP') sideTabContent = <SideListGCP />;
 
-  console.log(searchParams.forEach((v, key) => console.log("D", key, v)));
-
   let contentMainSection;
   if (selectedImageId || selectedImageId === 0) {
     contentMainSection = (

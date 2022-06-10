@@ -24,6 +24,11 @@ export const LinkNewImgPopup: React.FC<PointInspectorPropType> = ({
   useEffect(() => {
     if (!show) setSelectedImageIds([...initiallySelectedImagesId]);
   }, [show, initiallySelectedImagesId])
+  const [unlinkedImgNumber, setUnlinkedImgNumber] = useState(0);
+  useEffect(
+    () => setUnlinkedImgNumber(initiallySelectedImagesId.filter(id => !selectedImageIds.includes(id)).length),
+    [selectedImageIds, initiallySelectedImagesId]
+  );
   return (
     <div className="link-img-popup" >
       <div className="container">
@@ -55,6 +60,15 @@ export const LinkNewImgPopup: React.FC<PointInspectorPropType> = ({
               </div>
             ))
           }
+        </div>
+        <div className="warning">
+          {unlinkedImgNumber > 0 &&
+            <span className="material-symbols-outlined">
+            warning
+            </span>
+          }
+          {unlinkedImgNumber === 1 && `${unlinkedImgNumber} image will be unliked`}
+          {unlinkedImgNumber > 1 && `${unlinkedImgNumber} images will be unliked`}
         </div>
         <div className="footer">
           <button className="cancel" onClick={hidePopup} >Cancel</button>
