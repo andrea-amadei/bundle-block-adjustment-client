@@ -7,6 +7,8 @@ import { GCPImageTable } from '../components/data/tables/GCPImageTable';
 import { TPImageTable } from '../components/data/tables/TPImageTable';
 import { CameraPositionTable } from '../components/data/tables/CameraPositionTable';
 import { PointCloudTable } from '../components/data/tables/PointCloudTable';
+import { store } from '../../core/model/store';
+import { addNewMessage } from '../../core/model/slices/messages/messageQueueSlice';
 
 export function DataPage() {
   const [activeSideTab, setActiveSideTab] = useState('camera');
@@ -30,7 +32,23 @@ export function DataPage() {
           conflicts, please follow the strict order of import presented by the
           tabs below (left to right).
         </p>
-        <p>Allow importing files <input type="checkbox" onChange={(event) => setEnableImport(event.target.checked)} checked={enableImport} /></p>
+        <p>
+          Allow importing files{' '}
+          <input
+            type="checkbox"
+            checked={enableImport}
+            onChange={(event) => {
+              setEnableImport(event.target.checked);
+
+              if (event.target.checked)
+                store.dispatch(addNewMessage({
+                    message: 'Single file importing enabled. Please use caution',
+                    status: 'info',
+                  })
+                );
+            }}
+          />
+        </p>
       </div>
       <CardLayoutTabsPanel
         className="main-section"
