@@ -1,22 +1,1 @@
-import { configureStore } from '@reduxjs/toolkit';
-import cameraReducer from './slices/cameraSlice';
-import groundControlPointsReducer from './slices/groundControlPointsSlice';
-import tiePointsReducer from './slices/tiePointsSlice';
-import resultSliceReducer from './slices/resultSlice';
-import imageListReducer from './slices/imageListSlice';
-import messageQueueReducer from './slices/messages/messageQueueSlice';
-
-export const store = configureStore({
-  reducer: {
-    camera: cameraReducer,
-    groundControlPoints: groundControlPointsReducer,
-    tiePoints: tiePointsReducer,
-    result: resultSliceReducer,
-    imageList: imageListReducer,
-
-    messageQueue: messageQueueReducer,
-  },
-});
-
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+import { AnyAction, configureStore, Middleware } from "@reduxjs/toolkit";import cameraReducer from './slices/cameraSlice';import groundControlPointsReducer, { populateNewGCPWithDefaultsMiddleware } from "./slices/groundControlPointsSlice";import tiePointsReducer, { populateNewTPWithDefaultsMiddleware } from "./slices/tiePointsSlice";import resultSliceReducer from './slices/resultSlice';import imageListReducer from './slices/imageListSlice';import messageQueueReducer from './slices/messages/messageQueueSlice';import { pointPositionOnImageBoundedMiddleware } from "./Middlewares";export const store = configureStore({  reducer: {    camera: cameraReducer,    groundControlPoints: groundControlPointsReducer,    tiePoints: tiePointsReducer,    result: resultSliceReducer,    imageList: imageListReducer,    messageQueue: messageQueueReducer,  },  middleware: (getDefaultMiddleware) =>    getDefaultMiddleware()    .prepend(pointPositionOnImageBoundedMiddleware)    .prepend(populateNewTPWithDefaultsMiddleware)    .prepend(populateNewGCPWithDefaultsMiddleware)});export type RootState = ReturnType<typeof store.getState>;export type AppDispatch = typeof store.dispatch;

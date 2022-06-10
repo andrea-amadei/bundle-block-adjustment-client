@@ -1,28 +1,1 @@
-import { useSelector } from 'react-redux';
-import { useParams, useSearchParams } from 'react-router-dom';
-import {
-  addNewPointWithLinkedImage,
-  selectTiePointsOnImageBySourceType
-} from "../../../../core/model/slices/tiePointsSlice";
-import { SideList } from './SideList';
-import { store } from "../../../../core/model/store";
-
-export function SideListTP() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const selectedImageId = parseInt(searchParams.get('imgId') as string);
-
-  let imgId: undefined | number;
-  if (selectedImageId != null) imgId = parseInt(selectedImageId);
-  const tpListBySource = {
-    manual: useSelector(
-      selectTiePointsOnImageBySourceType(imgId, 'MANUAL')
-    ),
-    imported: useSelector(
-      selectTiePointsOnImageBySourceType(imgId, 'IMPORTED')
-    ),
-    auto: useSelector(
-      selectTiePointsOnImageBySourceType(imgId, 'AUTO')
-    ),
-  };
-  return <SideList pointType="TP" points={tpListBySource} addPoint={() => store.dispatch(addNewPointWithLinkedImage(selectedImageId))}/>;
-}
+import { useSelector } from 'react-redux';import { useParams, useSearchParams } from 'react-router-dom';import {  addNewDefaultPointWithLinkedImage, selectTiePointList,  selectTiePointsOnImageBySourceType} from "../../../../core/model/slices/tiePointsSlice";import { SideList } from './SideList';import { store } from "../../../../core/model/store";export function SideListTP() {  const [searchParams, setSearchParams] = useSearchParams();  const selectedImageId = parseInt(searchParams.get('imgId') as string);  const tpList = useSelector(selectTiePointList);  let imgId: undefined | number;  if (selectedImageId != null) imgId = parseInt(selectedImageId);  const tpListBySource = {    manual: useSelector(      selectTiePointsOnImageBySourceType(imgId, 'MANUAL')    ),    imported: useSelector(      selectTiePointsOnImageBySourceType(imgId, 'IMPORTED')    ),    auto: useSelector(      selectTiePointsOnImageBySourceType(imgId, 'AUTO')    ),  };  return <SideList    pointType="TP"    points={tpListBySource}    addPoint={() => {      const newPointId = tpList.map(tp => tp.pointId).sort( (a,b) => b - a)[0] + 1;      store.dispatch(addNewDefaultPointWithLinkedImage(selectedImageId));      searchParams.set('pointId', newPointId.toString());      searchParams.set('pointType', 'TP');      setSearchParams(searchParams);    }}    />;}
