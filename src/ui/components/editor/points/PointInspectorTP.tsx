@@ -3,10 +3,11 @@ import { useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
   selectLinkedImagesListForTiePoint,
+  editPoint,
   selectTiePointById,
   selectTiePointOnImageById,
   setLinkedPointX,
-  setLinkedPointY
+  setLinkedPointY, TiePoint
 } from "../../../../core/model/slices/tiePointsSlice";
 import { store } from '../../../../core/model/store';
 import { selectImagesMap } from '../../../../core/model/slices/imageListSlice';
@@ -26,6 +27,7 @@ export function PointInspectorTP() {
 
   return (
     <PointInspector
+      point={point}
       pointId={selectedPointId}
       imgId={selectedImageId}
       pointType="TP"
@@ -33,6 +35,7 @@ export function PointInspectorTP() {
       setPointX={(x) => store.dispatch(setLinkedPointX(selectedPointId, selectedImageId, parseInt(x)))}
       pointY={pointOnImage.y}
       setPointY={(y) => store.dispatch(setLinkedPointY(selectedPointId, selectedImageId, parseInt(y)))}
+      editPoint={editedPoint => store.dispatch(editPoint(editedPoint as TiePoint))}
       linkedImg={linkedImages.map((lp) => ({
         id: lp.imageId,
         name: allImages[lp.imageId].name,

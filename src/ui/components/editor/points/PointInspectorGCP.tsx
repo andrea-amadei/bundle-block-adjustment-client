@@ -10,7 +10,7 @@ import {
   setZByPointId,
   setLinkedPointX,
   setLinkedPointY,
-  selectLinkedImagesListForGroundControlPoint
+  selectLinkedImagesListForGroundControlPoint, editPoint, GroundControlPoint
 } from "../../../../core/model/slices/groundControlPointsSlice";
 import { InputField } from '../../common/InputField';
 import { useSearchParams } from 'react-router-dom';
@@ -32,6 +32,7 @@ export function PointInspectorGCP() {
 
   return (
     <PointInspector
+      point={point}
       pointId={selectedPointId}
       imgId={selectedImageId}
       pointType="GCP"
@@ -44,6 +45,7 @@ export function PointInspectorGCP() {
         name: images[lp.imageId].name,
         url: images[lp.imageId].path,
       }))}
+      editPoint={editedPoint => store.dispatch(editPoint(editedPoint as GroundControlPoint))}
       additionalGlobalFields={
         <>
           <div className="point-position">

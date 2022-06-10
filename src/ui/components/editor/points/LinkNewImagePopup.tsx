@@ -58,7 +58,7 @@ export const LinkNewImgPopup: React.FC<PointInspectorPropType> = ({
         </div>
         <div className="footer">
           <button className="cancel" onClick={hidePopup} >Cancel</button>
-          <button className="confirm" onClick={() => setLinkedImg(selectedImageIds)} >Select</button>
+          <button className="confirm" onClick={() => {hidePopup(); setLinkedImg(selectedImageIds);}} >Select</button>
         </div>
       </div>
     </div>

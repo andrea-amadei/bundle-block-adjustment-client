@@ -1,98 +1,1 @@
-import React, { useState } from "react";
-import './PointInspector.scss';
-import { InputField } from '../../common/InputField';
-import { FieldsContainer } from '../../common/FieldsContainer';
-import { ImagePreview } from '../images/ImagePreview';
-import { LinkNewImgPopup } from "./LinkNewImagePopup";
-import { useSelector } from "react-redux";
-import { selectAllImages } from "../../../../core/model/slices/imageListSlice";
-
-interface PointInspectorPropType {
-  pointType: string;
-  pointId: number;
-  imgId: number;
-  pointX: number;
-  setPointX: (x: number) => void;
-  pointY: number;
-  setPointY: (y: number) => void;
-  linkedImg: Array<{
-    id: number;
-    name: string;
-    url: string;
-  }>;
-  additionalGlobalFields?: any;
-}
-
-export const PointInspector: React.FC<PointInspectorPropType> = ({
-  pointType,
-  pointId,
-  imgId,
-  linkedImg,
-  pointX,
-  pointY,
-  setPointX,
-  setPointY,
-  additionalGlobalFields,
-}) => {
-
-  const imageList = useSelector(selectAllImages);
-
-  const [showLinkNewImgPopup, setShowNewImgPopup] = useState(false);
-
-  return (
-    <div className="point-inspector-component">
-      {showLinkNewImgPopup &&
-        <LinkNewImgPopup
-          show={showLinkNewImgPopup}
-          hidePopup={() => setShowNewImgPopup(false)}
-          pointType={pointType}
-          pointId={pointId}
-          images={imageList.map( img => ({title: img.name, id: img.id, src: img.path}))}
-          initiallySelectedImagesId={linkedImg.map( img => img.id)}
-        />
-      }
-      <div className="point-inspector-header">{`${pointType} ${pointId}`}</div>
-      <FieldsContainer title={`Image based ${pointType} properties`}>
-        <div className="point-local">
-          <div className="point-position">
-            <InputField
-              type="number"
-              label="X"
-              value={pointX}
-              setValue={setPointX}
-            />
-            <InputField
-              type="number"
-              label="Y"
-              value={pointY}
-              setValue={setPointY}
-            />
-          </div>
-        </div>
-      </FieldsContainer>
-      <FieldsContainer title={`Global ${pointType} properties`}>
-        <div className="point-global">
-          {additionalGlobalFields}
-          <div className="linked-img-container">
-            <div className="group-header">
-              <div className="linked-img-text">Linked images:</div>
-              <div className="add-btn" onClick={() => setShowNewImgPopup(true)}>
-                <span className="material-symbols-outlined btn"> add </span>
-              </div>
-            </div>
-            <div className="linked-img">
-              {linkedImg.map((img) => (
-                <ImagePreview
-                  key={img.id}
-                  imageId={img.id}
-                  imageName={img.name}
-                  imageUrl={img.url}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </FieldsContainer>
-    </div>
-  );
-};
+import React, { useState } from "react";import './PointInspector.scss';import { InputField } from '../../common/InputField';import { FieldsContainer } from '../../common/FieldsContainer';import { ImagePreview } from '../images/ImagePreview';import { LinkNewImgPopup } from "./LinkNewImagePopup";import { useSelector } from "react-redux";import { selectAllImages } from "../../../../core/model/slices/imageListSlice";import { ImagesLinkedPoint, Point, PointOnImage } from "../../../../core/model/slices/common/interfaces";interface PointInspectorPropType {  point: ImagesLinkedPoint<any>;  pointType: string;  pointId: number;  imgId: number;  pointX: number;  setPointX: (x: number) => void;  pointY: number;  setPointY: (y: number) => void;  linkedImg: Array<{    id: number;    name: string;    url: string;  }>;  additionalGlobalFields?: any;  editPoint: (point: ImagesLinkedPoint<any>) => void;}export const PointInspector: React.FC<PointInspectorPropType> = ({  point,  pointType,  pointId,  imgId,  linkedImg,  pointX,  pointY,  setPointX,  setPointY,  additionalGlobalFields,  editPoint}) => {  const imageList = useSelector(selectAllImages);  const [showLinkNewImgPopup, setShowNewImgPopup] = useState(false);  const setLinkedImg: (imgIds: Array<number>) => void = imgIds => {    const newPoint = { ...point };    newPoint.linkedImages = { ...newPoint.linkedImages };    const oldLinkedImageIds = Object.keys(newPoint.linkedImages)      .map((strId) => parseInt(strId));    const removedLinkedImageIds = oldLinkedImageIds      .filter(id => !imgIds.includes(id));    const newLinkedImageIds = imgIds      .filter(id => !oldLinkedImageIds.includes(id));    removedLinkedImageIds.forEach((imgIndex) => {      delete newPoint.linkedImages[imgIndex];    });    const newPointsOnImage: PointOnImage[] = newLinkedImageIds      .map(imgIndex => ({        imageId: imgIndex,        pointId: pointId,        x: pointX,        y: pointY,        source: "MANUAL"      }));    newPoint.linkedImages = {      ...newPoint.linkedImages,      ...newPointsOnImage.reduce((obj, pointOnImg) => ({...obj, [pointOnImg.imageId]: pointOnImg}), {})    };    editPoint(newPoint);  };  return (    <div className="point-inspector-component">      {showLinkNewImgPopup &&        <LinkNewImgPopup          show={showLinkNewImgPopup}          hidePopup={() => setShowNewImgPopup(false)}          pointType={pointType}          pointId={pointId}          images={imageList.map( img => ({title: img.name, id: img.id, src: img.path}))}          initiallySelectedImagesId={linkedImg.map( img => img.id)}          setLinkedImg={setLinkedImg}        />      }      <div className="point-inspector-header">{`${pointType} ${pointId}`}</div>      <FieldsContainer title={`Image based ${pointType} properties`}>        <div className="point-local">          <div className="point-position">            <InputField              type="number"              label="X"              value={pointX}              setValue={setPointX}            />            <InputField              type="number"              label="Y"              value={pointY}              setValue={setPointY}            />          </div>        </div>      </FieldsContainer>      <FieldsContainer title={`Global ${pointType} properties`}>        <div className="point-global">          {additionalGlobalFields}          <div className="linked-img-container">            <div className="group-header">              <div className="linked-img-text">Linked images:</div>              <div className="add-btn" onClick={() => setShowNewImgPopup(true)}>                <span className="material-symbols-outlined btn"> add </span>              </div>            </div>            <div className="linked-img">              {linkedImg.map((img) => (                <ImagePreview                  key={img.id}                  imageId={img.id}                  imageName={img.name}                  imageUrl={img.url}                />              ))}            </div>          </div>        </div>      </FieldsContainer>    </div>  );};
