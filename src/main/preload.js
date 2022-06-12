@@ -5,7 +5,12 @@ contextBridge.exposeInMainWorld('electron', {
   logToRenderer: (callback) => ipcRenderer.on('log:renderer', callback),
   addNotification: (callback) => ipcRenderer.on('notify', callback),
 
-  addCameraPositionsToModel: (callback) => ipcRenderer.on('addToModel:camera', callback),
+  addTPImageToModel: (callback) => ipcRenderer.on('addToModel:tp', callback),
+  addGCPImageToModel: (callback) => ipcRenderer.on('addToModel:gcp_img', callback),
+  addGCPObjectToModel: (callback) => ipcRenderer.on('addToModel:gcp_obj', callback),
+  addCameraPositionToModel: (callback) => ipcRenderer.on('addToModel:camera', callback),
+  addPointCloudToModel: (callback) => ipcRenderer.on('addToModel:cloud', callback),
+  addCameraSettingsToModel: (callback) => ipcRenderer.on('addToModel:settings', callback),
 
   // RENDERER -> MAIN
   // Logger
@@ -36,5 +41,10 @@ contextBridge.exposeInMainWorld('electron', {
   exportCameraSettingsTable: (data, chooseLocation) => ipcRenderer.send('export:settings', data, chooseLocation),
 
   // import.ts
+  importTPImageTable: (chooseLocation) => ipcRenderer.send('import:tp', chooseLocation),
+  importGCPImageTable: (chooseLocation) => ipcRenderer.send('import:gcp_img', chooseLocation),
+  importGCPObjectTable: (chooseLocation) => ipcRenderer.send('import:gcp_obj', chooseLocation),
   importCameraPositionTable: (chooseLocation) => ipcRenderer.send('import:camera', chooseLocation),
+  importPointCloudTable: (chooseLocation) => ipcRenderer.send('import:cloud', chooseLocation),
+  importCameraSettingsTable: (chooseLocation) => ipcRenderer.send('import:settings', chooseLocation),
 });

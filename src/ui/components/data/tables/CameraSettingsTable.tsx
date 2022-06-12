@@ -30,7 +30,7 @@ export function CameraSettingsTable(props: { showImportButton: boolean }) {
     <>
       <div className="buttons-row">
         {showImportButton ? (
-          <button onClick={() => console.log('Click!')}>Import from CSV</button>
+          <button onClick={() => window.electron.importCameraSettingsTable(true)}>Import from CSV</button>
         ) : (
           <></>
         )}

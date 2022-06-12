@@ -18,7 +18,13 @@ import {
   exportPointCloudTable,
   exportTPImageTable
 } from './api/export';
-import { importCameraPositionTable } from './api/import';
+import {
+  importCameraPositionTable, importCameraSettingsTable,
+  importGCPImageTable,
+  importGCPObjectTable,
+  importPointCloudTable,
+  importTPImageTable
+} from './api/import';
 
 export default function registerIpcEvents() {
   // log
@@ -52,5 +58,10 @@ export default function registerIpcEvents() {
   ipcMain.on('export:settings', async (_event, arg1, arg2) => exportCameraSettingsTable(arg1, arg2));
 
   // import.ts
+  ipcMain.on('import:tp', async (_event, arg1) => importTPImageTable(arg1));
+  ipcMain.on('import:gcp_img', async (_event, arg1) => importGCPImageTable(arg1));
+  ipcMain.on('import:gcp_obj', async (_event, arg1) => importGCPObjectTable(arg1));
   ipcMain.on('import:camera', async (_event, arg1) => importCameraPositionTable(arg1));
+  ipcMain.on('import:cloud', async (_event, arg1) => importPointCloudTable(arg1));
+  ipcMain.on('import:settings', async (_event, arg1) => importCameraSettingsTable(arg1));
 }

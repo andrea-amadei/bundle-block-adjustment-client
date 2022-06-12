@@ -10,7 +10,7 @@ export function GCPImageTable(props: { showImportButton: boolean }) {
     <>
       <div className="buttons-row">
         {showImportButton ? (
-          <button onClick={() => console.log('Click!')}>Import from CSV</button>
+          <button onClick={() => window.electron.importGCPImageTable(true)}>Import from CSV</button>
         ) : (
           <></>
         )}

@@ -10,7 +10,7 @@ export function TPImageTable(props: { showImportButton: boolean }) {
     <>
       <div className="buttons-row">
         {showImportButton ? (
-          <button onClick={() => console.log('Click!')}>Import from CSV</button>
+          <button onClick={() => window.electron.importTPImageTable(true)}>Import from CSV</button>
         ) : (
           <></>
         )}

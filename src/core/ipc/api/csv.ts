@@ -54,7 +54,8 @@ export function convertCSVToData(csv: string): Promise<string[][]> {
       resolve(result);
     });
 
-    csv.split('\n').forEach((row) => parser.write(row));
+    // csv.split('\n').forEach((row) => parser.write(row));
+    parser.write(csv);
     parser.end();
   });
 }
@@ -76,7 +77,7 @@ export function validateRow(row: string[], constraints: (ConstraintType | null)[
       // Check type
       if (constraints[i]?.type === 'float') {
         if (Number.isNaN(parseFloat(row[i]))) return false;
-      } else if (constraints[i]?.type === 'float') {
+      } else if (constraints[i]?.type === 'int') {
         if (Number.isNaN(parseInt(row[i], 10))) return false;
       } else if (constraints[i]?.type === 'boolean') {
         if (row[i].toLowerCase() !== 'true' && row[i].toLowerCase() !== 'false')
