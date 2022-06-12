@@ -30,11 +30,12 @@ export async function exportToCSV(defaultName: string, chooseLocation: boolean, 
         .then((result) => {
           writeTextFile(selectedPath, [result])
             .then(() => {
-              getMainWindow()?.webContents.send('notify', {
-                message: 'File saved successfully!',
-                status: 'success',
-                symbol: chooseLocation ? 'save_as' : 'save',
-              } as Message);
+              if (chooseLocation)
+                getMainWindow()?.webContents.send('notify', {
+                  message: 'File saved successfully!',
+                  status: 'success',
+                  symbol: chooseLocation ? 'save_as' : 'save',
+                } as Message);
             })
             .catch(() => {
               getMainWindow()?.webContents.send('notify', {

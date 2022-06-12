@@ -4,7 +4,10 @@ import { getSavesPath, readTextFile } from './fs';
 import { getMainWindow } from '../../../main/main';
 import { Message } from '../../model/slices/messages/messageQueueSlice';
 import { convertCSVToData, validateRow } from './csv';
-import { CameraPosition, RealPoint } from '../../model/slices/common/interfaces';
+import {
+  CameraPosition,
+  RealPoint,
+} from '../../model/slices/common/interfaces';
 import { TiePoint } from '../../model/slices/tiePointsSlice';
 import { GroundControlPoint } from '../../model/slices/groundControlPointsSlice';
 import { CameraState } from '../../model/slices/cameraSlice';
@@ -24,8 +27,8 @@ export async function importFromCSV(
         ],
         properties: ['openFile'],
       })
-    : new Promise<string>((resolve) =>
-        resolve(path.join(getSavesPath(), defaultName))
+    : new Promise<string[]>((resolve) =>
+        resolve([path.join(getSavesPath(), defaultName)])
       )
   )
     .then((selectedPath) => {
@@ -145,7 +148,8 @@ export function importTPImageTable(chooseLocation: boolean) {
 
     getMainWindow()?.webContents.send(
       'addToModel:tp',
-      Object.entries(result).map((x) => x[1])
+      Object.entries(result).map((x) => x[1]),
+      chooseLocation
     );
   });
 }
@@ -215,7 +219,8 @@ export function importGCPImageTable(chooseLocation: boolean) {
 
     getMainWindow()?.webContents.send(
       'addToModel:gcp_img',
-      Object.entries(result).map((x) => x[1])
+      Object.entries(result).map((x) => x[1]),
+      chooseLocation
     );
   });
 }
@@ -257,7 +262,11 @@ export function importGCPObjectTable(chooseLocation: boolean) {
       return;
     }
 
-    getMainWindow()?.webContents.send('addToModel:gcp_obj', result);
+    getMainWindow()?.webContents.send(
+      'addToModel:gcp_obj',
+      result,
+      chooseLocation
+    );
   });
 }
 
@@ -303,7 +312,11 @@ export function importCameraPositionTable(chooseLocation: boolean) {
       return;
     }
 
-    getMainWindow()?.webContents.send('addToModel:camera', result);
+    getMainWindow()?.webContents.send(
+      'addToModel:camera',
+      result,
+      chooseLocation
+    );
   });
 }
 
@@ -343,7 +356,11 @@ export function importPointCloudTable(chooseLocation: boolean) {
       return;
     }
 
-    getMainWindow()?.webContents.send('addToModel:cloud', result);
+    getMainWindow()?.webContents.send(
+      'addToModel:cloud',
+      result,
+      chooseLocation
+    );
   });
 }
 
@@ -394,6 +411,10 @@ export function importCameraSettingsTable(chooseLocation: boolean) {
       } as CameraState;
     });
 
-    getMainWindow()?.webContents.send('addToModel:settings', result);
+    getMainWindow()?.webContents.send(
+      'addToModel:settings',
+      result,
+      chooseLocation
+    );
   });
 }
