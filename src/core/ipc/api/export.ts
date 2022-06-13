@@ -10,6 +10,7 @@ import {
 } from '../../model/slices/common/interfaces';
 import { GroundControlPoint } from '../../model/slices/groundControlPointsSlice';
 import { Message } from '../../model/slices/messages/messageQueueSlice';
+import { InputImage } from '../../model/slices/imageListSlice';
 
 export async function exportToCSV(defaultName: string, chooseLocation: boolean, extractor: () => any[][]) {
   (chooseLocation
@@ -123,5 +124,11 @@ export function exportCameraSettingsTable(
 ) {
   exportToCSV('settings.csv', chooseLocation, () =>
     [[data.xi0, data.eta0, data.c, data.k1, data.k2, data.k3, data.p1, data.p2, data.a1, data.a2]]
+  );
+}
+
+export function exportImageListTable(data: InputImage[], chooseLocation: boolean) {
+  exportToCSV('img_list.csv', chooseLocation, () =>
+    data.map((p) => [p.id, p.name, `${path.basename(p.path)}`])
   );
 }

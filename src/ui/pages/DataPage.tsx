@@ -1,4 +1,4 @@
-import  './DataPage.scss'
+import './DataPage.scss';
 import { useState } from 'react';
 import { CardLayoutTabsPanel } from '../components/common/CardLayoutTabsPanel';
 import { CameraSettingsTable } from '../components/data/tables/CameraSettingsTable';
@@ -9,18 +9,20 @@ import { CameraPositionTable } from '../components/data/tables/CameraPositionTab
 import { PointCloudTable } from '../components/data/tables/PointCloudTable';
 import { store } from '../../core/model/store';
 import { addNewMessage } from '../../core/model/slices/messages/messageQueueSlice';
+import { ImageListTable } from '../components/data/tables/ImageListTable';
 
 export function DataPage() {
-  const [activeSideTab, setActiveSideTab] = useState('camera');
+  const [activeSideTab, setActiveSideTab] = useState('gcp_obj');
   const [enableImport, setEnableImport] = useState(false);
 
   const tables = {
-    camera: <CameraSettingsTable showImportButton={enableImport} />,
     gcp_obj: <GCPObjectTable showImportButton={enableImport} />,
     gcp_img: <GCPImageTable showImportButton={enableImport} />,
     tp_img: <TPImageTable showImportButton={enableImport} />,
     img: <CameraPositionTable showImportButton={enableImport} />,
     cloud: <PointCloudTable showImportButton={enableImport} />,
+    camera: <CameraSettingsTable showImportButton={enableImport} />,
+    img_list: <ImageListTable showImportButton={enableImport} />,
   };
 
   return (
@@ -53,14 +55,6 @@ export function DataPage() {
       <CardLayoutTabsPanel
         className="main-section"
         tabHeaderList={[
-          {
-            tabId: 'camera',
-            label: (
-              <div className="tab-link" onClick={() => setActiveSideTab('camera')}>
-                Camera Settings
-              </div>
-            ),
-          },
           {
             tabId: 'gcp_obj',
             label: (
@@ -98,6 +92,22 @@ export function DataPage() {
             label: (
               <div className="tab-link" onClick={() => setActiveSideTab('cloud')}>
                 Point Cloud
+              </div>
+            ),
+          },
+          {
+            tabId: 'camera',
+            label: (
+              <div className="tab-link" onClick={() => setActiveSideTab('camera')}>
+                Camera Settings
+              </div>
+            ),
+          },
+          {
+            tabId: 'img_list',
+            label: (
+              <div className="tab-link" onClick={() => setActiveSideTab('img_list')}>
+                Image List
               </div>
             ),
           },

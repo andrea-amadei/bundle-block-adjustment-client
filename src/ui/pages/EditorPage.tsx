@@ -8,7 +8,7 @@ import { PointInspectorGCP } from '../components/editor/points/PointInspectorGCP
 import React, { useEffect, useState } from "react";
 import { SideListTP } from '../components/editor/sidelist/SideListTP';
 import { SideListGCP } from '../components/editor/sidelist/SideListGCP';
-import { selectAllImages } from '../../core/model/slices/imageListSlice';
+import { InputImage, selectAllImages, selectImagesMap } from '../../core/model/slices/imageListSlice';
 import { useSelector } from 'react-redux';
 import { selectTiePoints } from "../../core/model/slices/tiePointsSlice";
 import { selectGroundControlPoints } from "../../core/model/slices/groundControlPointsSlice";
@@ -24,6 +24,11 @@ export function EditorPage() {
 
   const TPMap = useSelector(selectTiePoints);
   const GCPMap = useSelector(selectGroundControlPoints);
+
+  const lastImageId = Math.max(
+    0,
+    ...Object.keys(useSelector(selectImagesMap)).map((x) => parseInt(x, 10))
+  );
 
   useEffect(() => {
     if( (selectedPointId || selectedPointId === 0) && selectedPointType)
@@ -89,7 +94,7 @@ export function EditorPage() {
       <div className="editor-page">
         <div className="image-list">
           {/* <div className="title">Image list</div> */}
-          <div className="add-img-box">
+          <div className="add-img-box" onClick={() => window.electron.importImage([], lastImageId + 1)}>
             <span className="material-symbols-outlined btn"> add </span>
             add new image
           </div>

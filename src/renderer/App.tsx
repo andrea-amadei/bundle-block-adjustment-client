@@ -23,7 +23,7 @@ import {
   selectAllCameras,
   selectAllPoints,
 } from '../core/model/slices/resultSlice';
-import { importData, saveAll } from '../core/model/dataManipulation';
+import { importAll, importData, saveAll } from '../core/model/dataManipulation';
 import {
   selectTiePointList,
   TiePoint,
@@ -33,7 +33,17 @@ import {
   selectGroundControlPointList,
 } from '../core/model/slices/groundControlPointsSlice';
 import {
-  CameraState, selectA1, selectA2, selectC, selectEta0, selectK1, selectK2, selectK3, selectP1, selectP2, selectXi0,
+  CameraState,
+  selectA1,
+  selectA2,
+  selectC,
+  selectEta0,
+  selectK1,
+  selectK2,
+  selectK3,
+  selectP1,
+  selectP2,
+  selectXi0,
   setA1,
   setA2,
   setC,
@@ -45,6 +55,11 @@ import {
   setP2,
   setXi0,
 } from '../core/model/slices/cameraSlice';
+import {
+  addImage,
+  InputImage,
+  selectAllImages,
+} from '../core/model/slices/imageListSlice';
 
 export default function App() {
   const tpList = useSelector(selectTiePointList);
@@ -64,10 +79,12 @@ export default function App() {
   const a1 = useSelector(selectA1);
   const a2 = useSelector(selectA2);
 
+  const imageList = useSelector(selectAllImages);
+
   useEffect(() => {
     // Register periodic events
     const autosaveInterval = setInterval(() => {
-     saveAll(tpList, gcpList, cameraList, pointList, { xi0, eta0, c, k1, k2, k3, p1, p2, a1, a2 }, true);
+     saveAll(tpList, gcpList, cameraList, pointList, { xi0, eta0, c, k1, k2, k3, p1, p2, a1, a2 }, imageList, true);
     }, 60 * 1000);
 
     // Register IPC methods
@@ -134,10 +151,31 @@ export default function App() {
       }
     );
 
+    window.electron.addImageListToModel(
+      (_event, data: InputImage[], showSuccessMessage: boolean) => {
+        if (showSuccessMessage)
+          store.dispatch(
+            addNewMessage({
+              message: 'File imported successfully!',
+              status: 'success',
+              symbol: 'file_download',
+            })
+          );
+
+        data.forEach((x) => window.electron.importImage([x], x.id));
+      }
+    );
+
+    window.electron.addImageToModel((_event, data: InputImage) => {
+      store.dispatch(addImage(data));
+    });
+
+    importAll();
+
     return () => {
       clearInterval(autosaveInterval);
     };
-  });
+  }, []);
 
   return (
     <>

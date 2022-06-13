@@ -10,10 +10,16 @@ export function getSavesPath() {
   return path.join(app.getPath('userData'), 'saves');
 }
 
-export async function createSavesDirectory() {
-  if (!fs.existsSync(getSavesPath())) {
-    fs.mkdirSync(getSavesPath(), { recursive: true });
-  }
+export async function createSavesDirectory(): Promise<void> {
+  return new Promise((resolve) => {
+    const lastDirectory = path.join(getSavesPath(), 'images');
+
+    if (!fs.existsSync(lastDirectory)) {
+      fs.mkdirSync(lastDirectory, { recursive: true });
+    }
+
+    resolve();
+  });
 }
 
 export async function readTextFile(filePath: string): Promise<string> {
@@ -42,16 +48,14 @@ export async function writeTextFileInSaves(filePath: string, rows: string[]): Pr
   return writeTextFile(path.join(getSavesPath(), filePath), rows);
 }
 
-export async function copyFile(sourcePath: string, destinationPath: string) {
-  createSavesDirectory()
-    .then(() =>
-      fs.copyFile(sourcePath, destinationPath, (error) => {
-        if (error) throw error;
-      })
-    )
-    .catch((error) => {
-      throw error;
+export async function copyFile(sourcePath: string, destinationPath: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    fs.copyFile(sourcePath, destinationPath, (error) => {
+      if (error) reject();
+
+      resolve();
     });
+  });
 }
 
 export async function copyFileToSaves(sourcePath: string, name: string) {

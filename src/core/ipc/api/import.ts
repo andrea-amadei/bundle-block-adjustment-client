@@ -11,6 +11,7 @@ import {
 import { TiePoint } from '../../model/slices/tiePointsSlice';
 import { GroundControlPoint } from '../../model/slices/groundControlPointsSlice';
 import { CameraState } from '../../model/slices/cameraSlice';
+import { InputImage } from '../../model/slices/imageListSlice';
 
 export async function importFromCSV(
   defaultName: string,
@@ -413,6 +414,50 @@ export function importCameraSettingsTable(chooseLocation: boolean) {
 
     getMainWindow()?.webContents.send(
       'addToModel:settings',
+      result,
+      chooseLocation
+    );
+  });
+}
+
+export function importImageListTable(chooseLocation: boolean) {
+  const result: InputImage[] = [];
+
+  importFromCSV('img_list.csv', chooseLocation, (data: string[][]) => {
+    data.forEach((record: string[]) => {
+      if (
+        !validateRow(record, [
+          { type: 'int', validator: (x) => x >= 0 },
+          { type: 'string', validator: () => true },
+          { type: 'string', validator: () => true },
+        ])
+      )
+        throw Error();
+
+      result.push({
+        id: parseInt(record[0], 10),
+        name: record[1],
+        path: record[2],
+        width: 0,
+        height: 0,
+      });
+    });
+
+    // Check if every imageId is unique
+    if (!isFieldUnique(result.map((c) => c.id))) throw Error();
+
+    if (result.length === 0) {
+      getMainWindow()?.webContents.send('notify', {
+        message: 'File is empty',
+        status: 'warning',
+        symbol: 'file_download',
+      } as Message);
+
+      return;
+    }
+
+    getMainWindow()?.webContents.send(
+      'addToModel:img_list',
       result,
       chooseLocation
     );
