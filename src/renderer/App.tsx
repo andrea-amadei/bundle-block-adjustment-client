@@ -2,7 +2,6 @@
 import 'ui/styles/Styles.scss';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { PagesContainer } from '../ui/pages/PagesContainer';
 import { EditorPage } from '../ui/pages/EditorPage';
 import { DataPage } from '../ui/pages/DataPage';
@@ -17,33 +16,22 @@ import {
   CameraPosition,
   RealPoint,
 } from '../core/model/slices/common/interfaces';
+import { importCameras, importPoints } from '../core/model/slices/resultSlice';
+import { importAll, importData } from '../core/model/dataManipulation';
 import {
-  importCameras,
-  importPoints,
-  selectAllCameras,
-  selectAllPoints,
-} from '../core/model/slices/resultSlice';
-import { importAll, importData, saveAll } from '../core/model/dataManipulation';
-import {
-  selectTiePointList,
+  addPoint as addPointTP,
+  removeAll as removeAllTP,
   TiePoint,
 } from '../core/model/slices/tiePointsSlice';
 import {
   GroundControlPoint,
-  selectGroundControlPointList,
+  removeAll as removeAllGCP,
+  addPoint as addPointGCP,
+  addLinkedPointByPointId as addLinkedPointByPointIdGCP,
+  removeAllLinkedImages as removeAllLinkedImagesGCP,
 } from '../core/model/slices/groundControlPointsSlice';
 import {
   CameraState,
-  selectA1,
-  selectA2,
-  selectC,
-  selectEta0,
-  selectK1,
-  selectK2,
-  selectK3,
-  selectP1,
-  selectP2,
-  selectXi0,
   setA1,
   setA2,
   setC,
@@ -55,37 +43,13 @@ import {
   setP2,
   setXi0,
 } from '../core/model/slices/cameraSlice';
-import {
-  addImage,
-  InputImage,
-  selectAllImages,
-} from '../core/model/slices/imageListSlice';
+import { addImage, InputImage } from '../core/model/slices/imageListSlice';
 
 export default function App() {
-  const tpList = useSelector(selectTiePointList);
-  const gcpList = useSelector(selectGroundControlPointList);
-
-  const cameraList = useSelector(selectAllCameras);
-  const pointList = useSelector(selectAllPoints);
-
-  const xi0 = useSelector(selectXi0);
-  const eta0 = useSelector(selectEta0);
-  const c = useSelector(selectC);
-  const k1 = useSelector(selectK1);
-  const k2 = useSelector(selectK2);
-  const k3 = useSelector(selectK3);
-  const p1 = useSelector(selectP1);
-  const p2 = useSelector(selectP2);
-  const a1 = useSelector(selectA1);
-  const a2 = useSelector(selectA2);
-
-  const imageList = useSelector(selectAllImages);
-
   useEffect(() => {
-    // Register periodic events
     const autosaveInterval = setInterval(() => {
-     saveAll(tpList, gcpList, cameraList, pointList, { xi0, eta0, c, k1, k2, k3, p1, p2, a1, a2 }, imageList, true);
-    }, 60 * 1000);
+      // saveAll(true);
+    }, 30 * 1000);
 
     // Register IPC methods
     window.electron.logToRenderer((_event, text: string) => console.log(text));
@@ -97,21 +61,31 @@ export default function App() {
     // TODO
     window.electron.addTPImageToModel(
       (_event, data: TiePoint[], showSuccessMessage: boolean) => {
-        data.forEach((r) => console.log(r));
+        store.dispatch(removeAllTP());
+
+        data.forEach((tp) => store.dispatch(addPointTP(tp)));
       }
     );
 
     // TODO
     window.electron.addGCPImageToModel(
       (_event, data: GroundControlPoint[], showSuccessMessage: boolean) => {
-        data.forEach((r) => console.log(r));
+        store.dispatch(removeAllLinkedImagesGCP);
+
+        data.forEach((gcp) =>
+          Object.values(gcp.linkedImages).forEach((p) =>
+            store.dispatch(addLinkedPointByPointIdGCP(p))
+          )
+        );
       }
     );
 
     // TODO
     window.electron.addGCPObjectToModel(
       (_event, data: GroundControlPoint[], showSuccessMessage: boolean) => {
-        data.forEach((r) => console.log(r));
+        store.dispatch(removeAllGCP);
+
+        data.forEach((gcp) => store.dispatch(addPointGCP(gcp)));
       }
     );
 
