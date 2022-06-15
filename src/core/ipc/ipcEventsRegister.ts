@@ -7,7 +7,7 @@ import {
   copyFile,
   copyFileToSaves,
   writeTextFile,
-  writeTextFileInSaves,
+  writeTextFileInSaves, removeFile, removeFileInSaves, removeImage
 } from './api/fs';
 import { convertDataToCSV } from './api/csv';
 import {
@@ -42,6 +42,9 @@ export default function registerIpcEvents() {
   ipcMain.handle('writeTextFile:saves', async (_event, arg1, arg2) => writeTextFileInSaves(arg1, arg2));
   ipcMain.handle('copyFile', async (_event, arg1, arg2) => copyFile(arg1, arg2));
   ipcMain.handle('copyFile:saves', async (_event, arg1, arg2) => copyFileToSaves(arg1, arg2));
+  ipcMain.handle('removeFile', async (_event, arg) => removeFile(arg));
+  ipcMain.handle('removeFile:saves', async (_event, arg) => removeFileInSaves(arg));
+  ipcMain.handle('removeFile:images', async (_event, arg) => removeImage(arg));
 
   // csv.ts
   ipcMain.handle('convertToCSV', async (_event, arg) => convertDataToCSV(arg));

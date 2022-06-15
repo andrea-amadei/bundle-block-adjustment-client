@@ -27,6 +27,9 @@ contextBridge.exposeInMainWorld('electron', {
   writeTextFileInSaves: (path, rows) => ipcRenderer.invoke('writeTextFile:saves', path, rows),
   copyFile: (sourcePath, destinationPath) => ipcRenderer.invoke('copyFile', sourcePath, destinationPath),
   copyFileToSaves: (sourcePath, name) => ipcRenderer.invoke('copyFile:saves', sourcePath, name),
+  removeFile: (filePath) => ipcRenderer.invoke('removeFile', filePath),
+  removeFileInSaves: (name) => ipcRenderer.invoke('removeFile:saves', name),
+  removeImage: (name) => ipcRenderer.invoke('removeFile:images', name),
 
   // cvs.ts
   convertDataToCSV: (data) => ipcRenderer.invoke('convertToCSV', data),
