@@ -99,7 +99,7 @@ export function DataPage() {
             tabId: 'camera',
             label: (
               <div className="tab-link" onClick={() => setActiveSideTab('camera')}>
-                Camera Settings
+                Camera Parameters
               </div>
             ),
           },
