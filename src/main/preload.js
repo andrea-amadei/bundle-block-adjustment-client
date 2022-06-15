@@ -55,4 +55,7 @@ contextBridge.exposeInMainWorld('electron', {
 
   // images.ts
   importImage: (existingImages, imageId) => ipcRenderer.send('import:image', existingImages, imageId),
+
+  // computeResults.ts
+  computeResults: () => ipcRenderer.invoke('computeResults:run', {})
 });

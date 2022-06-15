@@ -11,6 +11,7 @@ import {
 import { GroundControlPoint } from '../../model/slices/groundControlPointsSlice';
 import { Message } from '../../model/slices/messages/messageQueueSlice';
 import { InputImage } from '../../model/slices/imageListSlice';
+import { app } from "electron";
 
 export async function exportToCSV(defaultName: string, chooseLocation: boolean, extractor: () => any[][]) {
   (chooseLocation

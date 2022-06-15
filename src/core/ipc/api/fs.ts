@@ -10,6 +10,14 @@ export function getSavesPath() {
   return path.join(app.getPath('userData'), 'saves');
 }
 
+export function getExecutablesPath() {
+  return path.join(app.getAppPath(), 'Contents/Resources/build');
+}
+
+export function getComputeResultsJarPath() {
+  return path.join(getExecutablesPath(), 'test.jar');
+}
+
 export async function createSavesDirectory(): Promise<void> {
   return new Promise((resolve) => {
     const lastDirectory = path.join(getSavesPath(), 'images');

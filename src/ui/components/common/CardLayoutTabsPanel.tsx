@@ -9,7 +9,7 @@ interface PropType {
     onClick?: (() => void) | null | undefined;
   }>;
   content: any;
-  className: string;
+  className?: string;
 }
 
 export const CardLayoutTabsPanel: React.FC<PropType> = (props) => {
@@ -36,3 +36,7 @@ export const CardLayoutTabsPanel: React.FC<PropType> = (props) => {
     </div>
   );
 };
+
+CardLayoutTabsPanel.defaultProps = {
+  className: '',
+}

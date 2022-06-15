@@ -26,6 +26,7 @@ import {
   importTPImageTable
 } from './api/import';
 import { importImage } from './api/images';
+import { computeResults } from "./api/computeResults";
 
 export default function registerIpcEvents() {
   // log
@@ -70,4 +71,7 @@ export default function registerIpcEvents() {
 
   // images.ts
   ipcMain.on('import:image', async (_event, arg1, arg2) => importImage(arg1, arg2));
+
+  // computeResults.ts
+  ipcMain.handle('computeResults:run', async (_event, options) => computeResults(options));
 }
