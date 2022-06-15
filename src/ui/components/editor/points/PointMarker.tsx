@@ -21,11 +21,13 @@ interface PointMarkerAttributes {
   isSelected?: boolean;
   zoomValue: number;
   wzoom: any;
+  maxX: number;
+  maxY: number;
 }
 
 // eslint-disable-next-line import/prefer-default-export
 export function PointMarker(props: PointMarkerAttributes) {
-  const { point, type, isMovable, isSelected, zoomValue, wzoom } = props;
+  const { point, type, isMovable, isSelected, zoomValue, wzoom, maxX, maxY } = props;
   const [searchParams, setSearchParams] = useSearchParams();
 
   if (type === undefined) throw Error('Attribute "type" is required');
@@ -47,11 +49,13 @@ export function PointMarker(props: PointMarkerAttributes) {
     );
 
     if (dragged === 'all' || dragged === 'right') {
-      setPointX(pointStartingX + Math.floor((e.pageX - mouseStartingX) / zoomValue));
+      const newValue = pointStartingX + Math.floor((e.pageX - mouseStartingX) / zoomValue);
+      if (newValue <= maxX && newValue > 0) setPointX(newValue);
     }
 
     if (dragged === 'all' || dragged === 'bottom') {
-      setPointY(pointStartingY + Math.floor((e.pageY - mouseStartingY) / zoomValue));
+      const newValue = pointStartingY + Math.floor((e.pageY - mouseStartingY) / zoomValue);
+      if (newValue <= maxY && newValue > 0) setPointY(newValue);
     }
   };
 
