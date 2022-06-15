@@ -85,6 +85,5 @@ export async function importAll() {
     .then(() => importAndAddToStoreCameraPositionTable(false))
     .then(() => importAndAddToStorePointCloudTable(false))
     .then(() => importAndAddToStoreCameraSettingsTable(false))
-
-  // saveAll();
+    // .then(() => saveAll(true));
 }

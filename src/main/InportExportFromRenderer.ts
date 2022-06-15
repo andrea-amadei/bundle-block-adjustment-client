@@ -21,17 +21,20 @@ import {
 } from "../core/model/slices/cameraSlice";
 import { InputImage } from "../core/model/slices/imageListSlice";
 
-
+// TODO: fix to many dispatches called
 export async function importAndAddToStoreTPImageTable(chooseLocation: boolean) {
-  return window.electron.importTPImageTable(chooseLocation)
+  return window.electron
+    .importTPImageTable(chooseLocation)
     .then((data: TiePoint[]) => {
       store.dispatch(removeAllTP());
       data.forEach((tp) => store.dispatch(addPointTP(tp)));
     });
 }
 
+// TODO: fix to many dispatches called
 export async function importAndAddToStoreGCPImageTable(chooseLocation: boolean) {
-  return window.electron.importGCPImageTable(chooseLocation)
+  return window.electron
+    .importGCPImageTable(chooseLocation)
     .then((data: GroundControlPoint[]) => {
       store.dispatch(removeAllLinkedImagesGCP);
       data.forEach((gcp) =>
@@ -42,8 +45,10 @@ export async function importAndAddToStoreGCPImageTable(chooseLocation: boolean) 
     });
 }
 
+// TODO: fix to many dispatches called
 export async function importAndAddToStoreGCPObjectTable(chooseLocation: boolean) {
-  return window.electron.importGCPObjectTable(chooseLocation)
+  return window.electron
+    .importGCPObjectTable(chooseLocation)
     .then((data: GroundControlPoint[]) => {
       store.dispatch(removeAllGCP);
       data.forEach((gcp) => store.dispatch(addPointGCP(gcp)));
@@ -51,21 +56,24 @@ export async function importAndAddToStoreGCPObjectTable(chooseLocation: boolean)
 }
 
 export async function importAndAddToStoreCameraPositionTable(chooseLocation: boolean) {
-  return window.electron.importCameraPositionTable(chooseLocation)
+  return window.electron
+    .importCameraPositionTable(chooseLocation)
     .then((data: CameraPosition[]) => {
       importData(data, importCameras, true);
     });
 }
 
 export async function importAndAddToStorePointCloudTable(chooseLocation: boolean) {
-  return window.electron.importPointCloudTable(chooseLocation)
+  return window.electron
+    .importPointCloudTable(chooseLocation)
     .then((data: RealPoint[]) => {
       importData(data, importPoints, true);
     });
 }
 
 export async function importAndAddToStoreCameraSettingsTable(chooseLocation: boolean) {
-  return window.electron.importCameraSettingsTable(chooseLocation)
+  return window.electron
+    .importCameraSettingsTable(chooseLocation)
     .then((data: CameraState) => {
       store.dispatch(setXi0(data.xi0));
       store.dispatch(setEta0(data.eta0));
@@ -81,7 +89,8 @@ export async function importAndAddToStoreCameraSettingsTable(chooseLocation: boo
 }
 
 export async function importAndAddToStoreImageListTable(chooseLocation: boolean) {
-  return window.electron.importImageListTable(chooseLocation)
+  return window.electron
+    .importImageListTable(chooseLocation)
     .then((data: InputImage[]) => {
       data.forEach((x) => window.electron.importImage([x], x.id));
     });

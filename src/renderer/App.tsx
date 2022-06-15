@@ -12,46 +12,15 @@ import {
 import { NotificationBanner } from '../ui/components/common/NotificationBanner';
 import { TestingPage } from '../ui/pages/TestingPage';
 import { store } from '../core/model/store';
-import {
-  CameraPosition,
-  RealPoint,
-} from '../core/model/slices/common/interfaces';
-import { importCameras, importPoints } from '../core/model/slices/resultSlice';
-import { importAll, importData } from '../core/model/dataManipulation';
-import {
-  addPoint as addPointTP,
-  removeAll as removeAllTP,
-  TiePoint,
-} from '../core/model/slices/tiePointsSlice';
-import {
-  GroundControlPoint,
-  removeAll as removeAllGCP,
-  addPoint as addPointGCP,
-  addLinkedPointByPointId as addLinkedPointByPointIdGCP,
-  removeAllLinkedImages as removeAllLinkedImagesGCP,
-} from '../core/model/slices/groundControlPointsSlice';
-import {
-  CameraState,
-  setA1,
-  setA2,
-  setC,
-  setEta0,
-  setK1,
-  setK2,
-  setK3,
-  setP1,
-  setP2,
-  setXi0,
-} from '../core/model/slices/cameraSlice';
+import { importAll, saveAll } from '../core/model/dataManipulation';
 import { addImage, InputImage } from '../core/model/slices/imageListSlice';
-import { ResultsPage } from "../ui/pages/ResultsPage";
 import { ComputePage } from '../ui/pages/ComputePage';
 
 export default function App() {
   useEffect(() => {
     const autosaveInterval = setInterval(() => {
-      // saveAll(true);
-    }, 30 * 1000);
+      saveAll(true);
+    }, 60 * 1000);
 
     // Register IPC methods
     window.electron.logToRenderer((_event, text: string) => console.log(text));
