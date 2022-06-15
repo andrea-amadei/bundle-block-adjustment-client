@@ -64,13 +64,13 @@ export default function registerIpcEvents() {
   ipcMain.on('export:img_list', async (_event, arg1, arg2) => exportImageListTable(arg1, arg2));
 
   // import.ts
-  ipcMain.on('import:tp', async (_event, arg) => importTPImageTable(arg));
-  ipcMain.on('import:gcp_img', async (_event, arg) => importGCPImageTable(arg));
-  ipcMain.on('import:gcp_obj', async (_event, arg) => importGCPObjectTable(arg));
-  ipcMain.on('import:camera', async (_event, arg) => importCameraPositionTable(arg));
-  ipcMain.on('import:cloud', async (_event, arg) => importPointCloudTable(arg));
-  ipcMain.on('import:settings', async (_event, arg) => importCameraSettingsTable(arg));
-  ipcMain.on('import:img_list', async (_event, arg) => importImageListTable(arg));
+  ipcMain.handle('import:tp', async (_event, arg) => importTPImageTable(arg));
+  ipcMain.handle('import:gcp_img', async (_event, arg) => importGCPImageTable(arg));
+  ipcMain.handle('import:gcp_obj', async (_event, arg) => importGCPObjectTable(arg));
+  ipcMain.handle('import:camera', async (_event, arg) => importCameraPositionTable(arg));
+  ipcMain.handle('import:cloud', async (_event, arg) => importPointCloudTable(arg));
+  ipcMain.handle('import:settings', async (_event, arg) => importCameraSettingsTable(arg));
+  ipcMain.handle('import:img_list', async (_event, arg) => importImageListTable(arg));
 
   // images.ts
   ipcMain.on('import:image', async (_event, arg1, arg2) => importImage(arg1, arg2));

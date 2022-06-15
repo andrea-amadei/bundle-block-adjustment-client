@@ -5,14 +5,6 @@ contextBridge.exposeInMainWorld('electron', {
   logToRenderer: (callback) => ipcRenderer.on('log:renderer', callback),
   addNotification: (callback) => ipcRenderer.on('notify', callback),
 
-  addTPImageToModel: (callback) => ipcRenderer.on('addToModel:tp', callback),
-  addGCPImageToModel: (callback) => ipcRenderer.on('addToModel:gcp_img', callback),
-  addGCPObjectToModel: (callback) => ipcRenderer.on('addToModel:gcp_obj', callback),
-  addCameraPositionToModel: (callback) => ipcRenderer.on('addToModel:camera', callback),
-  addPointCloudToModel: (callback) => ipcRenderer.on('addToModel:cloud', callback),
-  addCameraSettingsToModel: (callback) => ipcRenderer.on('addToModel:settings', callback),
-  addImageListToModel: (callback) => ipcRenderer.on('addToModel:img_list', callback),
-
   addImageToModel: (callback) => ipcRenderer.on('addToModel:images', callback),
 
   // RENDERER -> MAIN
@@ -48,13 +40,13 @@ contextBridge.exposeInMainWorld('electron', {
   exportImageListTable: (data, chooseLocation) => ipcRenderer.send('export:img_list', data, chooseLocation),
 
   // import.ts
-  importTPImageTable: (chooseLocation) => ipcRenderer.send('import:tp', chooseLocation),
-  importGCPImageTable: (chooseLocation) => ipcRenderer.send('import:gcp_img', chooseLocation),
-  importGCPObjectTable: (chooseLocation) => ipcRenderer.send('import:gcp_obj', chooseLocation),
-  importCameraPositionTable: (chooseLocation) => ipcRenderer.send('import:camera', chooseLocation),
-  importPointCloudTable: (chooseLocation) => ipcRenderer.send('import:cloud', chooseLocation),
-  importCameraSettingsTable: (chooseLocation) => ipcRenderer.send('import:settings', chooseLocation),
-  importImageListTable: (chooseLocation) => ipcRenderer.send('import:img_list', chooseLocation),
+  importTPImageTable: (chooseLocation) => ipcRenderer.invoke('import:tp', chooseLocation),
+  importGCPImageTable: (chooseLocation) => ipcRenderer.invoke('import:gcp_img', chooseLocation),
+  importGCPObjectTable: (chooseLocation) => ipcRenderer.invoke('import:gcp_obj', chooseLocation),
+  importCameraPositionTable: (chooseLocation) => ipcRenderer.invoke('import:camera', chooseLocation),
+  importPointCloudTable: (chooseLocation) => ipcRenderer.invoke('import:cloud', chooseLocation),
+  importCameraSettingsTable: (chooseLocation) => ipcRenderer.invoke('import:settings', chooseLocation),
+  importImageListTable: (chooseLocation) => ipcRenderer.invoke('import:img_list', chooseLocation),
 
   // images.ts
   importImage: (existingImages, imageId) => ipcRenderer.send('import:image', existingImages, imageId),

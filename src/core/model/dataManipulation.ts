@@ -16,6 +16,12 @@ import { selectTiePointList} from './slices/tiePointsSlice';
 import { selectGroundControlPointList } from './slices/groundControlPointsSlice';
 import { selectAllImages } from './slices/imageListSlice';
 import { selectAllCameras, selectAllPoints } from './slices/resultSlice';
+import {
+  importAndAddToStoreCameraPositionTable,
+  importAndAddToStoreCameraSettingsTable, importAndAddToStoreGCPImageTable, importAndAddToStoreGCPObjectTable,
+  importAndAddToStoreImageListTable, importAndAddToStorePointCloudTable, importAndAddToStoreTPImageTable,
+  importImageListTable
+} from "../../main/InportExportFromRenderer";
 
 export function importData<T>(data: T[], importer: ActionCreatorWithPayload<T[]>, showSuccessMessage = true) {
   try {
@@ -71,15 +77,14 @@ export function saveAll(showAutosaveMessage = false) {
     store.dispatch(addNewMessage({ message: 'Autosaving', status: 'info' }));
 }
 
-export function importAll() {
-  window.electron.importImageListTable(false);
-  window.electron.importGCPObjectTable(false);
-  window.electron.importGCPImageTable(false);
-  window.electron.importTPImageTable(false);
-  window.electron.importCameraPositionTable(false);
-  window.electron.importPointCloudTable(false);
-  window.electron.importCameraSettingsTable(false);
+export async function importAll() {
+  return importAndAddToStoreImageListTable(false)
+    .then(() => importAndAddToStoreGCPObjectTable(false))
+    .then(() => importAndAddToStoreGCPImageTable(false))
+    .then(() => importAndAddToStoreTPImageTable(false))
+    .then(() => importAndAddToStoreCameraPositionTable(false))
+    .then(() => importAndAddToStorePointCloudTable(false))
+    .then(() => importAndAddToStoreCameraSettingsTable(false))
 
-  // TODO: Should wait for everything to imported
   // saveAll();
 }

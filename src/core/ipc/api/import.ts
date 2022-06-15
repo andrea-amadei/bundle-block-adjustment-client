@@ -13,25 +13,17 @@ import { GroundControlPoint } from '../../model/slices/groundControlPointsSlice'
 import { CameraState } from '../../model/slices/cameraSlice';
 import { InputImage } from '../../model/slices/imageListSlice';
 
-export async function importFromCSV(
-  defaultName: string,
-  chooseLocation: boolean,
-  injector: (data: string[][]) => void
-) {
-  (chooseLocation
-    ? openFilePicker({
-        title: 'Open file',
-        defaultPath: defaultName,
-        filters: [
-          { name: 'CSV', extensions: ['csv'] },
-          { name: 'All Files', extensions: ['*'] },
-        ],
-        properties: ['openFile'],
-      })
-    : new Promise<string[]>((resolve) =>
-        resolve([path.join(getSavesPath(), defaultName)])
-      )
-  )
+
+async function getPathFromUser(defaultName: string) {
+  return openFilePicker({
+    title: 'Open file',
+    defaultPath: defaultName,
+    filters: [
+      { name: 'CSV', extensions: ['csv'] },
+      { name: 'All Files', extensions: ['*'] },
+    ],
+    properties: ['openFile'],
+  })
     .then((selectedPath) => {
       if (selectedPath.length !== 1) {
         getMainWindow()?.webContents.send('notify', {
@@ -40,34 +32,11 @@ export async function importFromCSV(
           status: 'warning',
           symbol: 'download',
         } as Message);
+        throw Error(
+          "Can only open one file at a time... (THIS SHOULDN'T BE POSSIBLE!!!)"
+        );
       } else {
-        readTextFile(selectedPath[0])
-          .then((result: string) => {
-            convertCSVToData(result)
-              .then((data: string[][]) => {
-                try {
-                  injector(data);
-                } catch (error) {
-                  getMainWindow()?.webContents.send('notify', {
-                    message: 'CSV data is invalid and could not be imported',
-                    status: 'error',
-                  } as Message);
-                }
-              })
-              .catch(() => {
-                getMainWindow()?.webContents.send('notify', {
-                  message: 'Could not import data from CSV',
-                  status: 'error',
-                } as Message);
-              });
-          })
-          .catch(() => {
-            if (chooseLocation)
-              getMainWindow()?.webContents.send('notify', {
-                message: 'Could not open file',
-                status: 'error',
-              } as Message);
-          });
+        return selectedPath[0];
       }
     })
     .catch(() => {
@@ -76,6 +45,41 @@ export async function importFromCSV(
         status: 'warning',
         symbol: 'file_download',
       } as Message);
+      throw Error('Action cancelled');
+    });
+}
+
+async function getPathForFileToImport(
+  defaultName: string,
+  makeUserChoosePath: boolean
+) {
+  if (makeUserChoosePath) {
+    return getPathFromUser(defaultName);
+  }
+  return path.join(getSavesPath(), defaultName);
+}
+
+export async function importFromCSV(
+  defaultName: string,
+  chooseLocation: boolean
+) {
+  return getPathForFileToImport(defaultName, chooseLocation)
+    .then(readTextFile)
+    .catch(() => {
+      if (chooseLocation)
+        getMainWindow()?.webContents.send('notify', {
+          message: 'Could not open file',
+          status: 'error',
+        } as Message);
+      throw Error('Could not open file');
+    })
+    .then(convertCSVToData)
+    .catch(() => {
+      getMainWindow()?.webContents.send('notify', {
+        message: 'Could not import data from CSV',
+        status: 'error',
+      } as Message);
+      throw Error('Could not import data from CSV');
     });
 }
 
@@ -86,11 +90,11 @@ function isFieldUnique<T extends number | string>(fields: T[]): boolean {
   );
 }
 
-export function importTPImageTable(chooseLocation: boolean) {
-  const result: { [id: number]: TiePoint } = {};
-
-  importFromCSV('tp_img.csv', chooseLocation, (data: string[][]) => {
-    data.forEach((record: string[]) => {
+export async function importTPImageTable(chooseLocation: boolean) {
+  return importFromCSV('tp_img.csv', chooseLocation)
+    .then((data) => {
+      const result: { [id: number]: TiePoint } = {};
+      data.forEach((record: string[]) => {
       if (
         !validateRow(record, [
           { type: 'int', validator: (x) => x >= 0 },
@@ -103,8 +107,9 @@ export function importTPImageTable(chooseLocation: boolean) {
               ['MANUAL', 'AUTO', 'IMPORTED'].includes(String(x).toUpperCase()),
           },
         ])
-      )
-        throw Error();
+      ) {
+        throw Error("Inavlid row found");
+      }
 
       const pointId = parseInt(record[0], 10);
       const imageId = parseInt(record[1], 10);
@@ -131,7 +136,7 @@ export function importTPImageTable(chooseLocation: boolean) {
               source: record[4] as 'MANUAL' | 'AUTO' | 'IMPORTED',
             },
           },
-          pointId: pointId,
+          pointId,
         };
       }
     });
@@ -143,21 +148,19 @@ export function importTPImageTable(chooseLocation: boolean) {
         symbol: 'file_download',
       } as Message);
 
-      return;
+      throw Error('File is empty');
+    } else {
+      return Object.values(result);
     }
 
-    getMainWindow()?.webContents.send(
-      'addToModel:tp',
-      Object.entries(result).map((x) => x[1]),
-      chooseLocation
-    );
   });
 }
 
-export function importGCPImageTable(chooseLocation: boolean) {
-  const result: { [id: number]: GroundControlPoint } = {};
+export async function importGCPImageTable(chooseLocation: boolean) {
 
-  importFromCSV('gcp_img.csv', chooseLocation, (data: string[][]) => {
+  return importFromCSV('gcp_img.csv', chooseLocation)
+    .then((data) => {
+      const result: { [id: number]: GroundControlPoint } = {};
     data.forEach((record: string[]) => {
       if (
         !validateRow(record, [
@@ -178,7 +181,8 @@ export function importGCPImageTable(chooseLocation: boolean) {
       const imageId = parseInt(record[1], 10);
 
       if (pointId in result) {
-        if (imageId in result[pointId].linkedImages) throw Error(); // Duplicate imageId on same point
+        if (imageId in result[pointId].linkedImages) throw Error();
+        // Duplicate imageId on same point
         else
           result[pointId].linkedImages[imageId] = {
             imageId,
@@ -212,22 +216,17 @@ export function importGCPImageTable(chooseLocation: boolean) {
         status: 'warning',
         symbol: 'file_download',
       } as Message);
-
-      return;
+      throw Error('File is empty');
+    } else {
+      return Object.entries(result);
     }
 
-    getMainWindow()?.webContents.send(
-      'addToModel:gcp_img',
-      Object.entries(result).map((x) => x[1]),
-      chooseLocation
-    );
   });
 }
 
-export function importGCPObjectTable(chooseLocation: boolean) {
-  const result: GroundControlPoint[] = [];
-
-  importFromCSV('gcp_obj.csv', chooseLocation, (data: string[][]) => {
+export async function importGCPObjectTable(chooseLocation: boolean) {
+  return importFromCSV('gcp_obj.csv', chooseLocation).then( (data) => {
+    const result: GroundControlPoint[] = [];
     data.forEach((record: string[]) => {
       if (
         !validateRow(record, [
@@ -257,22 +256,17 @@ export function importGCPObjectTable(chooseLocation: boolean) {
         status: 'warning',
         symbol: 'file_download',
       } as Message);
-
-      return;
+      throw Error('File is empty');
+    } else {
+      return result;
     }
 
-    getMainWindow()?.webContents.send(
-      'addToModel:gcp_obj',
-      result,
-      chooseLocation
-    );
   });
 }
 
-export function importCameraPositionTable(chooseLocation: boolean) {
-  const result: CameraPosition[] = [];
-
-  importFromCSV('camera.csv', chooseLocation, (data: string[][]) => {
+export async function importCameraPositionTable(chooseLocation: boolean) {
+  return importFromCSV('camera.csv', chooseLocation).then( (data) => {
+    const result: CameraPosition[] = [];
     data.forEach((record: string[]) => {
       if (
         !validateRow(record, [
@@ -307,22 +301,17 @@ export function importCameraPositionTable(chooseLocation: boolean) {
         status: 'warning',
         symbol: 'file_download',
       } as Message);
-
-      return;
+      throw Error('File is empty');
+    } else {
+      return result;
     }
 
-    getMainWindow()?.webContents.send(
-      'addToModel:camera',
-      result,
-      chooseLocation
-    );
   });
 }
 
-export function importPointCloudTable(chooseLocation: boolean) {
-  const result: RealPoint[] = [];
-
-  importFromCSV('cloud.csv', chooseLocation, (data: string[][]) => {
+export async function importPointCloudTable(chooseLocation: boolean) {
+  return importFromCSV('cloud.csv', chooseLocation).then( (data) => {
+    const result: RealPoint[] = [];
     data.forEach((record: string[]) => {
       if (
         !validateRow(record, [
@@ -351,77 +340,63 @@ export function importPointCloudTable(chooseLocation: boolean) {
         status: 'warning',
         symbol: 'file_download',
       } as Message);
-
-      return;
+      throw Error('File is empty');
+    } else {
+      return result;
     }
-
-    getMainWindow()?.webContents.send(
-      'addToModel:cloud',
-      result,
-      chooseLocation
-    );
   });
 }
 
-export function importCameraSettingsTable(chooseLocation: boolean) {
-  let result: CameraState;
-
-  importFromCSV('settings.csv', chooseLocation, (data: string[][]) => {
+export async function importCameraSettingsTable(chooseLocation: boolean) {
+  return importFromCSV('settings.csv', chooseLocation).then( (data) => {
     if (data.length === 0 && chooseLocation) {
       getMainWindow()?.webContents.send('notify', {
         message: 'File is empty',
         status: 'warning',
         symbol: 'file_download',
       } as Message);
-
-      return;
+      throw Error('File is empty');
     }
 
     if (data.length > 1) throw Error();
 
-    data.forEach((record: string[]) => {
-      if (
-        !validateRow(record, [
-          { type: 'float', validator: () => true },
-          { type: 'float', validator: () => true },
-          { type: 'float', validator: () => true },
-          { type: 'float', validator: () => true },
-          { type: 'float', validator: () => true },
-          { type: 'float', validator: () => true },
-          { type: 'float', validator: () => true },
-          { type: 'float', validator: () => true },
-          { type: 'float', validator: () => true },
-          { type: 'float', validator: () => true },
-        ])
-      )
-        throw Error();
+    const record = data[0];
+    if (
+      !validateRow(record, [
+        { type: 'float', validator: () => true },
+        { type: 'float', validator: () => true },
+        { type: 'float', validator: () => true },
+        { type: 'float', validator: () => true },
+        { type: 'float', validator: () => true },
+        { type: 'float', validator: () => true },
+        { type: 'float', validator: () => true },
+        { type: 'float', validator: () => true },
+        { type: 'float', validator: () => true },
+        { type: 'float', validator: () => true },
+      ])
+    )
+      throw Error();
 
-      result = {
-        xi0: parseInt(record[0], 10),
-        eta0: parseInt(record[1], 10),
-        c: parseInt(record[2], 10),
-        k1: parseInt(record[3], 10),
-        k2: parseInt(record[4], 10),
-        k3: parseInt(record[5], 10),
-        p1: parseInt(record[6], 10),
-        p2: parseInt(record[7], 10),
-        a1: parseInt(record[8], 10),
-        a2: parseInt(record[9], 10),
-      } as CameraState;
-    });
+    const result: CameraState = {
+      xi0: parseInt(record[0], 10),
+      eta0: parseInt(record[1], 10),
+      c: parseInt(record[2], 10),
+      k1: parseInt(record[3], 10),
+      k2: parseInt(record[4], 10),
+      k3: parseInt(record[5], 10),
+      p1: parseInt(record[6], 10),
+      p2: parseInt(record[7], 10),
+      a1: parseInt(record[8], 10),
+      a2: parseInt(record[9], 10),
+    } as CameraState;
 
-    getMainWindow()?.webContents.send(
-      'addToModel:settings',
-      result,
-      chooseLocation
-    );
+    return result;
   });
 }
 
-export function importImageListTable(chooseLocation: boolean) {
-  const result: InputImage[] = [];
-
-  importFromCSV('img_list.csv', chooseLocation, (data: string[][]) => {
+export async function importImageListTable(chooseLocation: boolean) {
+  return importFromCSV('img_list.csv', chooseLocation).then( (data) => {
+    const result: InputImage[] = [];
     data.forEach((record: string[]) => {
       if (
         !validateRow(record, [
@@ -450,14 +425,9 @@ export function importImageListTable(chooseLocation: boolean) {
         status: 'warning',
         symbol: 'file_download',
       } as Message);
-
-      return;
+      throw Error('File is empty');
+    } else {
+      return result;
     }
-
-    getMainWindow()?.webContents.send(
-      'addToModel:img_list',
-      result,
-      chooseLocation
-    );
   });
 }
