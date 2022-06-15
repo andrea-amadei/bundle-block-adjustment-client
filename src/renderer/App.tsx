@@ -17,7 +17,7 @@ import {
   RealPoint,
 } from '../core/model/slices/common/interfaces';
 import { importCameras, importPoints } from '../core/model/slices/resultSlice';
-import { importAll, importData, saveAll } from '../core/model/dataManipulation';
+import { importAll, importData } from '../core/model/dataManipulation';
 import {
   addPoint as addPointTP,
   removeAll as removeAllTP,
@@ -45,11 +45,12 @@ import {
 } from '../core/model/slices/cameraSlice';
 import { addImage, InputImage } from '../core/model/slices/imageListSlice';
 import { ResultsPage } from "../ui/pages/ResultsPage";
+import { ComputePage } from '../ui/pages/ComputePage';
 
 export default function App() {
   useEffect(() => {
     const autosaveInterval = setInterval(() => {
-      saveAll(true);
+      // saveAll(true);
     }, 30 * 1000);
 
     // Register IPC methods
@@ -78,7 +79,7 @@ export default function App() {
             <Route index element={<EditorPage />} />
             <Route path="editor" element={<EditorPage />} />
             <Route path="data" element={<DataPage />} />
-            <Route path="results" element={<ResultsPage />} />
+            <Route path="results" element={<ComputePage />} />
             <Route path="testing" element={<TestingPage />} />
             <Route path="*" element={<h2>Not defined</h2>} />
           </Route>
