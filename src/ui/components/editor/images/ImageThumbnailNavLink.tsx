@@ -2,8 +2,16 @@ import './ImageThumbnailNavLink.scss';
 import { useSearchParams } from 'react-router-dom';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectTiePointsOnImage } from '../../../../core/model/slices/tiePointsSlice';
-import { selectGroundControlPointsOnImage } from '../../../../core/model/slices/groundControlPointsSlice';
+import {
+  removeAllLinkedPointsByImageId as removeAllLinkedPointsByImageIdTP,
+  selectTiePointsOnImage,
+} from '../../../../core/model/slices/tiePointsSlice';
+import {
+  removeAllLinkedPointsByImageId as removeAllLinkedPointsByImageIdGCP,
+  selectGroundControlPointsOnImage
+} from '../../../../core/model/slices/groundControlPointsSlice';
+import { store } from '../../../../core/model/store';
+import { removeImageById } from '../../../../core/model/slices/imageListSlice';
 
 interface PropsType {
   title?: string | null;
@@ -14,14 +22,17 @@ interface PropsType {
 export const ImageThumbnailNavLink: React.FC<PropsType> = (props) => {
   const { title, imgSrc, imgId } = props;
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedPointId = parseInt(searchParams.get('pointId') as string);
+  const selectedPointId = parseInt(searchParams.get('pointId') as string, 10);
   const selectedPointType = searchParams.get('pointType');
 
   const tpOnImage = useSelector(selectTiePointsOnImage(imgId));
   const gcpOnImage = useSelector(selectGroundControlPointsOnImage(imgId));
 
-  function onRemoveImg(e) {
-    e.stopPropagation();
+  function onRemoveImg() {
+    window.electron.removeFile(imgSrc);
+    store.dispatch(removeImageById(imgId));
+    store.dispatch(removeAllLinkedPointsByImageIdTP(imgId));
+    store.dispatch(removeAllLinkedPointsByImageIdGCP(imgId));
   }
 
   return (

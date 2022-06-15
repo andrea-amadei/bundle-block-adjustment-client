@@ -69,3 +69,21 @@ export async function copyFile(sourcePath: string, destinationPath: string): Pro
 export async function copyFileToSaves(sourcePath: string, name: string) {
   await copyFile(sourcePath, path.join(getSavesPath(), name));
 }
+
+export async function removeFile(filePath: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    fs.unlink(filePath, (error) => {
+      if (error) reject();
+
+      resolve();
+    });
+  });
+}
+
+export async function removeFileInSaves(name: string): Promise<void> {
+  return removeFile(path.join(getSavesPath(), name));
+}
+
+export async function removeImage(name: string): Promise<void> {
+  return removeFile(path.join(getSavesPath(), 'images', name));
+}

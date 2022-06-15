@@ -37,6 +37,9 @@ export function PointMarker(props: PointMarkerAttributes) {
   const [pointStartingX, setPointStartingX] = useState(0);
   const [pointStartingY, setPointStartingY] = useState(0);
 
+  const [pointX, setPointX] = useState(point.x);
+  const [pointY, setPointY] = useState(point.y);
+
   const handleMouseMovement = (e) => {
     document.removeEventListener(
       'mousemove',
@@ -44,41 +47,11 @@ export function PointMarker(props: PointMarkerAttributes) {
     );
 
     if (dragged === 'all' || dragged === 'right') {
-      if (type === 'TP')
-        store.dispatch(
-          setLinkedPointX_TP(
-            point.pointId,
-            point.imageId,
-            pointStartingX + Math.floor((e.pageX - mouseStartingX) / zoomValue)
-          )
-        );
-      else
-        store.dispatch(
-          setLinkedPointX_GCP(
-            point.pointId,
-            point.imageId,
-            pointStartingX + Math.floor((e.pageX - mouseStartingX) / zoomValue)
-          )
-        );
+      setPointX(pointStartingX + Math.floor((e.pageX - mouseStartingX) / zoomValue));
     }
 
     if (dragged === 'all' || dragged === 'bottom') {
-      if (type === 'TP')
-        store.dispatch(
-          setLinkedPointY_TP(
-            point.pointId,
-            point.imageId,
-            pointStartingY + Math.floor((e.pageY - mouseStartingY) / zoomValue)
-          )
-        );
-      else
-        store.dispatch(
-          setLinkedPointY_GCP(
-            point.pointId,
-            point.imageId,
-            pointStartingY + Math.floor((e.pageY - mouseStartingY) / zoomValue)
-          )
-        );
+      setPointY(pointStartingY + Math.floor((e.pageY - mouseStartingY) / zoomValue));
     }
   };
 
@@ -93,6 +66,26 @@ export function PointMarker(props: PointMarkerAttributes) {
       setPointStartingY(point.y);
     } else {
       setDragged('none');
+
+      if (dragged !== 'none') {
+        if (type === 'TP') {
+          store.dispatch(
+            setLinkedPointX_TP(point.pointId, point.imageId, pointX)
+          );
+
+          store.dispatch(
+            setLinkedPointY_TP(point.pointId, point.imageId, pointY)
+          );
+        } else {
+          store.dispatch(
+            setLinkedPointX_GCP(point.pointId, point.imageId, pointX)
+          );
+
+          store.dispatch(
+            setLinkedPointY_GCP(point.pointId, point.imageId, pointY)
+          );
+        }
+      }
     }
   };
 
@@ -122,7 +115,7 @@ export function PointMarker(props: PointMarkerAttributes) {
       viewBox="0 0 200 200"
       width="30px"
       height="30px"
-      style={{ left: point.x - 8, top: point.y - 8, position: 'absolute' }}
+      style={{ left: pointX - 8, top: pointY - 8, position: 'absolute' }}
       onClick={() => {
         searchParams.set('pointId', String(point.pointId));
         searchParams.set('pointType', type);

@@ -41,9 +41,7 @@ export async function importFromCSV(
           symbol: 'download',
         } as Message);
       } else {
-        readTextFile(
-          typeof selectedPath === 'string' ? selectedPath : selectedPath[0]
-        )
+        readTextFile(selectedPath[0])
           .then((result: string) => {
             convertCSVToData(result)
               .then((data: string[][]) => {
@@ -64,10 +62,11 @@ export async function importFromCSV(
               });
           })
           .catch(() => {
-            getMainWindow()?.webContents.send('notify', {
-              message: 'Could not open file',
-              status: 'error',
-            } as Message);
+            if (chooseLocation)
+              getMainWindow()?.webContents.send('notify', {
+                message: 'Could not open file',
+                status: 'error',
+              } as Message);
           });
       }
     })
@@ -137,7 +136,7 @@ export function importTPImageTable(chooseLocation: boolean) {
       }
     });
 
-    if (Object.entries(result).length === 0) {
+    if (Object.entries(result).length === 0 && chooseLocation) {
       getMainWindow()?.webContents.send('notify', {
         message: 'File is empty',
         status: 'warning',
@@ -179,8 +178,7 @@ export function importGCPImageTable(chooseLocation: boolean) {
       const imageId = parseInt(record[1], 10);
 
       if (pointId in result) {
-        if (imageId in result[pointId].linkedImages) throw Error();
-        // Duplicate imageId on same point
+        if (imageId in result[pointId].linkedImages) throw Error(); // Duplicate imageId on same point
         else
           result[pointId].linkedImages[imageId] = {
             imageId,
@@ -208,7 +206,7 @@ export function importGCPImageTable(chooseLocation: boolean) {
       }
     });
 
-    if (Object.entries(result).length === 0) {
+    if (Object.entries(result).length === 0 && chooseLocation) {
       getMainWindow()?.webContents.send('notify', {
         message: 'File is empty',
         status: 'warning',
@@ -253,7 +251,7 @@ export function importGCPObjectTable(chooseLocation: boolean) {
     // Check if every imageId is unique
     if (!isFieldUnique(result.map((c) => c.pointId))) throw Error();
 
-    if (result.length === 0) {
+    if (result.length === 0 && chooseLocation) {
       getMainWindow()?.webContents.send('notify', {
         message: 'File is empty',
         status: 'warning',
@@ -303,7 +301,7 @@ export function importCameraPositionTable(chooseLocation: boolean) {
     // Check if every imageId is unique
     if (!isFieldUnique(result.map((c) => c.imageId))) throw Error();
 
-    if (result.length === 0) {
+    if (result.length === 0 && chooseLocation) {
       getMainWindow()?.webContents.send('notify', {
         message: 'File is empty',
         status: 'warning',
@@ -347,7 +345,7 @@ export function importPointCloudTable(chooseLocation: boolean) {
     // Check if every imageId is unique
     if (!isFieldUnique(result.map((c) => c.pointId))) throw Error();
 
-    if (result.length === 0) {
+    if (result.length === 0 && chooseLocation) {
       getMainWindow()?.webContents.send('notify', {
         message: 'File is empty',
         status: 'warning',
@@ -369,7 +367,7 @@ export function importCameraSettingsTable(chooseLocation: boolean) {
   let result: CameraState;
 
   importFromCSV('settings.csv', chooseLocation, (data: string[][]) => {
-    if (data.length === 0) {
+    if (data.length === 0 && chooseLocation) {
       getMainWindow()?.webContents.send('notify', {
         message: 'File is empty',
         status: 'warning',
@@ -446,7 +444,7 @@ export function importImageListTable(chooseLocation: boolean) {
     // Check if every imageId is unique
     if (!isFieldUnique(result.map((c) => c.id))) throw Error();
 
-    if (result.length === 0) {
+    if (result.length === 0 && chooseLocation) {
       getMainWindow()?.webContents.send('notify', {
         message: 'File is empty',
         status: 'warning',
