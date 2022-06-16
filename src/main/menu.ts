@@ -5,6 +5,7 @@ import {
   BrowserWindow,
   MenuItemConstructorOptions,
 } from 'electron';
+import { getMainWindow } from "./main";
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -83,6 +84,16 @@ export default class MenuBuilder {
           },
         },
       ],
+    };
+    const subMenuFile: DarwinMenuItemConstructorOptions = {
+      label: 'File',
+      submenu: [
+        {
+          label: 'Save all',
+          accelerator: 'Command+S',
+          click: () =>  getMainWindow()?.webContents.send('do-import:saveAll'),
+        },
+      ]
     };
     const subMenuEdit: DarwinMenuItemConstructorOptions = {
       label: 'Edit',
@@ -189,7 +200,7 @@ export default class MenuBuilder {
         ? subMenuViewDev
         : subMenuViewProd;
 
-    return [subMenuAbout, subMenuEdit, subMenuView, subMenuWindow, subMenuHelp];
+    return [subMenuAbout, subMenuFile, subMenuEdit, subMenuView, subMenuWindow, subMenuHelp];
   }
 
   buildDefaultTemplate() {
@@ -197,9 +208,13 @@ export default class MenuBuilder {
       {
         label: '&File',
         submenu: [
-          {
+/*           {
             label: '&Open',
             accelerator: 'Ctrl+O',
+          }, */
+          {
+            label: '&Save all',
+            click: () =>  getMainWindow()?.webContents.send('do-import:saveAll'),
           },
           {
             label: '&Close',

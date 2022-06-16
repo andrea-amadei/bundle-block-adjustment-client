@@ -33,6 +33,8 @@ export default function App() {
       store.dispatch(addImage(data));
     });
 
+    window.electron.doSaveAll( (_event) => saveAll(true));
+
     importAll();
 
     return () => {

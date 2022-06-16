@@ -7,6 +7,8 @@ contextBridge.exposeInMainWorld('electron', {
 
   addImageToModel: (callback) => ipcRenderer.on('addToModel:images', callback),
 
+  doSaveAll: (callback) => ipcRenderer.on('do-import:saveAll', callback),
+
   // RENDERER -> MAIN
   // Logger
   logToMain: (text) => ipcRenderer.send('log:main', text),
