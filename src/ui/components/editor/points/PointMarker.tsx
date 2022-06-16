@@ -42,6 +42,11 @@ export function PointMarker(props: PointMarkerAttributes) {
   const [pointX, setPointX] = useState(point.x);
   const [pointY, setPointY] = useState(point.y);
 
+  useEffect(() => {
+    setPointX(point.x);
+    setPointY(point.y);
+  }, [point, point.x, point.y]);
+
   const handleMouseMovement = (e) => {
     document.removeEventListener(
       'mousemove',
