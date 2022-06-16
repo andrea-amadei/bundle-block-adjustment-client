@@ -32,9 +32,9 @@ export function PointInspectorTP() {
       imgId={selectedImageId}
       pointType="TP"
       pointX={pointOnImage.x}
-      setPointX={(x) => store.dispatch(setLinkedPointX(selectedPointId, selectedImageId, parseInt(x)))}
+      setPointX={(x) => store.dispatch(setLinkedPointX(selectedPointId, selectedImageId, Math.round(parseFloat(x))))}
       pointY={pointOnImage.y}
-      setPointY={(y) => store.dispatch(setLinkedPointY(selectedPointId, selectedImageId, parseInt(y)))}
+      setPointY={(y) => store.dispatch(setLinkedPointY(selectedPointId, selectedImageId, Math.round(parseFloat(y))))}
       editPoint={editedPoint => store.dispatch(editPoint(editedPoint as TiePoint))}
       linkedImg={linkedImages.map((lp) => ({
         id: lp.imageId,

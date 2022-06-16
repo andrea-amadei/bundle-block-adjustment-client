@@ -37,9 +37,9 @@ export function PointInspectorGCP() {
       imgId={selectedImageId}
       pointType="GCP"
       pointX={pointOnImage.x}
-      setPointX={(x) => store.dispatch(setLinkedPointX(selectedPointId, selectedImageId, parseInt(x)))}
+      setPointX={(x) => store.dispatch(setLinkedPointX(selectedPointId, selectedImageId, Math.round(parseFloat(x))))}
       pointY={pointOnImage.y}
-      setPointY={(y) => store.dispatch(setLinkedPointY(selectedPointId, selectedImageId, parseInt(y)))}
+      setPointY={(y) => store.dispatch(setLinkedPointY(selectedPointId, selectedImageId, Math.round(parseFloat(y))))}
       linkedImg={linkedImages.map((lp) => ({
         id: lp.imageId,
         name: images[lp.imageId].name,
@@ -54,7 +54,7 @@ export function PointInspectorGCP() {
               label="X"
               value={point.x}
               setValue={(x) =>
-                store.dispatch(setXByPointId(selectedPointId, parseInt(x)))
+                store.dispatch(setXByPointId(selectedPointId, parseFloat(x)))
               }
             />
             <InputField
@@ -62,7 +62,7 @@ export function PointInspectorGCP() {
               label="Y"
               value={point.y}
               setValue={(y) =>
-                store.dispatch(setYByPointId(selectedPointId, parseInt(y)))
+                store.dispatch(setYByPointId(selectedPointId, parseFloat(y)))
               }
             />
             <InputField
@@ -70,7 +70,7 @@ export function PointInspectorGCP() {
               label="Z"
               value={point.z}
               setValue={(z) =>
-                store.dispatch(setZByPointId(selectedPointId, parseInt(z)))
+                store.dispatch(setZByPointId(selectedPointId, parseFloat(z)))
               }
             />
           </div>
