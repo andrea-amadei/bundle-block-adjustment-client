@@ -1,3 +1,4 @@
+import { importAndAddToStoreCameraSettingsTable } from 'main/InportExportFromRenderer';
 import { useSelector } from 'react-redux';
 import {
   selectA1,
@@ -30,7 +31,7 @@ export function CameraSettingsTable(props: { showImportButton: boolean }) {
     <>
       <div className="buttons-row">
         {showImportButton ? (
-          <button onClick={() => window.electron.importCameraSettingsTable(true)}>Import from CSV</button>
+          <button onClick={() => importAndAddToStoreCameraSettingsTable(true, true)}>Import from CSV</button>
         ) : (
           <></>
         )}

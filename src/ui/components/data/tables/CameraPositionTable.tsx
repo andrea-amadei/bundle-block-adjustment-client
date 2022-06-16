@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { selectAllCameras } from '../../../../core/model/slices/resultSlice';
+import { importAndAddToStoreCameraPositionTable } from "../../../../main/InportExportFromRenderer";
 
 export function CameraPositionTable(props: { showImportButton: boolean }) {
   const { showImportButton } = props;
@@ -10,7 +11,7 @@ export function CameraPositionTable(props: { showImportButton: boolean }) {
     <>
       <div className="buttons-row">
         {showImportButton ? (
-          <button onClick={() => window.electron.importCameraPositionTable(true)}>Import from CSV</button>
+          <button onClick={() => importAndAddToStoreCameraPositionTable(true, true)}>Import from CSV</button>
         ) : (
           <></>
         )}

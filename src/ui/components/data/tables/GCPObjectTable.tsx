@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { selectGroundControlPointList } from '../../../../core/model/slices/groundControlPointsSlice';
+import { importAndAddToStoreGCPObjectTable } from "../../../../main/InportExportFromRenderer";
 
 export function GCPObjectTable(props: { showImportButton: boolean }) {
   const { showImportButton } = props;
@@ -10,7 +11,7 @@ export function GCPObjectTable(props: { showImportButton: boolean }) {
     <>
       <div className="buttons-row">
         {showImportButton ? (
-          <button onClick={() => window.electron.importGCPObjectTable(true)}>Import from CSV</button>
+          <button onClick={() => importAndAddToStoreGCPObjectTable(true, true)}>Import from CSV</button>
         ) : (
           <></>
         )}

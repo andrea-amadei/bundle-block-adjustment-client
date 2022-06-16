@@ -20,21 +20,55 @@ import {
   setXi0
 } from "../core/model/slices/cameraSlice";
 import { InputImage } from "../core/model/slices/imageListSlice";
+import { addNewMessage } from "../core/model/slices/messages/messageQueueSlice";
 
-// TODO: fix to many dispatches called
-export async function importAndAddToStoreTPImageTable(chooseLocation: boolean) {
-  return window.electron
-    .importTPImageTable(chooseLocation)
-    .then((data: TiePoint[]) => {
-      store.dispatch(removeAllTP());
-      data.forEach((tp) => store.dispatch(addPointTP(tp)));
-    });
+function notifyError(fileName: string, error: any) {
+  store.dispatch(
+    addNewMessage({
+      message: `Error importing file ${fileName}\nError message: ${'message' in error ? error.message : error}`,
+      status: 'warning',
+      symbol: 'file_download',
+    })
+  );
+}
+
+function notifySuccess(fileName: string) {
+  store.dispatch(
+    addNewMessage({
+      message: `File ${fileName} imported successfully!`,
+      status: 'success',
+      symbol: 'file_download',
+    })
+  )
+}
+
+async function handleImport(fileName: string, shouldNotifySuccess: boolean | undefined, promise: Promise<any>) {
+  return promise.then(() => {
+    if(notifySuccess) {
+      notifySuccess(fileName);
+    }
+  }).catch((reason: any) => notifyError(fileName, reason));
 }
 
 // TODO: fix to many dispatches called
-export async function importAndAddToStoreGCPImageTable(chooseLocation: boolean) {
-  return window.electron
-    .importGCPImageTable(chooseLocation)
+export async function importAndAddToStoreTPImageTable(chooseLocation: boolean, shouldNotifySuccess?: boolean) {
+  return handleImport(
+    "TP image coordinates",
+    shouldNotifySuccess,
+    window.electron.importTPImageTable(chooseLocation)
+    .then((data: TiePoint[]) => {
+      store.dispatch(removeAllTP());
+      data.forEach((tp) => store.dispatch(addPointTP(tp)));
+    })
+  );
+}
+
+// TODO: fix to many dispatches called
+export async function importAndAddToStoreGCPImageTable(chooseLocation: boolean, shouldNotifySuccess?: boolean) {
+  return handleImport(
+    "GCP image coordinates",
+    shouldNotifySuccess,
+    window.electron.importGCPImageTable(chooseLocation)
     .then((data: GroundControlPoint[]) => {
       store.dispatch(removeAllLinkedImagesGCP);
       data.forEach((gcp) =>
@@ -42,38 +76,49 @@ export async function importAndAddToStoreGCPImageTable(chooseLocation: boolean) 
           store.dispatch(addLinkedPointByPointIdGCP(p))
         )
       );
-    });
+    })
+  );
 }
 
 // TODO: fix to many dispatches called
-export async function importAndAddToStoreGCPObjectTable(chooseLocation: boolean) {
-  return window.electron
-    .importGCPObjectTable(chooseLocation)
+export async function importAndAddToStoreGCPObjectTable(chooseLocation: boolean, shouldNotifySuccess?: boolean) {
+  return handleImport(
+    "GCP space coordinates",
+    shouldNotifySuccess,
+    window.electron.importGCPObjectTable(chooseLocation)
     .then((data: GroundControlPoint[]) => {
       store.dispatch(removeAllGCP);
       data.forEach((gcp) => store.dispatch(addPointGCP(gcp)));
-    });
+    })
+  );
 }
 
-export async function importAndAddToStoreCameraPositionTable(chooseLocation: boolean) {
-  return window.electron
-    .importCameraPositionTable(chooseLocation)
+export async function importAndAddToStoreCameraPositionTable(chooseLocation: boolean, shouldNotifySuccess?: boolean) {
+  return handleImport(
+    "Cameras position",
+    shouldNotifySuccess,
+    window.electron.importCameraPositionTable(chooseLocation)
     .then((data: CameraPosition[]) => {
       importData(data, importCameras, true);
-    });
+    })
+  );
 }
 
-export async function importAndAddToStorePointCloudTable(chooseLocation: boolean) {
-  return window.electron
-    .importPointCloudTable(chooseLocation)
+export async function importAndAddToStorePointCloudTable(chooseLocation: boolean, shouldNotifySuccess?: boolean) {
+  return handleImport(
+    "Point Cloud table",
+    shouldNotifySuccess,
+    window.electron.importPointCloudTable(chooseLocation)
     .then((data: RealPoint[]) => {
       importData(data, importPoints, true);
     });
 }
 
-export async function importAndAddToStoreCameraSettingsTable(chooseLocation: boolean) {
-  return window.electron
-    .importCameraSettingsTable(chooseLocation)
+export async function importAndAddToStoreCameraSettingsTable(chooseLocation: boolean, shouldNotifySuccess?: boolean) {
+  return handleImport(
+    "Cameras parameters",
+    shouldNotifySuccess,
+    window.electron.importCameraSettingsTable(chooseLocation)
     .then((data: CameraState) => {
       store.dispatch(setXi0(data.xi0));
       store.dispatch(setEta0(data.eta0));
@@ -85,13 +130,17 @@ export async function importAndAddToStoreCameraSettingsTable(chooseLocation: boo
       store.dispatch(setP2(data.p2));
       store.dispatch(setA1(data.a1));
       store.dispatch(setA2(data.a2));
-    });
+    })
+  );
 }
 
-export async function importAndAddToStoreImageListTable(chooseLocation: boolean) {
-  return window.electron
-    .importImageListTable(chooseLocation)
+export async function importAndAddToStoreImageListTable(chooseLocation: boolean, shouldNotifySuccess?: boolean) {
+  return handleImport(
+    "",
+    shouldNotifySuccess,
+    window.electron.importImageListTable(chooseLocation)
     .then((data: InputImage[]) => {
       data.forEach((x) => window.electron.importImage([x], x.id));
-    });
+    })
+  );
 }

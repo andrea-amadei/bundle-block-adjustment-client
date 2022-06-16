@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { selectAllPoints } from '../../../../core/model/slices/resultSlice';
+import { importAndAddToStorePointCloudTable } from "../../../../main/InportExportFromRenderer";
 
 export function PointCloudTable(props: { showImportButton: boolean }) {
   const { showImportButton } = props;
@@ -10,7 +11,7 @@ export function PointCloudTable(props: { showImportButton: boolean }) {
     <>
       <div className="buttons-row">
         {showImportButton ? (
-          <button onClick={() => window.electron.importPointCloudTable(true)}>Import from CSV</button>
+          <button onClick={() => importAndAddToStorePointCloudTable(true, true)}>Import from CSV</button>
         ) : (
           <></>
         )}
