@@ -10,6 +10,7 @@ import { PointCloudTable } from '../components/data/tables/PointCloudTable';
 import { store } from '../../core/model/store';
 import { addNewMessage } from '../../core/model/slices/messages/messageQueueSlice';
 import { ImageListTable } from '../components/data/tables/ImageListTable';
+import { saveAll } from '../../core/model/dataManipulation';
 
 export function DataPage() {
   const [activeSideTab, setActiveSideTab] = useState('gcp_obj');
@@ -27,7 +28,22 @@ export function DataPage() {
 
   return (
     <div className="data-page">
-      <div className="header-section">
+      <div className="save-section">
+        <h1>Save Project</h1>
+        <div className="save-content">
+          <div className="save-row-left">
+            <div>
+              Save the whole project (including all images and CSV files) as a
+              single deflated file to save on time and resources.
+            </div>
+          </div>
+          <div className="save-row-right">
+            <button>IMPORT PROJECT</button>
+            <button onClick={() => saveAll(false)}>EXPORT PROJECT</button>
+          </div>
+        </div>
+      </div>
+      <div className="info-section">
         <h1>Import instructions</h1>
         <p>
           Importing single files is susceptible to import order. To avoid
