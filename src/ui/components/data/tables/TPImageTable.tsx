@@ -1,6 +1,6 @@
+import { importAndAddToStoreTPImageTable } from 'main/ImportExportFromRenderer';
 import { useSelector } from 'react-redux';
 import { selectTiePointList } from '../../../../core/model/slices/tiePointsSlice';
-import { importAndAddToStoreTPImageTable } from "../../../../main/InportExportFromRenderer";
 
 export function TPImageTable(props: { showImportButton: boolean }) {
   const { showImportButton } = props;

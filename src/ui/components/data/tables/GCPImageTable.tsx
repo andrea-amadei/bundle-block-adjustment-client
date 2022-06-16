@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { selectGroundControlPointList } from '../../../../core/model/slices/groundControlPointsSlice';
-import { importAndAddToStoreGCPImageTable } from "../../../../main/InportExportFromRenderer";
+import { importAndAddToStoreGCPImageTable } from "../../../../main/ImportExportFromRenderer";
 
 export function GCPImageTable(props: { showImportButton: boolean }) {
   const { showImportButton } = props;

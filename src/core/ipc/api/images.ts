@@ -69,7 +69,7 @@ export function importImage(existingImages: InputImage[], startingId: number) {
               getMainWindow()?.webContents.send('addToModel:images', {
                 id: newId,
                 name: newImageName,
-                path: newPath,
+                path: `file:///${newPath}`,
                 width: dimensions.width,
                 height: dimensions.height,
               } as InputImage);

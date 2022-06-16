@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { selectAllCameras } from '../../../../core/model/slices/resultSlice';
-import { importAndAddToStoreCameraPositionTable } from "../../../../main/InportExportFromRenderer";
+import { importAndAddToStoreCameraPositionTable } from "../../../../main/ImportExportFromRenderer";
 
 export function CameraPositionTable(props: { showImportButton: boolean }) {
   const { showImportButton } = props;

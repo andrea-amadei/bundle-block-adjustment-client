@@ -1,6 +1,6 @@
+import { importAndAddToStoreGCPObjectTable } from 'main/ImportExportFromRenderer';
 import { useSelector } from 'react-redux';
 import { selectGroundControlPointList } from '../../../../core/model/slices/groundControlPointsSlice';
-import { importAndAddToStoreGCPObjectTable } from "../../../../main/InportExportFromRenderer";
 
 export function GCPObjectTable(props: { showImportButton: boolean }) {
   const { showImportButton } = props;

@@ -1,4 +1,4 @@
-import { importAndAddToStoreCameraSettingsTable } from 'main/InportExportFromRenderer';
+import { importAndAddToStoreCameraSettingsTable } from 'main/ImportExportFromRenderer';
 import { useSelector } from 'react-redux';
 import {
   selectA1,
