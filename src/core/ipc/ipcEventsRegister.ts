@@ -26,7 +26,6 @@ import {
   importPointCloudTable,
   importTPImageTable
 } from "./api/import";
-import { importImage } from './api/images';
 import { computeResults } from "./api/computeResults";
 
 export default function registerIpcEvents() {
