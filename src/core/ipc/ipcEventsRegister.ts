@@ -19,12 +19,13 @@ import {
   exportTPImageTable
 } from './api/export';
 import {
+  addNewImagesWithSelectionPopup,
   importCameraPositionTable, importCameraSettingsTable,
   importGCPImageTable,
   importGCPObjectTable, importImageListTable,
   importPointCloudTable,
   importTPImageTable
-} from './api/import';
+} from "./api/import";
 import { importImage } from './api/images';
 import { computeResults } from "./api/computeResults";
 
@@ -73,7 +74,7 @@ export default function registerIpcEvents() {
   ipcMain.handle('import:img_list', async (_event, arg) => importImageListTable(arg));
 
   // images.ts
-  ipcMain.on('import:image', async (_event, arg1, arg2) => importImage(arg1, arg2));
+  ipcMain.handle('import:addNewImagesWithSelectionPopup', async (_event, newImagesStartIndex) => addNewImagesWithSelectionPopup(newImagesStartIndex));
 
   // computeResults.ts
   ipcMain.handle('computeResults:run', async (_event, options) => computeResults(options));

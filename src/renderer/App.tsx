@@ -19,7 +19,7 @@ import { ComputePage } from '../ui/pages/ComputePage';
 export default function App() {
   useEffect(() => {
     const autosaveInterval = setInterval(() => {
-      saveAll(false);
+      //saveAll(false);
     }, 60 * 1000);
 
     // Register IPC methods

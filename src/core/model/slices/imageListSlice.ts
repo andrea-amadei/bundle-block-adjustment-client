@@ -24,12 +24,18 @@ export const ImageListSlice = createSlice({
     removeImageById: (state: InputImageToIdMap, action: PayloadAction<number>) => {
       delete state[action.payload];
     },
+    removeAllImages: (state: InputImageToIdMap) => {
+      Object.keys(imgId => {
+        delete state[imgId];
+      });
+    },
   },
 });
 
 export const {
   addImage,
   removeImageById,
+  removeAllImages
 } = ImageListSlice.actions;
 
 export const selectAllImages = (state: RootState) =>

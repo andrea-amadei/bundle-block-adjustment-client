@@ -12,6 +12,7 @@ import { InputImage, selectAllImages, selectImagesMap } from '../../core/model/s
 import { useSelector } from 'react-redux';
 import { selectTiePoints } from "../../core/model/slices/tiePointsSlice";
 import { selectGroundControlPoints } from "../../core/model/slices/groundControlPointsSlice";
+import { addAndStoreNewImagesUsingSelectionPopup } from "../../main/ImportExportFromRenderer";
 
 // eslint-disable-next-line import/prefer-default-export
 export function EditorPage() {
@@ -24,11 +25,6 @@ export function EditorPage() {
 
   const TPMap = useSelector(selectTiePoints);
   const GCPMap = useSelector(selectGroundControlPoints);
-
-  const lastImageId = Math.max(
-    0,
-    ...Object.keys(useSelector(selectImagesMap)).map((x) => parseInt(x, 10))
-  );
 
   useEffect(() => {
     if( (selectedPointId || selectedPointId === 0) && selectedPointType)
@@ -94,7 +90,7 @@ export function EditorPage() {
       <div className="editor-page">
         <div className="image-list">
           {/* <div className="title">Image list</div> */}
-          <div className="add-img-box" onClick={() => window.electron.importImage([], lastImageId + 1)}>
+          <div className="add-img-box" onClick={addAndStoreNewImagesUsingSelectionPopup}>
             <span className="material-symbols-outlined btn"> add </span>
             add new image
           </div>

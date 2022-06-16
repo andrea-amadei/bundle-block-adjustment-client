@@ -1,6 +1,7 @@
 import path from 'path';
+import sizeOf from 'image-size';
 import { openFilePicker } from './filePicker';
-import { getSavesPath, readTextFile } from './fs';
+import { copyFile, getSavesPath, readTextFile } from './fs';
 import { getMainWindow } from '../../../main/main';
 import { Message } from '../../model/slices/messages/messageQueueSlice';
 import { convertCSVToData, validateRow } from './csv';
@@ -12,7 +13,7 @@ import { TiePoint } from '../../model/slices/tiePointsSlice';
 import { GroundControlPoint } from '../../model/slices/groundControlPointsSlice';
 import { CameraState } from '../../model/slices/cameraSlice';
 import { InputImage } from '../../model/slices/imageListSlice';
-
+import { supportedFiles } from './images';
 
 async function getPathFromUser(defaultName: string) {
   return openFilePicker({
@@ -91,10 +92,9 @@ function isFieldUnique<T extends number | string>(fields: T[]): boolean {
 }
 
 export async function importTPImageTable(chooseLocation: boolean) {
-  return importFromCSV('tp_img.csv', chooseLocation)
-    .then((data) => {
-      const result: { [id: number]: TiePoint } = {};
-      data.forEach((record: string[]) => {
+  return importFromCSV('tp_img.csv', chooseLocation).then((data) => {
+    const result: { [id: number]: TiePoint } = {};
+    data.forEach((record: string[]) => {
       if (
         !validateRow(record, [
           { type: 'int', validator: (x) => x >= 0 },
@@ -108,7 +108,7 @@ export async function importTPImageTable(chooseLocation: boolean) {
           },
         ])
       ) {
-        throw Error("Inavlid row found");
+        throw Error('Inavlid row found');
       }
 
       const pointId = parseInt(record[0], 10);
@@ -152,15 +152,12 @@ export async function importTPImageTable(chooseLocation: boolean) {
     } else {
       return Object.values(result);
     }
-
   });
 }
 
 export async function importGCPImageTable(chooseLocation: boolean) {
-
-  return importFromCSV('gcp_img.csv', chooseLocation)
-    .then((data) => {
-      const result: { [id: number]: GroundControlPoint } = {};
+  return importFromCSV('gcp_img.csv', chooseLocation).then((data) => {
+    const result: { [id: number]: GroundControlPoint } = {};
     data.forEach((record: string[]) => {
       if (
         !validateRow(record, [
@@ -220,12 +217,11 @@ export async function importGCPImageTable(chooseLocation: boolean) {
     } else {
       return Object.values(result);
     }
-
   });
 }
 
 export async function importGCPObjectTable(chooseLocation: boolean) {
-  return importFromCSV('gcp_obj.csv', chooseLocation).then( (data) => {
+  return importFromCSV('gcp_obj.csv', chooseLocation).then((data) => {
     const result: GroundControlPoint[] = [];
     data.forEach((record: string[]) => {
       if (
@@ -260,12 +256,11 @@ export async function importGCPObjectTable(chooseLocation: boolean) {
     } else {
       return result;
     }
-
   });
 }
 
 export async function importCameraPositionTable(chooseLocation: boolean) {
-  return importFromCSV('camera.csv', chooseLocation).then( (data) => {
+  return importFromCSV('camera.csv', chooseLocation).then((data) => {
     const result: CameraPosition[] = [];
     data.forEach((record: string[]) => {
       if (
@@ -305,12 +300,11 @@ export async function importCameraPositionTable(chooseLocation: boolean) {
     } else {
       return result;
     }
-
   });
 }
 
 export async function importPointCloudTable(chooseLocation: boolean) {
-  return importFromCSV('cloud.csv', chooseLocation).then( (data) => {
+  return importFromCSV('cloud.csv', chooseLocation).then((data) => {
     const result: RealPoint[] = [];
     data.forEach((record: string[]) => {
       if (
@@ -348,7 +342,7 @@ export async function importPointCloudTable(chooseLocation: boolean) {
 }
 
 export async function importCameraSettingsTable(chooseLocation: boolean) {
-  return importFromCSV('settings.csv', chooseLocation).then( (data) => {
+  return importFromCSV('settings.csv', chooseLocation).then((data) => {
     if (data.length === 0 && chooseLocation) {
       getMainWindow()?.webContents.send('notify', {
         message: 'File is empty',
@@ -394,40 +388,138 @@ export async function importCameraSettingsTable(chooseLocation: boolean) {
   });
 }
 
-export async function importImageListTable(chooseLocation: boolean) {
-  return importFromCSV('img_list.csv', chooseLocation).then( (data) => {
-    const result: InputImage[] = [];
-    data.forEach((record: string[]) => {
-      if (
-        !validateRow(record, [
-          { type: 'int', validator: (x) => x >= 0 },
-          { type: 'string', validator: () => true },
-          { type: 'string', validator: () => true },
-        ])
+function pathsAreEqual(path1, path2) {
+  path1 = path.resolve(path1);
+  path2 = path.resolve(path2);
+  if (process.platform == 'win32')
+    return path1.toLowerCase() === path2.toLowerCase();
+  return path1 === path2;
+}
+
+export async function importImages(images: InputImage[]) {
+  return Promise.all(
+    images
+      .map(async (img) => {
+        const extension = path.extname(img.path);
+        const newFileName = `img_${String(img.id).padStart(
+          4,
+          '0'
+        )}${extension}`;
+        const newPath = path.join(getSavesPath(), 'images', newFileName);
+
+        if (!pathsAreEqual(img.path, newPath))
+          await copyFile(img.path, newPath);
+
+        const dimensions = sizeOf(newPath);
+        const newInputImage: InputImage = {
+          ...img,
+          path: `file:///${newPath}`,
+          height: dimensions.height as number,
+          width: dimensions.width as number,
+        };
+        return newInputImage;
+      })
+      .map((promise, index) =>
+        promise.catch(() => {
+          getMainWindow()?.webContents.send('notify', {
+            message: `Could not import image "${images[index].name}"`,
+            status: 'error',
+            symbol: 'add_a_photo',
+          } as Message);
+        })
       )
-        throw Error();
+  );
+}
 
-      result.push({
-        id: parseInt(record[0], 10),
-        name: record[1],
-        path: record[2],
-        width: 0,
-        height: 0,
+export async function importImageListTable(chooseLocation: boolean) {
+  return importFromCSV('img_list.csv', chooseLocation)
+    .then((data) => {
+      const result: InputImage[] = [];
+      data.forEach((record: string[]) => {
+        if (
+          !validateRow(record, [
+            { type: 'int', validator: (x) => x >= 0 },
+            { type: 'string', validator: () => true },
+            { type: 'string', validator: () => true },
+          ])
+        )
+          throw Error();
+
+        result.push({
+          id: parseInt(record[0], 10),
+          name: record[1],
+          path: record[2],
+          width: 0,
+          height: 0,
+        });
       });
-    });
 
-    // Check if every imageId is unique
-    if (!isFieldUnique(result.map((c) => c.id))) throw Error();
+      // Check if every imageId is unique
+      if (!isFieldUnique(result.map((c) => c.id))) throw Error();
 
-    if (result.length === 0 && chooseLocation) {
-      getMainWindow()?.webContents.send('notify', {
-        message: 'File is empty',
-        status: 'warning',
-        symbol: 'file_download',
-      } as Message);
-      throw Error('File is empty');
-    } else {
-      return result;
-    }
+      if (result.length === 0 && chooseLocation) {
+        getMainWindow()?.webContents.send('notify', {
+          message: 'File is empty',
+          status: 'warning',
+          symbol: 'file_download',
+        } as Message);
+        throw Error('File is empty');
+      } else {
+        return result;
+      }
+    })
+    .then((results) =>
+      results.map((img) => {
+        if (!path.isAbsolute(img.path))
+          return {
+            ...img,
+            path: path.join(getSavesPath(), 'images', img.path),
+          };
+        return img;
+      })
+    )
+    .then(importImages);
+}
+
+export async function addNewImages(
+  newImagesStartIndex: number,
+  paths: string[]
+) {
+  const images: InputImage[] = paths.map((imgPath, index) => {
+    const imgIndex = newImagesStartIndex + index;
+    return {
+      name: `Image ${imgIndex}`,
+      id: imgIndex,
+      path: imgPath,
+      width: -1,
+      height: -1,
+    };
   });
+  return importImages(images);
+}
+
+export async function addNewImagesWithSelectionPopup(
+  newImagesStartIndex: number
+) {
+  return openFilePicker({
+    title: 'Open file',
+    filters: [
+      { name: 'Image', extensions: supportedFiles },
+      { name: 'All Files', extensions: ['*'] },
+    ],
+    properties: ['openFile', 'multiSelections'],
+  })
+    .then((selectedPaths) => {
+      if (selectedPaths.length === 0) {
+        getMainWindow()?.webContents.send('notify', {
+          message:
+            "Must open at least one file... (THIS SHOULDN'T BE POSSIBLE!!!)",
+          status: 'warning',
+          symbol: 'add_a_photo',
+        } as Message);
+        throw Error('Must open at least one file');
+      }
+      return selectedPaths;
+    })
+    .then((selectedPaths) => addNewImages(newImagesStartIndex, selectedPaths));
 }

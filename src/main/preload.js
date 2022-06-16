@@ -51,7 +51,7 @@ contextBridge.exposeInMainWorld('electron', {
   importImageListTable: (chooseLocation) => ipcRenderer.invoke('import:img_list', chooseLocation),
 
   // images.ts
-  importImage: (existingImages, imageId) => ipcRenderer.send('import:image', existingImages, imageId),
+  addNewImagesWithSelectionPopup: (newImagesStartIndex) => ipcRenderer.invoke('import:addNewImagesWithSelectionPopup', newImagesStartIndex),
 
   // computeResults.ts
   computeResults: () => ipcRenderer.invoke('computeResults:run', {})

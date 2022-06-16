@@ -30,13 +30,14 @@ import {
   setP2,
   setXi0,
 } from '../core/model/slices/cameraSlice';
-import { InputImage } from '../core/model/slices/imageListSlice';
+import { addImage, InputImage, removeAllImages, selectImagesMap } from "../core/model/slices/imageListSlice";
 import { addNewMessage } from '../core/model/slices/messages/messageQueueSlice';
+import { useSelector } from "react-redux";
 
 function notifyError(fileName: string, error: any) {
   store.dispatch(
     addNewMessage({
-      message: `Error importing file ${fileName}\nError message: ${
+      message: `Error importing file '${fileName}'\nError message: ${
         'message' in error ? error.message : error
       }`,
       status: 'warning',
@@ -183,8 +184,21 @@ export async function importAndAddToStoreImageListTable(
     shouldNotifySuccess,
     window.electron
       .importImageListTable(chooseLocation)
-      .then((data: InputImage[]) => {
-        data.forEach((x) => window.electron.importImage([x], x.id));
+      .then((data: InputImage[] ) => {
+        store.dispatch(removeAllImages)
+        data.forEach((img) => store.dispatch(addImage(img)));
       })
   );
+}
+
+export async function addAndStoreNewImagesUsingSelectionPopup() {
+  const newImagesStartIndex = Math.max(
+    0,
+    ...Object.keys(store.getState().imageList).map((x) => parseInt(x, 10))
+  ) + 1;
+  window.electron
+    .addNewImagesWithSelectionPopup(newImagesStartIndex)
+    .then((data: InputImage[]) => {
+      data.forEach((img) => store.dispatch(addImage(img)));
+    });
 }

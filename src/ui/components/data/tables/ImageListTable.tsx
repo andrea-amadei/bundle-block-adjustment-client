@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { selectAllImages } from '../../../../core/model/slices/imageListSlice';
+import { importAndAddToStoreImageListTable } from "../../../../main/ImportExportFromRenderer";
 
 export function ImageListTable(props: { showImportButton: boolean }) {
   const { showImportButton } = props;
@@ -10,7 +11,7 @@ export function ImageListTable(props: { showImportButton: boolean }) {
     <>
       <div className="buttons-row">
         {showImportButton ? (
-          <button style={{backgroundColor: 'inherit'}} disabled>Import not supported</button>
+          <button onClick={() => importAndAddToStoreImageListTable(true, true)}>Import from CSV</button>
         ) : (
           <></>
         )}

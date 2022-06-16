@@ -7,7 +7,7 @@ import { InputImage } from '../../model/slices/imageListSlice';
 
 const sizeOf = require('image-size');
 
-const supportedFiles = [
+export const supportedFiles = [
   'jpg',
   'jpeg',
   'png',
