@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import { selectAllImages } from '../../../../core/model/slices/imageListSlice';
 
 export function ImageListTable(props: { showImportButton: boolean }) {
   const { showImportButton } = props;
