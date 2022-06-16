@@ -1,0 +1,29 @@
+@use "/src/ui/styles/MainStyle" as *;
+
+.camera-params {
+  padding-top: 15px;
+  padding-left: 10px;
+  padding-right: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-size: 1.2em;
+
+  .fields-row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: start;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    .field {
+      width: 170px;
+
+      .label {
+        width: 70px;
+        text-align: right;
+      }
+    }
+  }
+}

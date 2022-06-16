@@ -21,7 +21,7 @@ import {
   importAndAddToStoreCameraSettingsTable, importAndAddToStoreGCPImageTable, importAndAddToStoreGCPObjectTable,
   importAndAddToStoreImageListTable, importAndAddToStorePointCloudTable, importAndAddToStoreTPImageTable,
   importImageListTable
-} from "../../main/InportExportFromRenderer";
+} from "../../main/ImportExportFromRenderer";
 
 export function importData<T>(data: T[], importer: ActionCreatorWithPayload<T[]>, showSuccessMessage = true) {
   try {

@@ -218,7 +218,7 @@ export async function importGCPImageTable(chooseLocation: boolean) {
       } as Message);
       throw Error('File is empty');
     } else {
-      return Object.entries(result);
+      return Object.values(result);
     }
 
   });

@@ -2,6 +2,7 @@ import './ComputePage.scss';
 import { useState } from 'react';
 import { ComputationParams } from '../components/results/ComputationParams';
 import { CardLayoutTabsPanel } from '../components/common/CardLayoutTabsPanel';
+import { CameraParams } from '../components/results/CameraParams';
 
 export function ComputePage() {
   const [params, setParams] = useState({});
@@ -9,7 +10,7 @@ export function ComputePage() {
 
   const content = {
     compute: <ComputationParams params={params} setParams={setParams} />,
-    camera: <h1>TEST</h1>,
+    camera: <CameraParams />,
   };
 
   return (
