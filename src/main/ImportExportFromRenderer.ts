@@ -62,16 +62,16 @@ function notifySuccess(fileName: string) {
 
 async function handleImport(
   fileName: string,
-  shouldNotifySuccess: boolean | undefined,
+  shouldNotify: boolean | undefined,
   promise: Promise<any>
 ) {
   return promise
     .then(() => {
-      if (shouldNotifySuccess) {
+      if (shouldNotify) {
         notifySuccess(fileName);
       }
     })
-    .catch((reason: any) => notifyError(fileName, reason));
+    .catch((reason: any) => {if (shouldNotify) notifyError(fileName, reason)});
 }
 
 // TODO: fix to many dispatches called

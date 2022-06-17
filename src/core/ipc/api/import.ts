@@ -76,11 +76,13 @@ export async function importFromCSV(
     })
     .then(convertCSVToData)
     .catch(() => {
-      getMainWindow()?.webContents.send('notify', {
-        message: 'Could not import data from CSV',
-        status: 'error',
-      } as Message);
-      throw Error('Could not import data from CSV');
+      if(chooseLocation) {
+        getMainWindow()?.webContents.send('notify', {
+          message: 'Could not import data from CSV',
+          status: 'error',
+        } as Message);
+        throw Error('Could not import data from CSV');
+      }
     });
 }
 

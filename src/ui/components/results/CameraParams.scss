@@ -16,13 +16,13 @@
   .fields-row {
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 10px 30px;
     justify-content: start;
     padding-top: 5px;
     padding-bottom: 5px;
 
     .field {
-      width: 300px;
 
       .label {
         width: 70px;

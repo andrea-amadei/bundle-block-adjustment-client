@@ -84,7 +84,7 @@ export function exportCameraSettingsTableForComputation(dirPath: string, data: C
   return exportToCSVWithHeader(
     path.join(dirPath, 'cameras.csv'),
     ['id_cam', 'xi0', 'eta0', 'c', 'width', 'height', 'pixel', 'k1', 'k2', 'k3', 'p1', 'p2' ,'a1', 'a2'],
-    [[1, data.xi0, data.eta0, data.c, width, height, "0.0000032789658524578903", data.k1, data.k2, data.k3, data.p1, data.p2, data.a1, data.a2]]
+    [[1, data.xi0, data.eta0, data.c, width, height, data.pixel, data.k1, data.k2, data.k3, data.p1, data.p2, data.a1, data.a2]]
   );
 }
 

@@ -15,6 +15,7 @@ import { store } from '../core/model/store';
 import { importAll, saveAll } from '../core/model/dataManipulation';
 import { addImage, InputImage } from '../core/model/slices/imageListSlice';
 import { ComputePage } from '../ui/pages/ComputePage';
+import { RedirectTo } from "../utils/RedirectTo";
 
 export default function App() {
   useEffect(() => {
@@ -47,7 +48,7 @@ export default function App() {
       <Router>
         <Routes>
           <Route path="/" element={<PagesContainer />}>
-            <Route index element={<EditorPage />} />
+            <Route index element={<RedirectTo path="/editor" />} />
             <Route path="editor" element={<EditorPage />} />
             <Route path="data" element={<DataPage />} />
             <Route path="results" element={<ComputePage />} />
