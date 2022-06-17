@@ -21,6 +21,25 @@ export const ImageListSlice = createSlice({
     addImage: (state: InputImageToIdMap, action: PayloadAction<InputImage>) => {
       state[action.payload.id] = action.payload;
     },
+
+    setImageNameById: {
+      prepare: (id: number, name: string) => ({
+        payload: { id, name },
+      }),
+
+      reducer: (
+        state: InputImageToIdMap,
+        action: PayloadAction<{ id: number; name: string }>
+      ) => {
+        if (!(action.payload.id in state)) throw Error('Invalid image id');
+
+        if (action.payload.name === '')
+          state[action.payload.id].name = `Image ${action.payload.id}`;
+        else
+          state[action.payload.id].name = action.payload.name;
+      },
+    },
+
     removeImageById: (state: InputImageToIdMap, action: PayloadAction<number>) => {
       delete state[action.payload];
     },
@@ -34,6 +53,7 @@ export const ImageListSlice = createSlice({
 
 export const {
   addImage,
+  setImageNameById,
   removeImageById,
   removeAllImages
 } = ImageListSlice.actions;

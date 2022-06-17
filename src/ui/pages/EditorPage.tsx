@@ -2,24 +2,25 @@ import './EditorPage.scss';
 import { ImageThumbnailNavLink } from 'ui/components/editor/images/ImageThumbnailNavLink';
 import { useSearchParams } from 'react-router-dom';
 import { ImageEditor } from 'ui/components/editor/ImageEditor';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { CardLayoutTabsPanel } from '../components/common/CardLayoutTabsPanel';
 import { PointInspectorTP } from '../components/editor/points/PointInspectorTP';
 import { PointInspectorGCP } from '../components/editor/points/PointInspectorGCP';
-import React, { useEffect, useState } from "react";
 import { SideListTP } from '../components/editor/sidelist/SideListTP';
 import { SideListGCP } from '../components/editor/sidelist/SideListGCP';
-import { InputImage, selectAllImages, selectImagesMap } from '../../core/model/slices/imageListSlice';
-import { useSelector } from 'react-redux';
-import { selectTiePoints } from "../../core/model/slices/tiePointsSlice";
-import { selectGroundControlPoints } from "../../core/model/slices/groundControlPointsSlice";
-import { addAndStoreNewImagesUsingSelectionPopup } from "../../main/ImportExportFromRenderer";
+import { selectAllImages } from '../../core/model/slices/imageListSlice';
+import { selectTiePoints } from '../../core/model/slices/tiePointsSlice';
+import { selectGroundControlPoints } from '../../core/model/slices/groundControlPointsSlice';
+import { addAndStoreNewImagesUsingSelectionPopup } from '../../main/ImportExportFromRenderer';
+import { SideListImageOptions } from '../components/editor/sidelist/SideListImageOptions';
 
 // eslint-disable-next-line import/prefer-default-export
 export function EditorPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedPointId = parseInt(searchParams.get('pointId') as string);
+  const selectedPointId = parseInt(searchParams.get('pointId') as string, 10);
   const selectedPointType = searchParams.get('pointType');
-  const selectedImageId = parseInt(searchParams.get('imgId') as string);
+  const selectedImageId = parseInt(searchParams.get('imgId') as string, 10);
 
   const [activeSideTab, setActiveSideTab] = useState('TP');
 
@@ -27,9 +28,9 @@ export function EditorPage() {
   const GCPMap = useSelector(selectGroundControlPoints);
 
   useEffect(() => {
-    if( (selectedPointId || selectedPointId === 0) && selectedPointType)
+    if ((selectedPointId || selectedPointId === 0) && selectedPointType)
       setActiveSideTab(selectedPointType);
-  }, [selectedPointType, selectedPointId])
+  }, [selectedPointType, selectedPointId]);
 
   function deselectPoint() {
     searchParams.delete('pointId');
@@ -38,24 +39,27 @@ export function EditorPage() {
   }
 
   useEffect(() => {
-    const pointId = parseInt(searchParams.get('pointId') as string);
-    const imgId = parseInt(searchParams.get('imgId') as string);
-    if ( (!imgId && imgId !== 0) && (pointId || pointId === 0) )
-      deselectPoint();
-    if(pointId !== undefined && searchParams.get('pointType') === 'TP') {
-      if ( !(pointId in TPMap) || !(imgId in TPMap[pointId].linkedImages))
+    const pointId = parseInt(searchParams.get('pointId') as string, 10);
+    const imgId = parseInt(searchParams.get('imgId') as string, 10);
+    if (!imgId && imgId !== 0 && (pointId || pointId === 0)) deselectPoint();
+    if (pointId !== undefined && searchParams.get('pointType') === 'TP') {
+      if (!(pointId in TPMap) || !(imgId in TPMap[pointId].linkedImages))
         deselectPoint();
-    } else if (pointId !== undefined && searchParams.get('pointType') === 'GCP') {
-      if ( !(pointId in GCPMap) || !(imgId in GCPMap[pointId].linkedImages))
+    } else if (
+      pointId !== undefined &&
+      searchParams.get('pointType') === 'GCP'
+    ) {
+      if (!(pointId in GCPMap) || !(imgId in GCPMap[pointId].linkedImages))
         deselectPoint();
     }
-  }, [searchParams, TPMap, GCPMap, deselectPoint])
+  }, [searchParams, TPMap, GCPMap, deselectPoint]);
 
   const imgList = useSelector(selectAllImages);
 
   let sideTabContent;
   if (activeSideTab === 'TP') sideTabContent = <SideListTP />;
   else if (activeSideTab === 'GCP') sideTabContent = <SideListGCP />;
+  else if (activeSideTab === 'options') sideTabContent = <SideListImageOptions />;
 
   let contentMainSection;
   if (selectedImageId || selectedImageId === 0) {
@@ -90,7 +94,10 @@ export function EditorPage() {
       <div className="editor-page">
         <div className="image-list">
           {/* <div className="title">Image list</div> */}
-          <div className="add-img-box" onClick={addAndStoreNewImagesUsingSelectionPopup}>
+          <div
+            className="add-img-box"
+            onClick={addAndStoreNewImagesUsingSelectionPopup}
+          >
             <span className="material-symbols-outlined btn"> add </span>
             add new image
           </div>
@@ -106,9 +113,9 @@ export function EditorPage() {
           </div>
         </div>
         <div className="main-section">{contentMainSection}</div>
-        {(selectedImageId || selectedImageId === 0) &&
+        {(selectedImageId || selectedImageId === 0) && (
           <CardLayoutTabsPanel
-            className="gpc-tp-point-list"
+            className="side-list"
             tabHeaderList={[
               {
                 tabId: 'TP',
@@ -132,11 +139,22 @@ export function EditorPage() {
                   </div>
                 ),
               },
+              {
+                tabId: 'options',
+                label: (
+                  <div
+                    className="tab-link"
+                    onClick={() => setActiveSideTab('options')}
+                  >
+                    Options
+                  </div>
+                ),
+              },
             ]}
             content={sideTabContent}
             activeTabId={activeSideTab}
           />
-        }
+        )}
       </div>
     </>
   );

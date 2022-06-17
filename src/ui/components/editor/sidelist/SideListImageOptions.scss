@@ -1,0 +1,66 @@
+@use "/src/ui/styles/MainStyle" as *;
+
+.image-options {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 1.2em;
+
+  hr {
+    width: 100%;
+    border-color: $main-color-lighter;
+  }
+
+  input[type='string'] {
+    color: $main-color-dark;
+    background-color: $main-color-light;
+    border: none;
+    border-radius: $border-radius * 0.5;
+    width: 150px;
+    height: 20px;
+  }
+
+  .fields-row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: start;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    .readonly {
+      input {
+        color: $main-color-light;
+        background-color: $main-color-dark;
+      }
+    }
+
+    .field-1 {
+      width: 250px;
+
+      .label {
+        width: 50px;
+        text-align: right;
+      }
+    }
+
+    .field-2 {
+      width: 250px;
+
+      .label {
+        width: 25px;
+        text-align: right;
+      }
+    }
+
+    .field-3 {
+      width: 250px;
+
+      .label {
+        width: 83px;
+        text-align: right;
+      }
+    }
+  }
+}
