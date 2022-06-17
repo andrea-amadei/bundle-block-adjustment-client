@@ -46,7 +46,8 @@ export function ComputePage() {
       imgPosition: imagesCameraPosition,
       images: imagesMap
     }
-    window.electron.computeResults(params.out, inputData, params);
+    window.electron.computeResults(params.out, inputData, params)
+      .catch(() => {});
   }
 
   return (

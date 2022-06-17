@@ -21,6 +21,7 @@ import {
   templateInputComputationParams,
 } from '../../model/ComputationParams';
 import { getMainWindow } from '../../../main/main';
+import { Message } from "../../model/slices/messages/messageQueueSlice";
 
 export interface ComputeResultsInputData {
   tp: TiePoint[];
@@ -43,6 +44,25 @@ export async function computeResults(
   await makeDir(inputDirPath);
   await makeDir(outputDirPath);
 
+  if(Object.values(inputData.images).length === 0) {
+    getMainWindow()?.webContents.send('notify', {
+      message: 'There are no images in project',
+      status: 'error'
+    } as Message);
+    throw Error('There are no images in project');
+  }
+
+  const width = Object.values(inputData.images)[0].width;
+  const height = Object.values(inputData.images)[0].height;
+
+  if(Object.values(inputData.images).some(img => img.width !== width || img.height !== height) ) {
+    getMainWindow()?.webContents.send('notify', {
+      message: 'Images must all have the same size!',
+      status: 'error'
+    } as Message);
+    throw Error('Images must all have the same size!');
+  }
+
   const [pathTpImg, pathGcpImg, pathGcpObj, pathImages, pathCameraSettings] =
     await Promise.all([
       exportTPImageTableForComputation(inputDirPath, inputData.tp),
@@ -54,7 +74,9 @@ export async function computeResults(
       }),
       exportCameraSettingsTableForComputation(
         inputDirPath,
-        inputData.cameraSettings
+        inputData.cameraSettings,
+        width,
+        height
       ),
     ]);
 
