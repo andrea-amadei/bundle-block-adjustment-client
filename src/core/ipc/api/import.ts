@@ -367,21 +367,23 @@ export async function importCameraSettingsTable(chooseLocation: boolean) {
         { type: 'float', validator: () => true },
         { type: 'float', validator: () => true },
         { type: 'float', validator: () => true },
+        { type: 'float', validator: () => true },
       ])
     )
       throw Error();
 
     const result: CameraState = {
-      xi0: parseInt(record[0], 10),
-      eta0: parseInt(record[1], 10),
-      c: parseInt(record[2], 10),
-      k1: parseInt(record[3], 10),
-      k2: parseInt(record[4], 10),
-      k3: parseInt(record[5], 10),
-      p1: parseInt(record[6], 10),
-      p2: parseInt(record[7], 10),
-      a1: parseInt(record[8], 10),
-      a2: parseInt(record[9], 10),
+      xi0: parseFloat(record[0]),
+      eta0: parseFloat(record[1]),
+      c: parseFloat(record[2]),
+      pixel: parseFloat(record[3]),
+      k1: parseFloat(record[4]),
+      k2: parseFloat(record[5]),
+      k3: parseFloat(record[6]),
+      p1: parseFloat(record[7]),
+      p2: parseFloat(record[8]),
+      a1: parseFloat(record[9]),
+      a2: parseFloat(record[10]),
     } as CameraState;
 
     return result;

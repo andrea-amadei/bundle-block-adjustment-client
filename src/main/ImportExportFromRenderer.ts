@@ -27,6 +27,7 @@ import {
   setK3,
   setP1,
   setP2,
+  setPixel,
   setXi0,
 } from '../core/model/slices/cameraSlice';
 import {
@@ -183,6 +184,7 @@ export async function importAndAddToStoreCameraSettingsTable(
         store.dispatch(setXi0(data.xi0));
         store.dispatch(setEta0(data.eta0));
         store.dispatch(setC(data.c));
+        store.dispatch(setPixel(data.pixel));
         store.dispatch(setK1(data.k1));
         store.dispatch(setK2(data.k2));
         store.dispatch(setK3(data.k3));

@@ -117,6 +117,7 @@ export function exportCameraSettingsTable(
     xi0: number;
     eta0: number;
     c: number;
+    pixel: number;
     k1: number;
     k2: number;
     k3: number;
@@ -128,7 +129,7 @@ export function exportCameraSettingsTable(
   chooseLocation: boolean
 ) {
   exportToCSV('settings.csv', chooseLocation, () =>
-    [[data.xi0, data.eta0, data.c, data.k1, data.k2, data.k3, data.p1, data.p2, data.a1, data.a2]]
+    [[data.xi0, data.eta0, data.c, data.pixel, data.k1, data.k2, data.k3, data.p1, data.p2, data.a1, data.a2]]
   );
 }
 
