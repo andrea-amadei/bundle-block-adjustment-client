@@ -9,7 +9,7 @@ import {
   selectK2,
   selectK3,
   selectP1,
-  selectP2,
+  selectP2, selectPixel,
   selectXi0
 } from './slices/cameraSlice';
 import { selectTiePointList} from './slices/tiePointsSlice';
@@ -54,6 +54,7 @@ export function saveAll(showAutosaveMessage = false) {
   const xi0 = selectXi0(store.getState());
   const eta0 = selectEta0(store.getState());
   const c = selectC(store.getState());
+  const pixels = selectPixel(store.getState());
   const k1 = selectK1(store.getState());
   const k2 = selectK2(store.getState());
   const k3 = selectK3(store.getState());
@@ -61,7 +62,7 @@ export function saveAll(showAutosaveMessage = false) {
   const p2 = selectP2(store.getState());
   const a1 = selectA1(store.getState());
   const a2 = selectA2(store.getState());
-  const cameraSettings = { xi0, eta0, c, k1, k2, k3, p1, p2, a1, a2 };
+  const cameraSettings = { xi0, eta0, c, pixels, k1, k2, k3, p1, p2, a1, a2 };
 
   window.electron.exportTPImageTable(tpList, false);
   window.electron.exportGCPObjectTable(gcpList, false);

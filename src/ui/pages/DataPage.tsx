@@ -27,7 +27,7 @@ export function DataPage() {
   return (
     <div className="data-page">
       <div className="save-section">
-        <h1>Save Project</h1>
+        <h1>Export Project</h1>
         <div className="save-content">
           <div className="save-row-left">
             <div>
