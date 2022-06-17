@@ -29,7 +29,7 @@ contextBridge.exposeInMainWorld('electron', {
   convertDataToCSV: (data) => ipcRenderer.invoke('convertToCSV', data),
 
   // filePicker.ts
-  openFilePicker: () => ipcRenderer.invoke('filePicker:open'),
+  openFilePicker: (options) => ipcRenderer.invoke('filePicker:open', options),
   saveFilePicker: () => ipcRenderer.invoke('filePicker:save'),
 
   // export.ts
@@ -54,5 +54,6 @@ contextBridge.exposeInMainWorld('electron', {
   addNewImagesWithSelectionPopup: (newImagesStartIndex) => ipcRenderer.invoke('import:addNewImagesWithSelectionPopup', newImagesStartIndex),
 
   // computeResults.ts
-  computeResults: () => ipcRenderer.invoke('computeResults:run', {})
+  computeResults: (dirPath, inputData, cmdArgs) => ipcRenderer.invoke('computeResults:run', dirPath, inputData, cmdArgs),
+  logComputeResults: (callback) => ipcRenderer.on('computeResults:log', callback),
 });

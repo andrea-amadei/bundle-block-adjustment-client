@@ -102,4 +102,6 @@ export const selectP2 = (state: RootState) => state.camera.p2;
 export const selectA1 = (state: RootState) => state.camera.a1;
 export const selectA2 = (state: RootState) => state.camera.a2;
 
+export const selectAllCameraParams = (state: RootState) => state.camera as CameraState;
+
 export default cameraSlice.reducer;

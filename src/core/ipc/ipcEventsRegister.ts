@@ -26,7 +26,8 @@ import {
   importPointCloudTable,
   importTPImageTable
 } from "./api/import";
-import { computeResults } from "./api/computeResults";
+import { computeResults, ComputeResultsInputData } from "./api/ComputeResults";
+import { ComputationParamsMap } from "../../ui/components/common/OptionParams";
 
 export default function registerIpcEvents() {
   // log
@@ -76,5 +77,5 @@ export default function registerIpcEvents() {
   ipcMain.handle('import:addNewImagesWithSelectionPopup', async (_event, newImagesStartIndex) => addNewImagesWithSelectionPopup(newImagesStartIndex));
 
   // computeResults.ts
-  ipcMain.handle('computeResults:run', async (_event, options) => computeResults(options));
+  ipcMain.handle('computeResults:run', async (_event, dirPath: string, inputData: ComputeResultsInputData, cmdArgs: ComputationParamsMap) => computeResults(dirPath, inputData, cmdArgs));
 }

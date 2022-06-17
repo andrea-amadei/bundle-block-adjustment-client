@@ -15,7 +15,7 @@ export function getExecutablesPath() {
 }
 
 export function getComputeResultsJarPath() {
-  return path.join(getExecutablesPath(), 'test.jar');
+  return path.join(getExecutablesPath(), 'BBA-1.0-SNAPSHOT.jar');
 }
 
 export async function createSavesDirectory(): Promise<void> {
@@ -61,6 +61,15 @@ export async function copyFile(sourcePath: string, destinationPath: string): Pro
     fs.copyFile(sourcePath, destinationPath, (error) => {
       if (error) reject();
 
+      resolve();
+    });
+  });
+}
+
+export async function makeDir(dirPath: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    fs.mkdir(dirPath, { recursive: true }, (error) => {
+      if (error) reject();
       resolve();
     });
   });

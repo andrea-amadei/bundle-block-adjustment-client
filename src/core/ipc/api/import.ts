@@ -521,5 +521,12 @@ export async function addNewImagesWithSelectionPopup(
       }
       return selectedPaths;
     })
-    .then((selectedPaths) => addNewImages(newImagesStartIndex, selectedPaths));
+    .then((selectedPaths) => addNewImages(newImagesStartIndex, selectedPaths))
+    .catch(() => {
+      getMainWindow()?.webContents.send('notify', {
+        message: 'Action cancelled',
+        status: 'warning',
+        symbol: 'file_download',
+      } as Message);
+  });
 }

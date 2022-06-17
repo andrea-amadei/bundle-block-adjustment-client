@@ -11,7 +11,34 @@ import {
 import { GroundControlPoint } from '../../model/slices/groundControlPointsSlice';
 import { Message } from '../../model/slices/messages/messageQueueSlice';
 import { InputImage } from '../../model/slices/imageListSlice';
-import { app } from "electron";
+
+export async function exportToCSVAtPath(path: string, data: any[][], shouldNotifyOnSuccess?: boolean) {
+  return convertDataToCSV(data)
+    .then((result) => {
+      return writeTextFile(path, [result])
+        .then(() => {
+          if (shouldNotifyOnSuccess)
+            getMainWindow()?.webContents.send('notify', {
+              message: 'File saved successfully!',
+              status: 'success',
+              symbol: 'save',
+            } as Message);
+          return path;
+        })
+        .catch(() => {
+          getMainWindow()?.webContents.send('notify', {
+            message: 'Could not save file...',
+            status: 'error',
+          } as Message);
+        });
+    })
+    .catch(() => {
+      getMainWindow()?.webContents.send('notify', {
+        message: 'Could not convert data to CSV...',
+        status: 'error',
+      } as Message);
+    });
+}
 
 export async function exportToCSV(defaultName: string, chooseLocation: boolean, extractor: () => any[][]) {
   (chooseLocation
@@ -28,30 +55,7 @@ export async function exportToCSV(defaultName: string, chooseLocation: boolean, 
     : new Promise<string>((resolve) => resolve(path.join(getSavesPath(), defaultName)))
   )
     .then((selectedPath) => {
-      convertDataToCSV(extractor())
-        .then((result) => {
-          writeTextFile(selectedPath, [result])
-            .then(() => {
-              if (chooseLocation)
-                getMainWindow()?.webContents.send('notify', {
-                  message: 'File saved successfully!',
-                  status: 'success',
-                  symbol: chooseLocation ? 'save_as' : 'save',
-                } as Message);
-            })
-            .catch(() => {
-              getMainWindow()?.webContents.send('notify', {
-                message: 'Could not save file...',
-                status: 'error',
-              } as Message);
-            });
-        })
-        .catch(() => {
-          getMainWindow()?.webContents.send('notify', {
-            message: 'Could not convert data to CSV...',
-            status: 'error',
-          } as Message);
-        });
+      return exportToCSVAtPath(selectedPath, extractor(), chooseLocation)
     })
     .catch(() => {
       getMainWindow()?.webContents.send('notify', {
@@ -133,3 +137,6 @@ export function exportImageListTable(data: InputImage[], chooseLocation: boolean
     data.map((p) => [p.id, p.name, `${path.basename(p.path)}`])
   );
 }
+
+
+

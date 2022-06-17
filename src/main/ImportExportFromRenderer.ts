@@ -15,7 +15,6 @@ import {
   CameraPosition,
   RealPoint,
 } from '../core/model/slices/common/interfaces';
-import { importData } from '../core/model/dataManipulation';
 import { importCameras, importPoints } from '../core/model/slices/resultSlice';
 import {
   CameraState,
@@ -30,7 +29,13 @@ import {
   setP2,
   setXi0,
 } from '../core/model/slices/cameraSlice';
-import { addImage, InputImage, removeAllImages, selectImagesMap } from "../core/model/slices/imageListSlice";
+import {
+  addImage,
+  InputImage,
+  InputImageToIdMap,
+  removeAllImages,
+  selectImagesMap
+} from "../core/model/slices/imageListSlice";
 import { addNewMessage } from '../core/model/slices/messages/messageQueueSlice';
 import { useSelector } from "react-redux";
 
@@ -134,7 +139,21 @@ export async function importAndAddToStoreCameraPositionTable(
     shouldNotifySuccess,
     window.electron
       .importCameraPositionTable(chooseLocation)
-      .then((data: CameraPosition[]) => store.dispatch(importCameras(data)))
+      .then((data: CameraPosition[]) => {
+        const additionalCameraPos =  Object.values(store.getState().imageList as InputImageToIdMap)
+          .map((img) => img.id)
+          .filter(imgId => !data.some(c => c.imageId === imgId))
+          .map(imgId => ({
+            imageId: imgId,
+            kappa: 0,
+            omega: 0,
+            phi: 0,
+            xc: 0,
+            yc: 0,
+            zc: 0
+          }));
+        store.dispatch(importCameras([...additionalCameraPos, ...data]));
+      })
   );
 }
 
@@ -200,5 +219,5 @@ export async function addAndStoreNewImagesUsingSelectionPopup() {
     .addNewImagesWithSelectionPopup(newImagesStartIndex)
     .then((data: InputImage[]) => {
       data.forEach((img) => store.dispatch(addImage(img)));
-    });
+    }).catch(() => {});
 }

@@ -1,11 +1,11 @@
 import { importAndAddToStorePointCloudTable } from 'main/ImportExportFromRenderer';
 import { useSelector } from 'react-redux';
-import { selectAllPoints } from '../../../../core/model/slices/resultSlice';
+import { selectAllPointsList } from "../../../../core/model/slices/resultSlice";
 
 export function PointCloudTable(props: { showImportButton: boolean }) {
   const { showImportButton } = props;
 
-  const pointList = useSelector(selectAllPoints);
+  const pointList = useSelector(selectAllPointsList);
 
   return (
     <>

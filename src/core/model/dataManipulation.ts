@@ -15,12 +15,11 @@ import {
 import { selectTiePointList} from './slices/tiePointsSlice';
 import { selectGroundControlPointList } from './slices/groundControlPointsSlice';
 import { selectAllImages } from './slices/imageListSlice';
-import { selectAllCameras, selectAllPoints } from './slices/resultSlice';
+import { selectAllCamerasList, selectAllPointsList } from "./slices/resultSlice";
 import {
   importAndAddToStoreCameraPositionTable,
   importAndAddToStoreCameraSettingsTable, importAndAddToStoreGCPImageTable, importAndAddToStoreGCPObjectTable,
   importAndAddToStoreImageListTable, importAndAddToStorePointCloudTable, importAndAddToStoreTPImageTable,
-  importImageListTable
 } from "../../main/ImportExportFromRenderer";
 
 export function importData<T>(data: T[], importer: ActionCreatorWithPayload<T[]>, showSuccessMessage = true) {
@@ -49,8 +48,8 @@ export function importData<T>(data: T[], importer: ActionCreatorWithPayload<T[]>
 export function saveAll(showAutosaveMessage = false) {
   const tpList = selectTiePointList(store.getState());
   const gcpList = selectGroundControlPointList(store.getState());
-  const cameraList = selectAllCameras(store.getState());
-  const pointList = selectAllPoints(store.getState());
+  const cameraList = selectAllCamerasList(store.getState());
+  const pointList = selectAllPointsList(store.getState());
   const imageList = selectAllImages(store.getState());
 
   const xi0 = selectXi0(store.getState());
