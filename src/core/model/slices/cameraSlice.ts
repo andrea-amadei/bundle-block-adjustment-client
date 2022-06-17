@@ -16,6 +16,8 @@ export interface CameraState {
 
   a1: number;
   a2: number;
+
+  pixel: number;
 }
 
 const initialState = {
@@ -29,6 +31,7 @@ const initialState = {
   p2: 0,
   a1: 0,
   a2: 0,
+  pixel: 0,
 } as CameraState;
 
 export const cameraSlice = createSlice({
@@ -75,6 +78,10 @@ export const cameraSlice = createSlice({
     setA2: (state = initialState, action: PayloadAction<number>) => {
       state.a2 = action.payload;
     },
+
+    setPixel: (state = initialState, action: PayloadAction<number>) => {
+      state.pixel = action.payload;
+    },
   },
 });
 
@@ -89,6 +96,7 @@ export const {
   setP2,
   setA1,
   setA2,
+  setPixel,
 } = cameraSlice.actions;
 
 export const selectXi0 = (state: RootState) => state.camera.xi0;
@@ -101,6 +109,7 @@ export const selectP1 = (state: RootState) => state.camera.p1;
 export const selectP2 = (state: RootState) => state.camera.p2;
 export const selectA1 = (state: RootState) => state.camera.a1;
 export const selectA2 = (state: RootState) => state.camera.a2;
+export const selectPixel = (state: RootState) => state.camera.pixel;
 
 export const selectAllCameraParams = (state: RootState) => state.camera as CameraState;
 

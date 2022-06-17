@@ -9,8 +9,8 @@ import {
   selectK2,
   selectK3,
   selectP1,
-  selectP2,
-  selectXi0,
+  selectP2, selectPixel,
+  selectXi0
 } from '../../../../core/model/slices/cameraSlice';
 
 export function CameraSettingsTable(props: { showImportButton: boolean }) {
@@ -19,6 +19,7 @@ export function CameraSettingsTable(props: { showImportButton: boolean }) {
   const xi0 = useSelector(selectXi0);
   const eta0 = useSelector(selectEta0);
   const c = useSelector(selectC);
+  const pixel = useSelector(selectPixel);
   const k1 = useSelector(selectK1);
   const k2 = useSelector(selectK2);
   const k3 = useSelector(selectK3);
@@ -35,7 +36,7 @@ export function CameraSettingsTable(props: { showImportButton: boolean }) {
         ) : (
           <></>
         )}
-        <button onClick={() => window.electron.exportCameraSettingsTable({ xi0, eta0, c, k1, k2, k3, p1, p2, a1, a2 }, true)}>Export to CSV</button>
+        <button onClick={() => window.electron.exportCameraSettingsTable({ xi0, eta0, c, pixel, k1, k2, k3, p1, p2, a1, a2 }, true)}>Export to CSV</button>
       </div>
       <table>
         <thead>
@@ -43,6 +44,7 @@ export function CameraSettingsTable(props: { showImportButton: boolean }) {
             <th>xi0</th>
             <th>eta0</th>
             <th>c</th>
+            <th>pixel</th>
             <th>k1</th>
             <th>k2</th>
             <th>k3</th>
@@ -57,6 +59,7 @@ export function CameraSettingsTable(props: { showImportButton: boolean }) {
             <td>{xi0}</td>
             <td>{eta0}</td>
             <td>{c}</td>
+            <td>{pixel}</td>
             <td>{k1}</td>
             <td>{k2}</td>
             <td>{k3}</td>
