@@ -34,11 +34,9 @@ import {
   addImage,
   InputImage,
   InputImageToIdMap,
-  removeAllImages,
-  selectImagesMap
+  removeAllImages
 } from "../core/model/slices/imageListSlice";
 import { addNewMessage } from '../core/model/slices/messages/messageQueueSlice';
-import { useSelector } from "react-redux";
 
 function notifyError(fileName: string, error: any) {
   store.dispatch(
@@ -155,19 +153,6 @@ export async function importAndAddToStoreCameraPositionTable(
           }));
         store.dispatch(importCameras([...additionalCameraPos, ...data]));
       })
-  );
-}
-
-export async function importAndAddToStorePointCloudTable(
-  chooseLocation: boolean,
-  shouldNotifySuccess?: boolean
-) {
-  return handleImport(
-    'Point Cloud table',
-    shouldNotifySuccess,
-    window.electron
-      .importPointCloudTable(chooseLocation)
-      .then((data: RealPoint[]) => store.dispatch(importPoints(data)))
   );
 }
 

@@ -106,12 +106,6 @@ export function exportCameraPositionTable(data: CameraPosition[], chooseLocation
   );
 }
 
-export function exportPointCloudTable(data: RealPoint[], chooseLocation: boolean) {
-  exportToCSV('cloud.csv', chooseLocation, () =>
-    data.map((p) => [p.pointId, p.x, p.y, p.z])
-  );
-}
-
 export function exportCameraSettingsTable(
   data: {
     xi0: number;

@@ -29,7 +29,6 @@ import {
   importGCPImageTable,
   importGCPObjectTable,
   importImageListTable,
-  importPointCloudTable,
   importTPImageTable
 } from './api/import';
 import { ComputationParamsMap } from '../../ui/components/common/OptionParams';
@@ -85,9 +84,6 @@ export default function registerIpcEvents() {
   ipcMain.on('export:camera', async (_event, arg1, arg2) =>
     exportCameraPositionTable(arg1, arg2)
   );
-  ipcMain.on('export:cloud', async (_event, arg1, arg2) =>
-    exportPointCloudTable(arg1, arg2)
-  );
   ipcMain.on('export:settings', async (_event, arg1, arg2) =>
     exportCameraSettingsTable(arg1, arg2)
   );
@@ -105,9 +101,6 @@ export default function registerIpcEvents() {
   );
   ipcMain.handle('import:camera', async (_event, arg) =>
     importCameraPositionTable(arg)
-  );
-  ipcMain.handle('import:cloud', async (_event, arg) =>
-    importPointCloudTable(arg)
   );
   ipcMain.handle('import:settings', async (_event, arg) =>
     importCameraSettingsTable(arg)

@@ -6,7 +6,6 @@ import { GCPObjectTable } from '../components/data/tables/GCPObjectTable';
 import { GCPImageTable } from '../components/data/tables/GCPImageTable';
 import { TPImageTable } from '../components/data/tables/TPImageTable';
 import { CameraPositionTable } from '../components/data/tables/CameraPositionTable';
-import { PointCloudTable } from '../components/data/tables/PointCloudTable';
 import { store } from '../../core/model/store';
 import { addNewMessage } from '../../core/model/slices/messages/messageQueueSlice';
 import { ImageListTable } from '../components/data/tables/ImageListTable';
@@ -21,7 +20,6 @@ export function DataPage() {
     gcp_img: <GCPImageTable showImportButton={enableImport} />,
     tp_img: <TPImageTable showImportButton={enableImport} />,
     img: <CameraPositionTable showImportButton={enableImport} />,
-    cloud: <PointCloudTable showImportButton={enableImport} />,
     camera: <CameraSettingsTable showImportButton={enableImport} />,
     img_list: <ImageListTable showImportButton={enableImport} />,
   };
@@ -99,14 +97,6 @@ export function DataPage() {
             label: (
               <div className="tab-link" onClick={() => setActiveSideTab('img')}>
                 Camera Positions
-              </div>
-            ),
-          },
-          {
-            tabId: 'cloud',
-            label: (
-              <div className="tab-link" onClick={() => setActiveSideTab('cloud')}>
-                Point Cloud
               </div>
             ),
           },

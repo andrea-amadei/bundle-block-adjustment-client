@@ -303,44 +303,6 @@ export async function importCameraPositionTable(chooseLocation: boolean) {
   });
 }
 
-export async function importPointCloudTable(chooseLocation: boolean) {
-  return importFromCSV('cloud.csv', chooseLocation).then((data) => {
-    const result: RealPoint[] = [];
-    data.forEach((record: string[]) => {
-      if (
-        !validateRow(record, [
-          { type: 'int', validator: (x) => x >= 0 },
-          { type: 'float', validator: () => true },
-          { type: 'float', validator: () => true },
-          { type: 'float', validator: () => true },
-        ])
-      )
-        throw Error();
-
-      result.push({
-        pointId: parseInt(record[0], 10),
-        x: parseFloat(record[1]),
-        y: parseFloat(record[2]),
-        z: parseFloat(record[3]),
-      });
-    });
-
-    // Check if every imageId is unique
-    if (!isFieldUnique(result.map((c) => c.pointId))) throw Error();
-
-    if (result.length === 0 && chooseLocation) {
-      getMainWindow()?.webContents.send('notify', {
-        message: 'File is empty',
-        status: 'warning',
-        symbol: 'file_download',
-      } as Message);
-      throw Error('File is empty');
-    } else {
-      return result;
-    }
-  });
-}
-
 export async function importCameraSettingsTable(chooseLocation: boolean) {
   return importFromCSV('settings.csv', chooseLocation).then((data) => {
     if (data.length === 0 && chooseLocation) {

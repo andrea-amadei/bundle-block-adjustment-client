@@ -49,7 +49,6 @@ export function saveAll(showAutosaveMessage = false) {
   const tpList = selectTiePointList(store.getState());
   const gcpList = selectGroundControlPointList(store.getState());
   const cameraList = selectAllCamerasList(store.getState());
-  const pointList = selectAllPointsList(store.getState());
   const imageList = selectAllImages(store.getState());
 
   const xi0 = selectXi0(store.getState());
@@ -68,7 +67,6 @@ export function saveAll(showAutosaveMessage = false) {
   window.electron.exportGCPObjectTable(gcpList, false);
   window.electron.exportGCPImageTable(gcpList, false);
   window.electron.exportCameraPositionTable(cameraList, false);
-  window.electron.exportPointCloudTable(pointList, false);
   window.electron.exportCameraSettingsTable(cameraSettings, false);
   window.electron.exportImageListTable(imageList, false);
 
@@ -82,7 +80,6 @@ export async function importAll() {
     .then(() => importAndAddToStoreGCPImageTable(false))
     .then(() => importAndAddToStoreTPImageTable(false))
     .then(() => importAndAddToStoreCameraPositionTable(false))
-    .then(() => importAndAddToStorePointCloudTable(false))
     .then(() => importAndAddToStoreCameraSettingsTable(false))
     // .then(() => saveAll(true));
 }
