@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
-import { imgTest } from "./ModelTestData";
 
 export interface InputImage {
   id: number;
@@ -16,7 +15,7 @@ export interface InputImageToIdMap {
 
 export const ImageListSlice = createSlice({
   name: 'imageList',
-  initialState: imgTest as InputImageToIdMap,
+  initialState: {} as InputImageToIdMap,
   reducers: {
     addImage: (state: InputImageToIdMap, action: PayloadAction<InputImage>) => {
       state[action.payload.id] = action.payload;
