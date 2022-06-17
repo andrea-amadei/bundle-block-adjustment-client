@@ -13,13 +13,13 @@ export function PageMenu() {
       <NavLink className="page-menu-nav-link" to="data">
         Raw Data
       </NavLink>
-      {process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true' ? (
-        <NavLink className="page-menu-nav-link" to="testing">
-          Testing
-        </NavLink>
-      ) : (
-        <></>
-      )}
+      {/*{process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true' ? (*/}
+      {/*  <NavLink className="page-menu-nav-link" to="testing">*/}
+      {/*    Testing*/}
+      {/*  </NavLink>*/}
+      {/*) : (*/}
+      {/*  <></>*/}
+      {/*)}*/}
     </div>
   );
 }
