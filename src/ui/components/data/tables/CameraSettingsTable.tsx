@@ -45,6 +45,21 @@ export function CameraSettingsTable(props: { showImportButton: boolean }) {
             <th>eta0</th>
             <th>c</th>
             <th>pixel</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{xi0}</td>
+            <td>{eta0}</td>
+            <td>{c}</td>
+            <td>{pixel}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+      <table>
+        <thead>
+          <tr>
             <th>k1</th>
             <th>k2</th>
             <th>k3</th>
@@ -56,10 +71,6 @@ export function CameraSettingsTable(props: { showImportButton: boolean }) {
         </thead>
         <tbody>
           <tr>
-            <td>{xi0}</td>
-            <td>{eta0}</td>
-            <td>{c}</td>
-            <td>{pixel}</td>
             <td>{k1}</td>
             <td>{k2}</td>
             <td>{k3}</td>

@@ -6,10 +6,10 @@ import {
   selectA1, selectA2,
   selectC,
   selectEta0,
-  selectK1, selectK2, selectK3, selectP1, selectP2,
+  selectK1, selectK2, selectK3, selectP1, selectP2, selectPixel,
   selectXi0, setA1, setA2,
   setC,
-  setEta0, setK1, setK2, setK3, setP1, setP2,
+  setEta0, setK1, setK2, setK3, setP1, setP2, setPixel,
   setXi0
 } from '../../../core/model/slices/cameraSlice';
 import { store } from '../../../core/model/store';
@@ -41,6 +41,18 @@ export function CameraParams() {
               label="c"
               value={useSelector(selectC)}
               setValue={(value: number) => {store.dispatch(setC(value))}}
+            />
+          </div>
+        </div>
+      </FieldsContainer>
+      <FieldsContainer title="Image properties">
+        <div className="fields-row">
+          <div className="field">
+            <InputField
+              type="number"
+              label="Pixel"
+              value={useSelector(selectPixel)}
+              setValue={(value: number) => {store.dispatch(setPixel(value))}}
             />
           </div>
         </div>
