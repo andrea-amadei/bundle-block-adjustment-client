@@ -32,9 +32,10 @@ export async function exportToCSVAtPath(path: string, data: any[][], shouldNotif
           } as Message);
         });
     })
-    .catch(() => {
+    .catch((reason) => {
+      console.log("eerrr", reason);
       getMainWindow()?.webContents.send('notify', {
-        message: 'Could not convert data to CSV...',
+        message: `Could not convert data to CSV... (${path})`,
         status: 'error',
       } as Message);
     });
