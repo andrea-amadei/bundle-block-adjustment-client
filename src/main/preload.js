@@ -37,7 +37,6 @@ contextBridge.exposeInMainWorld('electron', {
   exportGCPImageTable: (data, chooseLocation) => ipcRenderer.send('export:gcp_img', data, chooseLocation),
   exportGCPObjectTable: (data, chooseLocation) => ipcRenderer.send('export:gcp_obj', data, chooseLocation),
   exportCameraPositionTable: (data, chooseLocation) => ipcRenderer.send('export:camera', data, chooseLocation),
-  exportPointCloudTable: (data, chooseLocation) => ipcRenderer.send('export:cloud', data, chooseLocation),
   exportCameraSettingsTable: (data, chooseLocation) => ipcRenderer.send('export:settings', data, chooseLocation),
   exportImageListTable: (data, chooseLocation) => ipcRenderer.send('export:img_list', data, chooseLocation),
 
@@ -46,7 +45,6 @@ contextBridge.exposeInMainWorld('electron', {
   importGCPImageTable: (chooseLocation) => ipcRenderer.invoke('import:gcp_img', chooseLocation),
   importGCPObjectTable: (chooseLocation) => ipcRenderer.invoke('import:gcp_obj', chooseLocation),
   importCameraPositionTable: (chooseLocation) => ipcRenderer.invoke('import:camera', chooseLocation),
-  importPointCloudTable: (chooseLocation) => ipcRenderer.invoke('import:cloud', chooseLocation),
   importCameraSettingsTable: (chooseLocation) => ipcRenderer.invoke('import:settings', chooseLocation),
   importImageListTable: (chooseLocation) => ipcRenderer.invoke('import:img_list', chooseLocation),
 
