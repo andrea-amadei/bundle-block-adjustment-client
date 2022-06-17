@@ -55,7 +55,12 @@ export function ComputePage() {
         <h1>Start computation</h1>
         <div className="go-content">
           <div className="go-row-left">
-            <div>Insert description here</div>
+            <div>
+              Compute all data with the BundleBlockAdjustment algorithm and
+              saves all inputs and results in the specified folder.
+              <br />
+              All output will be viewed here
+            </div>
           </div>
           <div className="go-row-right">
             <button onClick={compute}>COMPUTE</button>
