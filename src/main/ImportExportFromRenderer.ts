@@ -71,7 +71,7 @@ async function handleImport(
         notifySuccess(fileName);
       }
     })
-    .catch((reason: any) => {if (shouldNotify) notifyError(fileName, reason)});
+    .catch((reason: any) => {if (shouldNotify && reason.message !== 'Action cancelled') notifyError(fileName, reason)});
 }
 
 // TODO: fix to many dispatches called

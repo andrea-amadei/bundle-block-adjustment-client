@@ -66,23 +66,27 @@ export async function importFromCSV(
 ) {
   return getPathForFileToImport(defaultName, chooseLocation)
     .then(readTextFile)
-    .catch(() => {
-      if (chooseLocation)
+    .catch((reason) => {
+      if (chooseLocation && reason.message !== 'Action cancelled') {
         getMainWindow()?.webContents.send('notify', {
           message: 'Could not open file',
           status: 'error',
         } as Message);
-      throw Error('Could not open file');
+        throw Error('Could not open file');
+      }
+      throw reason;
     })
     .then(convertCSVToData)
-    .catch(() => {
-      if(chooseLocation) {
+    .catch((reason) => {
+      if(chooseLocation && reason.message !== 'Action cancelled') {
         getMainWindow()?.webContents.send('notify', {
           message: 'Could not import data from CSV',
           status: 'error',
         } as Message);
         throw Error('Could not import data from CSV');
       }
+      if (reason.message !== 'Action cancelled')
+        throw reason;
     });
 }
 
