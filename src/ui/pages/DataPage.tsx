@@ -38,8 +38,7 @@ export function DataPage() {
             </div>
           </div>
           <div className="save-row-right">
-            <button>IMPORT PROJECT</button>
-            <button onClick={() => saveAll(false)}>EXPORT PROJECT</button>
+            <button onClick={() => {saveAll(false); window.electron.exportSavesToZip();}}>EXPORT PROJECT</button>
           </div>
         </div>
       </div>

@@ -56,4 +56,7 @@ contextBridge.exposeInMainWorld('electron', {
   // computeResults.ts
   computeResults: (dirPath, inputData, cmdArgs) => ipcRenderer.invoke('computeResults:run', dirPath, inputData, cmdArgs),
   logComputeResults: (callback) => ipcRenderer.on('computeResults:log', callback),
+
+  // archive.ts
+  exportSavesToZip: () => ipcRenderer.send('exportToZip'),
 });

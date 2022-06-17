@@ -9,6 +9,10 @@
   gap: 15px;
   font-size: 1.2em;
 
+  input[type='number'] {
+    width: 150px !important;
+  }
+
   .fields-row {
     display: flex;
     flex-direction: row;
@@ -18,7 +22,7 @@
     padding-bottom: 5px;
 
     .field {
-      width: 170px;
+      width: 300px;
 
       .label {
         width: 70px;
